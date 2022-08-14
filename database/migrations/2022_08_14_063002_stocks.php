@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('branch_id');
+            $table->bigInteger('branch_id')->unsigned();
             $table->foreign('branch_id')->references('id')->on('branches');
-            $table->bigInteger('product_id');
+            $table->bigInteger('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products');
             $table->integer('qty');
             $table->boolean('is_deleted')->default(0);

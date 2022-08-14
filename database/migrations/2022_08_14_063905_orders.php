@@ -15,16 +15,15 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('sr_id');
+            $table->bigInteger('sr_id')->unsigned();
             $table->foreign('sr_id')->references('id')->on('srs');
-            $table->bigInteger('branch_is');
-            $table->foreign('branch_is')->references('id')->on('branches');
-            $table->bigInteger('branch_is');
-            $table->foreign('branch_is')->references('id')->on('branches');
-            $table->bigInteger('distributor_id');
+
+            $table->bigInteger('branch_id')->unsigned();
+            $table->foreign('branch_id')->references('id')->on('branches');
+            $table->bigInteger('distributor_id')->unsigned();
             $table->foreign('distributor_id')->references('id')->on('distributors');
 
-            $table->bigInteger('product_id');
+            $table->bigInteger('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products');
             $table->integer('qty');
 
