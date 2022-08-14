@@ -1,0 +1,293 @@
+<section>
+    <!-- Left Sidebar -->
+    <aside id="leftsidebar" class="sidebar">
+        <!-- User Info -->
+        <div class="user-info">
+            <div class="image">
+                <img src="{{ asset('assets') }}/images/user.png" width="48" height="48" alt="User" />
+            </div>
+            <div class="info-container">
+                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@auth
+                    {{ auth()->user()->name }}
+                @endauth</div>
+                <div class="email">@auth
+                    {{ auth()->user()->email }}
+                @endauth</div>
+                <div class="btn-group user-helper-dropdown">
+                    <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a href="views/profile.html"><i class="material-icons">person</i>Profile</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                    <button type="submit" class="btn btn-danger"href="javascript:void(0);"><i class="material-icons">input</i>Sign Out</button>
+
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- #User Info -->
+        <!-- Menu -->
+        <div class="menu">
+            <ul class="list">
+                <li class="header">MAIN NAVIGATION</li>
+                <li class="active">
+                    <a href="dashboard.html">
+                        <i class="material-icons">dashboard</i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="views/preliminary-works.html">
+                        <i class="material-icons">add_circle</i>
+                        <span>Add SR</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="views/preliminary-works.html">
+                        <i class="material-icons">add_circle</i>
+                        <span>Add Distributor</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="views/preliminary-works.html">
+                        <i class="material-icons">add_circle</i>
+                        <span>Add Vendor</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="views/preliminary-works.html">
+                        <i class="material-icons">add_circle</i>
+                        <span>Add Vendor</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="views/preliminary-works.html">
+                        <i class="material-icons">shopping_cart</i>
+                        <span>Purchase Raw Materials</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="views/design-and-drawing.html">
+                        <i class="material-icons">history</i>
+                        <span>Add Product History</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="views/documentation.html">
+                        <i class="material-icons">move_up</i>
+                        <span>Shift Product To ZAF</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="views/financial-plan.html">
+                        <i class="material-icons">request_page</i>
+                        <span>SR's Product Request</span>
+                    </a>
+                </li>
+                <li>
+
+
+
+                    <a class="" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"> <i class="material-icons">report</i>
+                        <span>Reports</span></a>
+
+
+                  <div class="container">
+                    <div  class="collapse multi-collapse" id="multiCollapseExample1">
+
+                        <div id="list-example" class="list-group w-50">
+                            <a class="list-group-item list-group-item-action" href="#list-item-1">Stock</a>
+                            <a class="list-group-item list-group-item-action" href="#list-item-1">Sales</a>
+                            <a class="list-group-item list-group-item-action" href="#list-item-1">Shift</a>
+                            <a class="list-group-item list-group-item-action" href="#list-item-1">Dues of distributors</a>
+                            <a class="list-group-item list-group-item-action" href="#list-item-1">Dues of vendor</a>
+
+                          </div>
+                   </div>
+
+                  </div>
+                </li>
+                <li>
+                    <a href="views/time-management.html">
+                        <i class="material-icons">move_up</i>
+                        <span>Send Product Request to ZAF or Factory</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="views/procurement-plan.html">
+                        <i class="material-icons">payments</i>
+                        <span>Check Dues Of Distributors</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="views/operational-analysis.html">
+                        <i class="material-icons">payments</i>
+                        <span>Add SR Payments</span>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+        <!-- #Menu -->
+        <!-- Footer -->
+        <div class="legal">
+            <div class="copyright">
+                &copy; 2022 <a href="javascript:void(0);">OrginFood</a>.
+            </div>
+            <div class="version">
+                <b>Version: </b> 0.0.1
+            </div>
+        </div>
+        <!-- #Footer -->
+    </aside>
+    <!-- #END# Left Sidebar -->
+    <!-- Right Sidebar -->
+    <aside id="rightsidebar" class="right-sidebar">
+        <ul class="nav nav-tabs tab-nav-right" role="tablist">
+            <li role="presentation" class="active"><a href="#skins" data-toggle="tab">SKINS</a></li>
+            <li role="presentation"><a href="#settings" data-toggle="tab">SETTINGS</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active in active" id="skins">
+                <ul class="demo-choose-skin">
+                    <li data-theme="red" class="active">
+                        <div class="red"></div>
+                        <span>Red</span>
+                    </li>
+                    <li data-theme="pink">
+                        <div class="pink"></div>
+                        <span>Pink</span>
+                    </li>
+                    <li data-theme="purple">
+                        <div class="purple"></div>
+                        <span>Purple</span>
+                    </li>
+                    <li data-theme="deep-purple">
+                        <div class="deep-purple"></div>
+                        <span>Deep Purple</span>
+                    </li>
+                    <li data-theme="indigo">
+                        <div class="indigo"></div>
+                        <span>Indigo</span>
+                    </li>
+                    <li data-theme="blue">
+                        <div class="blue"></div>
+                        <span>Blue</span>
+                    </li>
+                    <li data-theme="light-blue">
+                        <div class="light-blue"></div>
+                        <span>Light Blue</span>
+                    </li>
+                    <li data-theme="cyan">
+                        <div class="cyan"></div>
+                        <span>Cyan</span>
+                    </li>
+                    <li data-theme="teal">
+                        <div class="teal"></div>
+                        <span>Teal</span>
+                    </li>
+                    <li data-theme="green">
+                        <div class="green"></div>
+                        <span>Green</span>
+                    </li>
+                    <li data-theme="light-green">
+                        <div class="light-green"></div>
+                        <span>Light Green</span>
+                    </li>
+                    <li data-theme="lime">
+                        <div class="lime"></div>
+                        <span>Lime</span>
+                    </li>
+                    <li data-theme="yellow">
+                        <div class="yellow"></div>
+                        <span>Yellow</span>
+                    </li>
+                    <li data-theme="amber">
+                        <div class="amber"></div>
+                        <span>Amber</span>
+                    </li>
+                    <li data-theme="orange">
+                        <div class="orange"></div>
+                        <span>Orange</span>
+                    </li>
+                    <li data-theme="deep-orange">
+                        <div class="deep-orange"></div>
+                        <span>Deep Orange</span>
+                    </li>
+                    <li data-theme="brown">
+                        <div class="brown"></div>
+                        <span>Brown</span>
+                    </li>
+                    <li data-theme="grey">
+                        <div class="grey"></div>
+                        <span>Grey</span>
+                    </li>
+                    <li data-theme="blue-grey">
+                        <div class="blue-grey"></div>
+                        <span>Blue Grey</span>
+                    </li>
+                    <li data-theme="black">
+                        <div class="black"></div>
+                        <span>Black</span>
+                    </li>
+                </ul>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="settings">
+                <div class="demo-settings">
+                    <p>GENERAL SETTINGS</p>
+                    <ul class="setting-list">
+                        <li>
+                            <span>Report Panel Usage</span>
+                            <div class="switch">
+                                <label><input type="checkbox" checked><span class="lever"></span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <span>Email Redirect</span>
+                            <div class="switch">
+                                <label><input type="checkbox"><span class="lever"></span></label>
+                            </div>
+                        </li>
+                    </ul>
+                    <p>SYSTEM SETTINGS</p>
+                    <ul class="setting-list">
+                        <li>
+                            <span>Notifications</span>
+                            <div class="switch">
+                                <label><input type="checkbox" checked><span class="lever"></span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <span>Auto Updates</span>
+                            <div class="switch">
+                                <label><input type="checkbox" checked><span class="lever"></span></label>
+                            </div>
+                        </li>
+                    </ul>
+                    <p>ACCOUNT SETTINGS</p>
+                    <ul class="setting-list">
+                        <li>
+                            <span>Offline</span>
+                            <div class="switch">
+                                <label><input type="checkbox"><span class="lever"></span></label>
+                            </div>
+                        </li>
+                        <li>
+                            <span>Location Permission</span>
+                            <div class="switch">
+                                <label><input type="checkbox" checked><span class="lever"></span></label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <!-- #END# Right Sidebar -->
+</section>
