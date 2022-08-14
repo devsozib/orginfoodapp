@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('qty');
             $table->integer('price');
+            $table->string('status');
             $table->date('date');
             $table->boolean('is_deleted')->default(0);
             $table->rememberToken();

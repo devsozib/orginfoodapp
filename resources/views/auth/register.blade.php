@@ -1,7 +1,7 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 
-@section('content')
-<div class="container">
+@section('content') --}}
+<div class="container d-flex justify-content-center">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -24,6 +24,35 @@
                                 @enderror
                             </div>
                         </div>
+
+
+
+                        <div class="row mb-3">
+                            <label for="role" class="col-md-4 col-form-label text-md-end">{{ __('Role') }}</label>
+
+                            <div class="col-md-6">
+
+
+
+                                <select id="role"  class="form-control @error('role') is-invalid @enderror" name="role" value="{{ old('role') }}" required autocomplete="role" autofocus aria-label="Default select example">
+                                    <option selected hidden disabled>-- Select Role--</option>
+                                    <option value="zaf">ZAF</option>
+                                    <option value="factory">Factory</option>
+                                    <option value="super_admin">super Admin</option>
+                                    <option value="account">Account</option>
+                                  </select>
+
+                                @error('role')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+
+
+
 
                         <div class="row mb-3">
                             <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
@@ -76,4 +105,4 @@
 
 
 </div>
-@endsection
+{{-- @endsection --}}

@@ -41,30 +41,35 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li>
-                    <a href="views/preliminary-works.html">
-                        <i class="material-icons">add_circle</i>
-                        <span>Add SR</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="views/preliminary-works.html">
-                        <i class="material-icons">add_circle</i>
-                        <span>Add Distributor</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="views/preliminary-works.html">
-                        <i class="material-icons">add_circle</i>
-                        <span>Add Vendor</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="views/preliminary-works.html">
-                        <i class="material-icons">add_circle</i>
-                        <span>Add Vendor</span>
-                    </a>
-                </li>
+
+                @if(auth()->user()->role == 'super_admin')
+                    <li>
+                        <a href="views/preliminary-works.html">
+                            <i class="material-icons">add_circle</i>
+                            <span>Add Branch</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="views/preliminary-works.html">
+                            <i class="material-icons">add_circle</i>
+                            <span>Add SR</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="views/preliminary-works.html">
+                            <i class="material-icons">add_circle</i>
+                            <span>Add Distributor</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="views/preliminary-works.html">
+                            <i class="material-icons">add_circle</i>
+                            <span>Add Vendor</span>
+                        </a>
+                    </li>
+
+                @endif
+
 
                 <li>
                     <a href="views/preliminary-works.html">
@@ -106,8 +111,9 @@
                             <a class="list-group-item list-group-item-action" href="#list-item-1">Sales</a>
                             <a class="list-group-item list-group-item-action" href="#list-item-1">Shift</a>
                             <a class="list-group-item list-group-item-action" href="#list-item-1">Dues of distributors</a>
-                            <a class="list-group-item list-group-item-action" href="#list-item-1">Dues of vendor</a>
-
+                            @if(auth()->user()->role != 'zaf' && auth()->user()->role != 'sr')
+                                <a class="list-group-item list-group-item-action" href="#list-item-1">Dues of vendor</a>
+                            @endif
                           </div>
                    </div>
 
