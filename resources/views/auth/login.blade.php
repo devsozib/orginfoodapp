@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Sign In | TZ Application</title>
+    <title>Sign In | Orginfood App</title>
     <!-- Favicon-->
     <link rel="icon" href="images/favicon.png" type="image/x-icon">
 
@@ -29,7 +29,7 @@
     <div class="login-page">
         <div class="login-box">
             <div class="logo">
-                <a href="javascript:void(0);">OrginFood<b> Application</b></a>
+                <a href="javascript:void(0);">OrginFood Application</a>
                 <small></small>
             </div>
             <div class="card">

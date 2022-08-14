@@ -29,10 +29,10 @@
 <body>
     <div id="app">
 
-       @auth
+
        @include('components.nav')
        @include('components.sidebar')
-       @endauth
+
 
 
         <section class="content">
