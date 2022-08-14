@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('role');
             $table->string('name');
+            $table->string('status');
             $table->boolean('is_deleted')->default(0);
             $table->rememberToken();
             $table->timestamps();
