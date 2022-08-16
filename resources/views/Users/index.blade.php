@@ -4,7 +4,7 @@
 <section class="">
     <div class="container-fluid">
         <div class="block-header">
-            <h2> All Branch</h2>
+            <h2> All Users</h2>
 
 
         </div>
@@ -14,11 +14,11 @@
                 <div class="card">
                     <div class="header">
                         <h2>
-                           All Branch
+                           All Users
 
                         </h2>
                         <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('add_branch_form') }}">Add Branch</a>
+                            <a class="btn-sm btn-primary float-right"href="{{ route('create_user') }}">Add Users</a>
                         </ul>
                     </div>
                     <div class="body table-responsive">
@@ -27,18 +27,18 @@
                                 <tr>
                                     <th>#</th>
                                     <th>NAME</th>
-                                    <th>Type</th>
-                                    <th>User</th>
+                                    <th>BRANCH</th>
+                                    <th>EMAIL</th>
                                 </tr>
                             </thead>
                             <tbody>
 
-                            @foreach ($all_branches as $banch)
+                            @foreach ($users as $user)
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
-                                    <td>{{ $banch->name }}</td>
-                                    <td>{{ $banch->type }}</td>
-                                    <td>@twitter</td>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->brance_id }}</td>
+                                    <td>{{ $user->email }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

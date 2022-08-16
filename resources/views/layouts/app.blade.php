@@ -49,7 +49,7 @@
       <!-- Bootstrap Core Js -->
       <script src="{{ asset('assets') }}/plugins/bootstrap/js/bootstrap.js"></script>
       <!-- Select Plugin Js -->
-      <script src="{{ asset('assets') }}/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+      {{-- <script src="{{ asset('assets') }}/plugins/bootstrap-select/js/bootstrap-select.js"></script> --}}
       <!-- Slimscroll Plugin Js -->
       <script src="{{ asset('assets') }}/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
       <!-- Waves Effect Plugin Js -->
@@ -58,13 +58,32 @@
       <script src="{{ asset('assets') }}/plugins/jquery-countto/jquery.countTo.js"></script>
       <!-- Validation Plugin Js -->
       <script src="{{ asset('assets') }}/plugins/jquery-validation/jquery.validate.js"></script>
-
+      <!--Sweet Alert -->
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       <!-- Custom Js -->
       <script src="{{ asset('assets') }}/js/admin.js"></script>
       <script src="{{ asset('assets') }}/js/pages/examples/sign-in.js"></script>
 
       <script src="{{ asset('assets') }}/js/demo.js"></script>
 
-
+      @if (session('success'))
+      <script>
+          const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 2000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+              }
+          })
+          Toast.fire({
+              icon: 'success',
+              title: '{{ session('success') }}'
+          })
+      </script>
+  @endif
 </body>
 </html>

@@ -36,8 +36,6 @@
 
                                 <select id="role"  class="form-control @error('role') is-invalid @enderror" name="role" value="{{ old('role') }}" required autocomplete="role" autofocus aria-label="Default select example">
                                     <option selected hidden disabled>-- Select Role--</option>
-                                    <option value="zaf">ZAF</option>
-                                    <option value="factory">Factory</option>
                                     <option value="super_admin">super Admin</option>
                                     <option value="account">Account</option>
                                   </select>

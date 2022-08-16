@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\BranchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +17,20 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware(['auth'])->group(function (){
+    Route::get('/', function () { return view('home');});
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/', function () {
-        return view('home');
-    });
+    //Users Routes Start Here
+    Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::get('/create-users', [UserController::class, 'create'])->name('create_user');
+    Route::post('/store-user',[UserController::class, 'store'])->name('store_user');
+   //Users Routes End Here
+    //Branch Routes Start
+    Route::get("/all-branches", [BranchController::class, 'index'])->name('branches');
+    Route::get('/add_branch_form', [BranchController::class, 'addBranchForm'])->name('add_branch_form');
+    Route::post('/add_branch', [BranchController::class, 'addBranch'])->name('add_branch');
+   //Branch End Start
+
 
 });
 
