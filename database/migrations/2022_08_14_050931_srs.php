@@ -19,7 +19,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->bigInteger('branch_id')->unsigned();
             $table->foreign('branch_id')->references('id')->on('branches');
-
+            $table->string('address');
+            $table->string('phone');
             $table->boolean('is_deleted')->default(0);
             $table->rememberToken();
             $table->timestamps();

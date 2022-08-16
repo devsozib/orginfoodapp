@@ -36,7 +36,7 @@
             <ul class="list">
                 <li class="header">MAIN NAVIGATION</li>
                 <li class="active">
-                    <a href="dashboard.html">
+                    <a href="{{route('home')}}">
                         <i class="material-icons">dashboard</i>
                         <span>Dashboard</span>
                     </a>
@@ -44,15 +44,15 @@
 
                 @if(auth()->user()->role == 'super_admin')
                     <li>
-                        <a href="{{route('add_branch_form')}}">
+                        <a href="{{route('branches')}}">
                             <i class="material-icons">add_circle</i>
-                            <span>Add Branch</span>
+                            <span>Branches</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('add_user_form')}}">
+                        <a href="{{route('users')}}">
                             <i class="material-icons">add_circle</i>
-                            <span>Add User</span>
+                            <span>Users</span>
                         </a>
                     </li>
                     <li>

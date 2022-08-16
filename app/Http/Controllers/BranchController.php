@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Validator;
 
 class BranchController extends Controller
 {
+    protected function index(){
+        $all_branches = Branch::get();
+        return view('Branch.index',compact('all_branches'));
+    }
+
     protected function addBranchForm(){
         return view('branch.addBranchForm');
     }
@@ -34,6 +39,7 @@ class BranchController extends Controller
                 $branch->name = $data['name'];
                 $branch->type = $data['type'];
                 $branch->save();
+
                 return redirect()->route('add_branch_form')->with('success',"Insert successfully");
             }catch(Exception $e){
                 return redirect()->route('add_branch_form')->with('error',"operation failed");
