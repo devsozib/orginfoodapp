@@ -56,15 +56,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="views/preliminary-works.html">
+                        <a href="{{ route('distributors') }}">
                             <i class="material-icons">add_circle</i>
-                            <span>Add Distributor</span>
+                            <span>Distributors</span>
                         </a>
                     </li>
                     <li>
-                        <a href="views/preliminary-works.html">
+                        <a href="{{ route('vendors') }}">
                             <i class="material-icons">add_circle</i>
-                            <span>Add Vendor</span>
+                            <span>Vendors</span>
                         </a>
                     </li>
 
@@ -72,7 +72,7 @@
 
 
                 <li>
-                    <a href="views/preliminary-works.html">
+                    <a href="{{ route('purchase_materials') }}">
                         <i class="material-icons">shopping_cart</i>
                         <span>Purchase Raw Materials</span>
                     </a>
