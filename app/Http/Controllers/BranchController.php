@@ -28,16 +28,15 @@ class BranchController extends Controller
 		}
         else{
             $data = $request->all();
-            dd($data);
+
             try{
                 $branch = new Branch;
-                $branch->name = $data->name;
-                $branch->type = $data->type;
+                $branch->name = $data['name'];
+                $branch->type = $data['type'];
                 $branch->save();
-
-                return redirect()->route('add_branch_form')->with('status',"Insert successfully");
+                return redirect()->route('add_branch_form')->with('success',"Insert successfully");
             }catch(Exception $e){
-
+                return redirect()->route('add_branch_form')->with('error',"operation failed");
             }
 
         }
