@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned()->unique();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('user_id')->nullable();
             $table->string('name');
+            $table->string('type');
             $table->boolean('is_deleted')->default(0);
             $table->rememberToken();
             $table->timestamps();

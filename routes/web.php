@@ -16,15 +16,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function (){
 
-
-
-
+    Route::get('/', function () { return view('home');});
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/', function () {
-        return view('home');
-    });
 
 
+
+    Route::get('/add_user_form', [App\Http\Controllers\UserController::class, 'addUserForm'])->name('add_user_form');
+    Route::get('/add_branch_form', [App\Http\Controllers\BranchController::class, 'addBranchForm'])->name('add_branch_form');
+    Route::post('/add_branch', [App\Http\Controllers\BranchController::class, 'addBranch'])->name('add_branch');
 
 
 });

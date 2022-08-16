@@ -44,15 +44,15 @@
 
                 @if(auth()->user()->role == 'super_admin')
                     <li>
-                        <a href="views/preliminary-works.html">
+                        <a href="{{route('add_branch_form')}}">
                             <i class="material-icons">add_circle</i>
                             <span>Add Branch</span>
                         </a>
                     </li>
                     <li>
-                        <a href="views/preliminary-works.html">
+                        <a href="{{route('add_user_form')}}">
                             <i class="material-icons">add_circle</i>
-                            <span>Add SR</span>
+                            <span>Add User</span>
                         </a>
                     </li>
                     <li>
