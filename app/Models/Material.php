@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Material extends Model
 {
     use HasFactory;
+
+    public function vendor(){
+       return $this->hasOne(Vendor::class,'id', 'vendor_id');
+    }
 }

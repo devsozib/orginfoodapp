@@ -57,6 +57,7 @@ Route::middleware(['auth'])->group(function (){
 
   Route::get('/purchase_materials', [MaterialsPurchase::class, 'purchase'])->name('purchase_materials');
   Route::post('/store_raw_materials',[MaterialsPurchase::class, 'store'])->name('store_raw_materials');
+  Route::get('raw-materials-lists',[MaterialsPurchase::class, 'getList'])->name('materials_list');
 
   //Product route start here
   Route::get('/purchases', [MaterialsPurchase::class, 'index'])->name('products');
