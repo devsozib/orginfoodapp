@@ -31,7 +31,7 @@
                     <div class="header">
                         <h2> Purchase Raw Materials</h2>
                         <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('vendors') }}">Raw Materials Purchase List</a>
+                            <a class="btn-sm btn-primary float-right"href="{{ route('materials_list') }}">Raw Materials Purchase List</a>
                         </ul>
                     </div>
                     <div class="body">

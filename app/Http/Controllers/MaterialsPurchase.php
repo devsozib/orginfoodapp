@@ -52,4 +52,9 @@ class MaterialsPurchase extends Controller
 
     }
    }
+
+   protected function getList(){
+    $materials_list = Material::orderBy('id')->get();
+    return view('materials.list', compact('materials_list'));
+   }
 }
