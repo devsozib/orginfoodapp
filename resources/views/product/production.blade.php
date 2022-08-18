@@ -1,10 +1,13 @@
 @extends('layouts.app')
 @section('content')
 
+
+
+
 <section class="">
     <div class="container-fluid">
         <div class="block-header">
-            <h2> All Product</h2>
+            <h2> All Production</h2>
 
 
         </div>
@@ -14,11 +17,11 @@
                 <div class="card">
                     <div class="header">
                         <h2>
-                           All Product
+                           All Production
 
                         </h2>
                         <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('add_product') }}">Add Product</a>
+                            <a class="btn-sm btn-primary float-right"href="{{ route('add_production') }}">Add Production</a>
                         </ul>
                     </div>
                     <div class="body table-responsive">
@@ -26,24 +29,23 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
-                                    <th>Unit</th>
-                                    <th>Price</th>
+                                    <th>Product</th>
+                                    <th>Qty</th>
+                                    <th>Date</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
 
-                                @php
 
-                                @endphp
-                            @foreach ($products as $product)
+                            @foreach ($productions as $production)
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
-                                    <td>{{ $product->name }}</td>
-                                    <td>{{ $product->unit }}</td>
-                                    <td>{{ $product->price }}</td>
-                                    <td>{{ _('...') }}</td>
+                                    <td>{{ $production->product_name }}</td>
+                                    <td>{{ $production->qty }}</td>
+                                    <td>{{ $production->date }}</td>
+                                    <td>...</td>
+
                                 </tr>
                             @endforeach
                             </tbody>
@@ -56,4 +58,8 @@
 
     </div>
 </section>
+
+
+
+
 @endsection

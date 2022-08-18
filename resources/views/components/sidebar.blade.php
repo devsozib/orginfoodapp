@@ -76,13 +76,13 @@
 
 
                     <a class="" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"> <i class="material-icons">report</i>
-                        <span>Product</span></a>
+                        <span>Product</span> <i class="material-icons text-end" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i></a>
                   <div class="container">
                     <div  class="collapse multi-collapse" id="multiCollapseExample1">
 
                         <div id="list-example" class="list-group w-50">
                             <a class="list-group-item list-group-item-action" href="{{route('products')}}">Product List</a>
-                            <a class="list-group-item list-group-item-action" href="#list-item-1">Add Production</a>
+                            <a class="list-group-item list-group-item-action" href="{{route('add_production')}}">Add Production</a>
                             <a class="list-group-item list-group-item-action" href="#list-item-1">Stock</a>
                           </div>
                    </div>
