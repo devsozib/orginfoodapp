@@ -2,11 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\MaterialsPurchase;
-use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\DistributorController;
+use App\Http\Controllers\ShiftProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +71,20 @@ Route::middleware(['auth'])->group(function (){
   Route::get('/production', [ProductController::class, 'productionList'])->name('production');
   Route::get('/add_production', [ProductController::class, 'addProductionView'])->name('add_production');
   Route::post('/store_production', [ProductController::class, 'storeProduction'])->name('store_production');
+
+
+
+  //Stock Routes start here
+   Route::get('stocks', [StockController::class, 'index'])->name('stocks');
+   Route::get('add-stock',[StockController::class, 'create'])->name('add_stock');
+   Route::post('store-stock',[StockController::class, 'store'])->name('store_stock');
+
+
+
+   //Shift Route start here
+    Route::get('shift-product', [ShiftProductController::class, 'index'])->name('shift_product');
+    Route::get('shift-stock-create',[ShiftProductController::class, 'create'])->name('shift_stock_create');
+    Route::post('shift-stock-store', [ShiftProductController::class, 'store'])->name('shift_product_store');
 
 
 

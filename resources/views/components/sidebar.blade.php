@@ -75,15 +75,38 @@
 
 
 
+<<<<<<< HEAD
                     <a class="" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"> <i class="material-icons">report</i>
                         <span>Product</span> <i class="material-icons text-end" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i></a>
+=======
+                    <a class="" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample2"> <i class="material-icons">report</i>
+                        <span>Product</span><small style="margin-top:-10px"><i class="material-icons">keyboard_arrow_down</i></small></a>
+>>>>>>> 2778d4925c6af8ca9f92aa356815e021eb523716
                   <div class="container">
-                    <div  class="collapse multi-collapse" id="multiCollapseExample1">
+                    <div  class="collapse multi-collapse" id="multiCollapseExample2">
 
                         <div id="list-example" class="list-group w-50">
                             <a class="list-group-item list-group-item-action" href="{{route('products')}}">Product List</a>
+<<<<<<< HEAD
                             <a class="list-group-item list-group-item-action" href="{{route('add_production')}}">Add Production</a>
                             <a class="list-group-item list-group-item-action" href="#list-item-1">Stock</a>
+=======
+                            <a class="list-group-item list-group-item-action" href="#list-item-1">Add Production</a>
+
+                            @if (auth()->user()->role !='sr' and auth()->user()->role !='super_admin')
+                            <a class="list-group-item list-group-item-action" href="{{ route('add_stock') }}">Add Stocks</a>
+                            @endif
+                            @if (auth()->user()->role == 'super_admin' or auth()->user()->role == 'admin')
+                            <a class="list-group-item list-group-item-action" href="{{ route('stocks') }}">Stock Lists</a>
+                            @endif
+                             @php
+                                  $check_factory = App\Models\Branch::where('user_id',auth()->user()->id)->where('type','factory')->first('id')->id;
+                             @endphp
+                            @if ($check_factory)
+                            <a class="list-group-item list-group-item-action" href="{{ route('shift_product') }}">Shift</a>
+                            @endif
+
+>>>>>>> 2778d4925c6af8ca9f92aa356815e021eb523716
                           </div>
                    </div>
                   </div>
@@ -96,42 +119,14 @@
                         <span>Purchase Raw Materials</span>
                     </a>
                 </li>
-                <li>
-                    <a href="views/documentation.html">
-                        <i class="material-icons">move_up</i>
-                        <span>Shift Product To ZAF</span>
-                    </a>
-                </li>
+
                 <li>
                     <a href="views/financial-plan.html">
                         <i class="material-icons">request_page</i>
                         <span>SR's Product Request</span>
                     </a>
                 </li>
-                <li>
 
-
-
-                    <a class="" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"> <i class="material-icons">report</i>
-                        <span>Reports</span></a>
-
-
-                  <div class="container">
-                    <div  class="collapse multi-collapse" id="multiCollapseExample1">
-
-                        <div id="list-example" class="list-group w-50">
-                            <a class="list-group-item list-group-item-action" href="#list-item-1">Stock</a>
-                            <a class="list-group-item list-group-item-action" href="#list-item-1">Sales</a>
-                            <a class="list-group-item list-group-item-action" href="#list-item-1">Shift</a>
-                            <a class="list-group-item list-group-item-action" href="#list-item-1">Dues of distributors</a>
-                            @if(auth()->user()->role != 'zaf' && auth()->user()->role != 'sr')
-                                <a class="list-group-item list-group-item-action" href="#list-item-1">Dues of vendor</a>
-                            @endif
-                          </div>
-                   </div>
-
-                  </div>
-                </li>
                 <li>
                     <a href="views/time-management.html">
                         <i class="material-icons">move_up</i>

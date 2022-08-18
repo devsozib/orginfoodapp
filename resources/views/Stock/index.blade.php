@@ -4,7 +4,7 @@
 <section class="">
     <div class="container-fluid">
         <div class="block-header">
-            <h2> All Branch</h2>
+            <h2> All Product</h2>
 
 
         </div>
@@ -14,11 +14,13 @@
                 <div class="card">
                     <div class="header">
                         <h2>
-                           All Branch
+                           All Stock
 
                         </h2>
                         <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('add_branch_form') }}">Add Branch</a>
+                            @if (auth()->user()->role != 'super_admin')
+                            <a class="btn-sm btn-primary float-right"href="{{ route('add_stock') }}">Add Stock</a>
+                            @endif
                         </ul>
                     </div>
                     <div class="body table-responsive">
@@ -26,21 +28,22 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>NAME</th>
-                                    <th>Type</th>
-                                    <th>User</th>
+                                    <th>Branch</th>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
 
-                            @foreach ($all_branches as $banch)
+                            @foreach ($stocks as $stock)
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
-                                    <td>{{ $banch->name }}</td>
-                                    <td>{{ $banch->type }}</td>
-                                    <td>{{ $banch->user->name }}</td>
+                                    <td>{{ $stock->branch->name }}</td>
+                                    <td>{{ $stock->product->name }}</td>
+                                    <td>{{ $stock->qty }}</td>
                                 </tr>
-                                @endforeach
+                            @endforeach
                             </tbody>
                         </table>
                     </div>

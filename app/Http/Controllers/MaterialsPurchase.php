@@ -27,9 +27,6 @@ class MaterialsPurchase extends Controller
     ];
 
     $validator = Validator::make($request->all(),$rules);
-    //   var_dump($request->vendor_id);
-    //   exit();
-    //   dd($validator->errors());
     if ($validator->fails()) {
         return redirect('purchase_materials')
         ->withInput()

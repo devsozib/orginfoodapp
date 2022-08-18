@@ -64,7 +64,7 @@ class UserController extends Controller
                 }else{
                     try{
 
-                        $branch->user_id = createUser($data);
+                        $branch->user_id = $this->createUser($data);
                         $branch->update();
                         return redirect()->route('create_user')->with('success',"Insert successfully");
                     }catch(Exception $e){
@@ -77,7 +77,7 @@ class UserController extends Controller
 
 
                     $sr = new Sr;
-                    $sr->user_id =  createuser($data);
+                    $sr->user_id =  $this->createUser($data);
                     $sr->branch_id = $data['branch_id'];
                     $sr->address = $data['address'];
                     $sr->phone = $data['phone'];
@@ -90,7 +90,7 @@ class UserController extends Controller
         }
     }
 
-    protected function createuser($data){
+    protected function createUser($data){
         $user = new User;
         $user->name = $data['name'];
         $user->email = $data['email'];
