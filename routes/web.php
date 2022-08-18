@@ -6,6 +6,7 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\MaterialsPurchase;
 use App\Http\Controllers\DistributorController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,7 +61,9 @@ Route::middleware(['auth'])->group(function (){
   Route::get('raw-materials-lists',[MaterialsPurchase::class, 'getList'])->name('materials_list');
 
   //Product route start here
-  Route::get('/purchases', [MaterialsPurchase::class, 'index'])->name('products');
+  Route::get('/products', [ProductController::class, 'index'])->name('products');
+  Route::get('/add_product', [ProductController::class, 'addProductView'])->name('add_product');
+  Route::post('/store_product', [ProductController::class, 'store'])->name('store_product');
 
 
 

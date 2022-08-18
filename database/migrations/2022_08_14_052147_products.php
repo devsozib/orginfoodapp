@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('unit');
             $table->integer('price');
             $table->boolean('is_deleted')->default(0);
             $table->rememberToken();
