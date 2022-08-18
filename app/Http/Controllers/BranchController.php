@@ -22,7 +22,7 @@ class BranchController extends Controller
     protected function addBranch(Request $request){
         $rules = [
             'name' => ['required', 'string', 'max:255'],
-            'type' => ['required', 'string', 'in:factory,outlet_branch'],
+            'type' => ['required', 'string', 'in:factory,wirehouse'],
         ];
 
         $validator = Validator::make($request->all(),$rules);

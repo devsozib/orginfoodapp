@@ -39,7 +39,7 @@
                                         <select class="form-control" name="type">
                                             <option value="" selected hidden disabled>-- Please select --</option>
                                             <option value="factory">Factory</option>
-                                            <option value="outlet_branch">Outlet Branch</option>
+                                            <option value="wirehouse">Wirehouse</option>
                                         </select>
                                     </div>
 

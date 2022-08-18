@@ -20,7 +20,7 @@ class ProductController extends Controller
     }
 
     protected function store(Request $request){
-        $rols = [
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'unit' => ['required', 'string', 'in:kg,gm,Ltr,ml'],
             'price' => ['required', 'numeric'],

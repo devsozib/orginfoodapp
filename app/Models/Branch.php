@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Branch extends Model
 {
     use HasFactory;
+
+    protected function user(){
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }
