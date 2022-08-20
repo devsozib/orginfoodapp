@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Stock;
 
-use Illuminate\Support\Facades\Validator;
+use App\Models\Branch;
 
 use App\Models\Product;
 use App\Models\Production;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -67,13 +69,34 @@ class ProductController extends Controller
 		}
         else{
             try{
+                $branch_id = Branch::where('user_id', auth()->user()->id)->first();
+
+                $stock_check = Stock::where('branch_id',$branch_id->id)->where('product_id', $request->product_id)->first();
+
+             //For Production Table
                 $data = $request->all();
                 $production = new Production;
                 $production->product_id =  $data['product_id'];
                 $production->qty =  $data['qty'];
                 $production->date =  $data['date'];
                 $production->save();
+
+              //For Stock Table
+                if($stock_check){
+                    $stock_check->qty += $request->qty;
+                    $stock_check->update();
+                  }else{
+                    $stockData = new Stock;
+                    $stockData->branch_id = $branch_id->id;
+                    $stockData->product_id = $request->product_id;
+                    $stockData->qty = $request->qty;
+                    $stockData->save();
+                  }
+
                 return redirect()->route('add_production')->with('success',"Insert successfully");
+
+
+
             }catch(Exception $e){
                 return redirect()->route('add_production')->with('error',"operation failed");
             }

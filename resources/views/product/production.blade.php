@@ -20,9 +20,13 @@
                            All Production
 
                         </h2>
+
+                        @if (auth()->user()->role != 'super_admin')
                         <ul class="header-dropdown m-r--5">
                             <a class="btn-sm btn-primary float-right"href="{{ route('add_production') }}">Add Production</a>
                         </ul>
+                        @endif
+
                     </div>
                     <div class="body table-responsive">
                         <table class="table">

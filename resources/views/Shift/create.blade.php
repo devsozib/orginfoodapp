@@ -65,13 +65,19 @@
                                 </div>
                                     <div class="col-sm-4">
                                         <label class="">Quantity</label>
+
                                         <input type="number" class="form-control" placeholder="Quantity" name="qty" required>
                                         @error('qty')
-                                            <span class="invalid-feedback" role="alert">
+                                            <span class="text-danger">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
+                                        @if (session('error_qty'))
 
+                                            <span class="text-danger" >
+                                                <strong>{{ session('error_qty') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
 
 

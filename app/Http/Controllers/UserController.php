@@ -20,74 +20,66 @@ class UserController extends Controller
 
 
     protected function index(){
-        $users = User::get();
+        $users = User::leftJoin('branches', 'branches.user_id','=','users.id')
+        ->select('users.id','users.name as user_name','users.email','users.role','branches.name as branch_name')
+        ->get();
         return view('users.index',compact('users'));
 
     }
 
     protected function create(){
         $branches = Branch::where('is_deleted', 0)->get();
-        return view('users.create')->with(compact('branches'));
+        $branches_for_sr = Branch::where('is_deleted', 0)->where('type','wirehouse')->get();
+        return view('users.create')->with(compact('branches','branches_for_sr'));
     }
 
-    protected function store(Request $request){
+    protected function storeAdmin(Request $request){
+
+        $request->validate([
+            'name'=>'required','string','max:255',
+            'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
+            'password' => 'required', 'string', 'min:8',
+             ]);
 
 
-        $rules = [
-            'name' => ['required', 'string', 'max:255'],
-            'role' => ['required', 'string','in:admin,sr'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8'],
-            'branch_id' => ['required', 'numeric'],
-        ];
+             $user = new User;
+             $user->name = $request->name;
+             $user->email = $request->email;
+             $user->role = 'admin';
+             $user->password = Hash::make($request->password);
+             $user->save();
 
-        if($request->all()['role'] == 'sr'){
-            $rules['address'] = ['required','string', 'max:255'];
-            $rules['phone'] = ['required','string', 'max:255'];
-        }
+             $branch = Branch::where('id', $request->branch_id)->first();
+             $branch->user_id = $user->id;
+             $branch->update();
+             return redirect()->route('create_user')->with('success',"Insert successfully");
+    }
 
-        $validator = Validator::make($request->all(),$rules);
+    protected function storeSR(Request $request){
 
-        //var_dump($request->all());
-        //dd( $validator->errors());
+        $request->validate([
+            'name'=>'required','string','max:255',
+            'branch_id'=>'required','numeric',
+            'address' => 'required', 'string',
+            'phone' => 'required', 'string',
+            'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
+            'password' => 'required', 'string', 'min:8',
+             ]);
 
-		if ($validator->fails()) {
-			return redirect()->route('create_user')->withInput()->withErrors($validator);
-		}
-        else{
-            $data = $request->all();
+             $user = new User;
+             $user->name = $request->name;
+             $user->email = $request->email;
+             $user->role = 'sr';
+             $user->password = Hash::make($request->password);
+             $user->save();
+             $sr = new Sr;
+             $sr->user_id =  $user->id;
+             $sr->branch_id =  $request->branch_id;
+             $sr->address =$request->address;
+             $sr->phone =$request->phone;
 
-            if($data['role'] == 'admin'){
-                $branch = Branch::where('id',$data['branch_id'])->first();
-                if($branch->user_id){
-                    return redirect()->route('create_user')->with('branch_id',"This branch is already taken");
-                }else{
-                    try{
-
-                        $branch->user_id = $this->createUser($data);
-                        $branch->update();
-                        return redirect()->route('create_user')->with('success',"Insert successfully");
-                    }catch(Exception $e){
-                        return redirect()->route('create_user')->with('error',"operation failed");
-                    }
-                }
-            }else{
-                //dd($data);
-                try{
-
-
-                    $sr = new Sr;
-                    $sr->user_id =  $this->createUser($data);
-                    $sr->branch_id = $data['branch_id'];
-                    $sr->address = $data['address'];
-                    $sr->phone = $data['phone'];
-                    $sr->save();
-                    return redirect()->route('create_user')->with('success',"Insert successfully");
-                }catch(Exception $e){
-                    return redirect()->route('create_user')->with('error',"operation failed");
-                }
-            }
-        }
+             $sr->save();
+             return redirect()->route('create_user')->with('success',"Insert successfully");
     }
 
     protected function createUser($data){

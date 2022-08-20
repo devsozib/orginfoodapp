@@ -32,7 +32,8 @@ Route::middleware(['auth'])->group(function (){
     //Users Routes Start Here
     Route::get('/users', [UserController::class, 'index'])->name('users');
     Route::get('/create-users', [UserController::class, 'create'])->name('create_user');
-    Route::post('/store-user',[UserController::class, 'store'])->name('store_user');
+    Route::post('/store_admin',[UserController::class, 'storeAdmin'])->name('store_admin');
+    Route::post('/store_sr',[UserController::class, 'storeSR'])->name('store_sr');
    //Users Routes End Here
 
 

@@ -29,6 +29,7 @@
                                     <th>Branch</th>
                                     <th>Product</th>
                                     <th>Quantity</th>
+                                    <th>date</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -41,6 +42,8 @@
                                     <td>{{ $item->branch->name }}</td>
                                     <td>{{ $item->product->name }}</td>
                                     <td>{{ $item->qty }}</td>
+                                    <td>{{ $item->date }}</td>
+                                    <td>...</td>
                                 </tr>
                             @endforeach
                             </tbody>

@@ -29,6 +29,7 @@
                                     <th>NAME</th>
                                     <th>BRANCH</th>
                                     <th>EMAIL</th>
+                                    <th>ROLE</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -36,9 +37,10 @@
                             @foreach ($users as $user)
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->brance_id }}</td>
+                                    <td>{{ $user->user_name }}</td>
+                                    <td>{{ $user->branch_name }}</td>
                                     <td>{{ $user->email }}</td>
+                                    <td>{{ $user->role }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
