@@ -56,12 +56,7 @@
                             <span>Users</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('distributors') }}">
-                            <i class="material-icons">group</i>
-                            <span>Distributors</span>
-                        </a>
-                    </li>
+
                     <li>
                         <a href="{{ route('vendors') }}">
                             <i class="material-icons">local_shipping</i>
@@ -69,8 +64,15 @@
                         </a>
                     </li>
 
+                @endif
 
-
+                @if (auth()->user()->role != "account" )
+                    <li>
+                        <a href="{{ route('distributors') }}">
+                            <i class="material-icons">group</i>
+                            <span>Distributors</span>
+                        </a>
+                    </li>
                 @endif
                 @php
                 $check_factory = App\Models\Branch::where('user_id',auth()->user()->id)->where('type','factory')->exists();
@@ -84,13 +86,8 @@
                </li>
                 @endif
 
-
+                @if(auth()->user()->role != 'sr' and auth()->user()->role != "account")
                 <li>
-
-
-
-
-
                     <a class="" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample2"> <i class="material-icons">report</i>
                         <span>Product</span><small style="margin-top:-10px"><i class="material-icons">keyboard_arrow_down</i></small></a>
 
@@ -98,10 +95,8 @@
                     <div  class="collapse multi-collapse" id="multiCollapseExample2">
 
                         <div id="list-example" class="list-group w-50">
+                            @if ($check_factory or auth()->user()->role == 'super_admin')
                             <a class="list-group-item list-group-item-action" href="{{route('products')}}">Product List</a>
-
-
-                              @if ($check_factory or auth()->user()->role == 'super_admin')
                               <a class="list-group-item list-group-item-action" href="{{route('production')}}">Productions</a>
 
                               @endif
@@ -109,9 +104,10 @@
 
 
 
-                            @if (auth()->user()->role !='sr' and auth()->user()->role !='super_admin')
+                            @if (auth()->user()->role =='admin' )
                             <a class="list-group-item list-group-item-action" href="{{ route('add_stock') }}">Add Stocks</a>
                             @endif
+
                             @if (auth()->user()->role == 'super_admin' or auth()->user()->role == 'admin')
                             <a class="list-group-item list-group-item-action" href="{{ route('stocks') }}">Stock Lists</a>
                             @endif
@@ -127,36 +123,34 @@
                    </div>
                   </div>
                 </li>
+               @endif
 
 
-
-
+                @if (auth()->user()->role == "admin")
                 <li>
-                    <a href="views/financial-plan.html">
+                    <a href="{{ route('orders') }}">
                         <i class="material-icons">request_page</i>
                         <span>SR's Product Request</span>
                     </a>
                 </li>
+                @endif
               @if (auth()->user()->role == "sr")
                 <li>
-                    <a href="views/time-management.html">
+                    <a href="{{ route('order_place') }}">
                         <i class="material-icons">move_up</i>
-                        <span>Send Product Request to ZAF or Factory</span>
+                        <span>Palce Order and Order Staus</span>
                     </a>
                 </li>
                 @endif
+                @if (auth()->user()->role == "account")
                 <li>
-                    <a href="views/procurement-plan.html">
+                    <a href="{{ route('orders') }}">
                         <i class="material-icons">payments</i>
-                        <span>Check Dues Of Distributors</span>
+                        <span>SR Order Status</span>
                     </a>
                 </li>
-                <li>
-                    <a href="views/operational-analysis.html">
-                        <i class="material-icons">payments</i>
-                        <span>Add SR Payments</span>
-                    </a>
-                </li>
+               @endif
+
 
             </ul>
         </div>

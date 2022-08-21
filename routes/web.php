@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\VendorController;
@@ -62,32 +63,46 @@ Route::middleware(['auth'])->group(function (){
   Route::get('/purchase_materials', [MaterialsPurchase::class, 'purchase'])->name('purchase_materials');
   Route::post('/store_raw_materials',[MaterialsPurchase::class, 'store'])->name('store_raw_materials');
   Route::get('raw-materials-lists',[MaterialsPurchase::class, 'getList'])->name('materials_list');
+  //Purchase Materials Routes end
+
 
   //Product route start here
   Route::get('/products', [ProductController::class, 'index'])->name('products');
   Route::get('/add_product', [ProductController::class, 'addProductView'])->name('add_product');
   Route::post('/store_product', [ProductController::class, 'store'])->name('store_product');
+  //Product route end here
 
   //production route start here
   Route::get('/production', [ProductController::class, 'productionList'])->name('production');
   Route::get('/add_production', [ProductController::class, 'addProductionView'])->name('add_production');
   Route::post('/store_production', [ProductController::class, 'storeProduction'])->name('store_production');
-
+  //production route end here
 
 
   //Stock Routes start here
    Route::get('stocks', [StockController::class, 'index'])->name('stocks');
    Route::get('add-stock',[StockController::class, 'create'])->name('add_stock');
    Route::post('store-stock',[StockController::class, 'store'])->name('store_stock');
-
+  //Stock Routes emd here
 
 
    //Shift Route start here
     Route::get('shift-product', [ShiftProductController::class, 'index'])->name('shift_product');
     Route::get('shift-stock-create',[ShiftProductController::class, 'create'])->name('shift_stock_create');
     Route::post('shift-stock-store', [ShiftProductController::class, 'store'])->name('shift_product_store');
+   //Shift Route end here
 
 
+   //Order Route Start Here
+
+   Route::get('orders',[OrderController::class,'index'])->name('orders');
+   Route::get('order-place',[OrderController::class,'create'])->name('order_place');
+   Route::post('store-orders',[OrderController::class,'store'])->name('store_orders');
+
+
+   //Change order status route
+
+   Route::get('change-order-status',[OrderController::class,'ChangeStatus'])->name('change-order-status');
 
 });
 

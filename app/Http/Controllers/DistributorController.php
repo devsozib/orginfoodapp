@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Sr;
 use App\Models\User;
+use App\Models\Branch;
 use App\Models\Distributor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -11,13 +12,38 @@ use Illuminate\Support\Facades\Validator;
 class DistributorController extends Controller
 {
     protected function index(){
-        $distributors = Distributor::get();
-        return view('distributor.index', compact('distributors'));
+
+        if(auth()->user()->role == 'sr'){
+            $condition = ['users.id', auth()->user()->id];
+        }
+        else{$condition = ['users.id', '!=', 0];}
+
+        if(auth()->user()->role == 'admin'){
+            $branch = Branch::where('user_id', auth()->user()->id)->first('id');
+            $condition2 = ['srs.branch_id', $branch->id];
+        }
+        else{$condition2 = ['srs.branch_id', '!=', 0];}
+
+        //dd($condition);
+
+        $get_distributor_details = User::join('srs','srs.user_id','=','users.id')
+                                       ->join('distributors','distributors.sr_id', '=','srs.id')
+                                       ->where([$condition2])
+                                       ->where([$condition])
+                                       ->select('users.name as sr_name','distributors.name','distributors.id','distributors.address')->get();
+
+        //dd( $get_distributor_details);
+
+
+        return view('distributor.index', compact('get_distributor_details'));
     }
 
     protected function create(){
 
-        $srS = Sr::get();
+       $srS = Sr::join('users','users.id','=','srs.user_id')
+       ->select('users.name as sr_name','srs.id')
+       ->get();
+
        return view('distributor.create',compact('srS'));
     }
 
@@ -39,7 +65,7 @@ class DistributorController extends Controller
         else{
 
               $distributor = new Distributor;
-            //   $distributor->sr_id = $request->sr_id;
+              $distributor->sr_id = $request->sr_id;
               $distributor->name = $request->name;
               $distributor->address = $request->address;
               $distributor->save();

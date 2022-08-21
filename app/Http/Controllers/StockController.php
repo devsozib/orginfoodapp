@@ -55,8 +55,9 @@ class StockController extends Controller
             'qty' => 'required', 'numeric'
              ]);
 
-    $branch_id = Branch::where('user_id', auth()->user()->id)->first();
+    $branch_id = Branch::where('user_id', auth()->user()->id)->first('id');
 
+    if($branch_id){
     $stock_check = Stock::where('branch_id',$branch_id->id)->where('product_id', $request->product_id)->first();
 
           if($stock_check){
@@ -71,7 +72,7 @@ class StockController extends Controller
             $stockData->save();
             return back()->with('success', "Insert successfully");
           }
-
+        }
     }
 
     /**

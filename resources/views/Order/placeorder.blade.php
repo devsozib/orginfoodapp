@@ -21,7 +21,7 @@
     <div class="container-fluid">
         <div class="block-header">
             <h2>
-               Add Stock
+               Place your order
             </h2>
         </div>
         <!-- Basic Validation -->
@@ -29,38 +29,76 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                     <div class="header">
-                        <h2>Add Stock</h2>
+                        <h2>Place order</h2>
                         <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('stocks') }}">All Stock</a>
+                            <a class="btn-sm btn-primary float-right"href="{{ route('orders') }}">Order Status</a>
                         </ul>
                     </div>
                     <div class="body">
-                        <form id="form_validation"  method="post" action="{{route('store_stock')}}">
+                        <form id="form_validation"  method="post" action="{{route('store_orders')}}">
                             @csrf
                             <div class="body">
                                 <div class="row clearfix">
+
+
                                     <div class="col-sm-6">
                                             <div class="form-line">
                                                 <label class="">Products</label>
                                                 <select id="unit" class="form-control" name="product_id" value="">
                                                     <option value="" selected hidden disabled>-- Please select --</option>
-                                                    @foreach ($products as $product)
-                                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                                    @foreach ($product_information as $product)
+                                                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                     </div>
 
                                     <div class="col-sm-6">
+                                        <div class="form-line">
+                                            <label class="">Distributor</label>
+                                            <select id="unit" class="form-control" name="distributor_id" value="">
+                                                <option value="" selected hidden disabled>-- Please select --</option>
+                                                @foreach ($distributors as $distributor)
+                                                <option value="{{ $distributor->id }}">{{ $distributor->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                </div>
+
+
+
+
+                                </div>
+
+                                <div class="row clearfix">
+
+
+                                    <div class="col-sm-6">
                                         <label class="">Quantity</label>
+
                                         <input type="number" class="form-control" placeholder="Quantity" name="qty" required>
                                         @error('qty')
-                                            <span class="invalid-feedback" role="alert">
+                                            <span class="text-danger">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
 
                                     </div>
+
+                                    <div class="col-sm-6">
+                                            <div class="form-line">
+                                                <label class="">Date</label>
+                                                <input type="date" class="form-control" placeholder="" name="date" required>
+                                                @error('date')
+                                                    <span class="text-danger">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                    </div>
+
+
+
 
 
 

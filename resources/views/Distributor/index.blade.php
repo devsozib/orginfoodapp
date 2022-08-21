@@ -17,9 +17,11 @@
                            All Distributor
 
                         </h2>
-                        <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('create_distributors') }}">Add Distributor</a>
-                        </ul>
+                        @if(auth()->user()->role == 'super_admin')
+                            <ul class="header-dropdown m-r--5">
+                                <a class="btn-sm btn-primary float-right"href="{{ route('create_distributors') }}">Add Distributor</a>
+                            </ul>
+                        @endif
                     </div>
                     <div class="body table-responsive">
                         <table class="table">
@@ -27,17 +29,24 @@
                                 <tr>
                                     <th>#</th>
                                     <th>NAME</th>
+
+                                    @if (auth()->user()->role != "sr")
                                     <th>SR</th>
+                                    @endif
+
                                     <th>ADDRESS</th>
                                 </tr>
                             </thead>
                             <tbody>
 
-                            @foreach ($distributors as $distributor)
+
+                            @foreach ($get_distributor_details as $distributor)
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
                                     <td>{{ $distributor->name }}</td>
-                                    <td>{{ $distributor->sr_id }}</td>
+                                    @if (auth()->user()->role != "sr")
+                                    <td>{{ $distributor->sr_name }}</td>
+                                    @endif
                                     <td>{{ $distributor->address }}</td>
                                 </tr>
                                 @endforeach
