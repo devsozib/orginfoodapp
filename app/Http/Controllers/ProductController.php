@@ -30,7 +30,7 @@ class ProductController extends Controller
         ];
         //dd($request->all());
 
-        $validator = Validator::make($request->all(),$rols);
+        $validator = Validator::make($request->all(),$rules);
         if ($validator->fails()) {
 			return redirect()->route('add_product')->withInput()->withErrors($validator);
 		}
@@ -56,7 +56,7 @@ class ProductController extends Controller
 
     protected function storeProduction(Request $request){
 
-        $rols = [
+        $rols= [
             'product_id' => ['required', 'numeric'],
             'qty' => ['required', 'numeric'],
             'date' => ['required', 'date'],

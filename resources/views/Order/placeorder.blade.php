@@ -77,11 +77,13 @@
                                         <label class="">Quantity</label>
 
                                         <input type="number" class="form-control" placeholder="Quantity" name="qty" required>
+
+
                                         @error('qty')
-                                            <span class="text-danger">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <span class="text-danger">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
 
                                     </div>
 

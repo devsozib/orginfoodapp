@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sr;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Stock;
 use App\Models\Branch;
 use App\Models\Product;
 use App\Models\Distributor;
@@ -84,19 +85,26 @@ class OrderController extends Controller
         ]);
 
 
-         $sr = Sr::where('user_id', auth()->user()->id)->first(['id','branch_id']);
+        $sr = Sr::where('user_id', auth()->user()->id)->first(['id','branch_id']);
+
+        $old_stock_qty = Stock::where('branch_id', $sr->branch_id)->where('product_id',$request->product_id)->first('qty');
+        if($request->qty <= $old_stock_qty->qty){
+            $orders = new Order;
+            $orders->sr_id = $sr->id;
+            $orders->branch_id = $sr->branch_id;
+            $orders->distributor_id = $request->distributor_id;
+            $orders->product_id = $request->product_id;
+            $orders->qty = $request->qty;
+            $orders->status = "pending";
+            $orders->date = $request->date;
+            $orders->save();
+            return back()->with('success', "Order Place successful");
+        }
+        else{
+            return back()->withErrors(['qty'=> "Quantity is not available"]);
+        }
 
 
-        $orders = new Order;
-        $orders->sr_id = $sr->id;
-        $orders->branch_id = $sr->branch_id;
-        $orders->distributor_id = $request->distributor_id;
-        $orders->product_id = $request->product_id;
-        $orders->qty = $request->qty;
-        $orders->status = "pending";
-        $orders->date = $request->date;
-        $orders->save();
-        return back()->with('success', "Order Place successful");
 
     }
 
@@ -148,9 +156,20 @@ class OrderController extends Controller
     protected function changeStatus(Request $request){
 
             $orders = Order::find($request->id);
-            // return $request->data;
-           $orders->status = $request->data;
+
+            $orders->status = $request->data;
             $orders->update();
+
+            if($request->data== 'delevered'){
+              $product_id= $orders->product_id;
+              $branch_id=  $orders->branch_id;
+              $orders_qty = $orders->qty;
+              $stock = Stock::where('product_id', $product_id)->where('branch_id', $branch_id)->first();
+
+              $stock->qty -= $orders_qty;
+              $stock->update();
+
+            }
 
     }
 }

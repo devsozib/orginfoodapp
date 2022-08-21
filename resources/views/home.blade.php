@@ -54,7 +54,7 @@
     </div>
     <!-- #END# Widgets -->
 
-    <div class="row clearfix">
+    {{-- <div class="row clearfix">
         <!-- Task Info -->
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="card">
@@ -151,7 +151,7 @@
         </div>
         <!-- #END# Task Info -->
 
-    </div>
+    </div> --}}
 </div>
 
 @endsection

@@ -72,12 +72,7 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
-                                        @if (session('error_qty'))
 
-                                            <span class="text-danger" >
-                                                <strong>{{ session('error_qty') }}</strong>
-                                            </span>
-                                        @endif
                                     </div>
 
 
