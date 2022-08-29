@@ -85,5 +85,18 @@
           })
       </script>
   @endif
+
+
+  @if (session('qty'))
+  <script>
+     Swal.fire({
+    icon: 'error',
+    title: 'Oops...',
+    text: '{{ session('qty') }}',
+
+    })
+  </script>
+
+@endif
 </body>
 </html>

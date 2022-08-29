@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Validator;
 class VendorController extends Controller
 {
    protected function index(){
-       $vendors = Vendor::all();
+       $vendors = Vendor::get();
+
+
 
        return view('vendors.index', compact('vendors'));
    }

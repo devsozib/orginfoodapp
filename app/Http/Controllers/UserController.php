@@ -29,8 +29,8 @@ class UserController extends Controller
 
     protected function create(){
         $branches = Branch::where('is_deleted', 0)->get();
-        $branches_for_sr = Branch::where('is_deleted', 0)->where('type','wirehouse')->get();
-        return view('users.create')->with(compact('branches','branches_for_sr'));
+        // $branches_for_sr = Branch::where('is_deleted', 0)->where('type','wirehouse')->get();
+        return view('users.create')->with(compact('branches'));
     }
 
     protected function storeAdmin(Request $request){

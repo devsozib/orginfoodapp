@@ -26,18 +26,27 @@ class OrderController extends Controller
         if(auth()->user()->role == "admin"){
              $branch= Branch::where('user_id', auth()->user()->id)->first('id');
              $condition= ['orders.branch_id','=', $branch->id];
+             $condition2= [['orders.status','!=', 'cancel']];
         }else if(auth()->user()->role == "sr"){
             $sr = Sr::where('user_id', auth()->user()->id)->first('id');
             $condition= ['orders.sr_id','=', $sr->id];
-        }else{
+            $condition2= [['orders.id','!=',0]];
+        }else if(auth()->user()->role == "account"){
             $condition= ['orders.id','!=',0];
+            $condition2 = [['orders.status', '!=','pending'], ['orders.status', '!=','cancel']];
         }
+        else{
+            $condition= ['orders.id','!=',0];
+            $condition2= [['orders.id','!=',0]];
+        }
+
         $orders = Order::join('branches', 'orders.branch_id','=','branches.id')
         ->join('srs', 'srs.id', '=', 'orders.sr_id')
         ->join('products', 'products.id', '=', 'orders.product_id')
         ->join('distributors', 'distributors.id', '=', 'orders.distributor_id')
         ->join('users' , 'srs.user_id', '=', 'users.id')
         ->where([$condition])
+        ->where($condition2)
         ->select('orders.id','users.name as sr_name', 'products.name as product_name',
          'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'orders.date', 'orders.status')
         ->get();
@@ -156,20 +165,23 @@ class OrderController extends Controller
     protected function changeStatus(Request $request){
 
             $orders = Order::find($request->id);
+            $product_id= $orders->product_id;
+            $branch_id=  $orders->branch_id;
+            $orders_qty = $orders->qty;
 
-            $orders->status = $request->data;
-            $orders->update();
 
-            if($request->data== 'delevered'){
-              $product_id= $orders->product_id;
-              $branch_id=  $orders->branch_id;
-              $orders_qty = $orders->qty;
-              $stock = Stock::where('product_id', $product_id)->where('branch_id', $branch_id)->first();
+            $stock = Stock::where('product_id', $product_id)->where('branch_id', $branch_id)->first();
 
-              $stock->qty -= $orders_qty;
-              $stock->update();
-
-            }
-
+            if($request->data== 'delivered' && $orders->qty > $stock->qty){
+                session()->flash('qty', 'Quantity not available');
+           }
+           else{
+                $orders->status = $request->data;
+                $orders->update();
+                if($request->data== 'delivered'){
+                    $stock->qty -= $orders_qty;
+                    $stock->update();
+                }
+           }
     }
 }

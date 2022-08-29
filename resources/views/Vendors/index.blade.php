@@ -26,17 +26,34 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>NAME</th>
-                                    <th>ADDRESS</th>
+                                    <th>Name</th>
+                                    <th>Address</th>
+                                    <th>Due</th>
                                 </tr>
                             </thead>
                             <tbody>
 
                             @foreach ($vendors as $vendor)
+                              @php
+
+
+
+
+                                   $total_due_Amount = App\Models\VendorAccount::where('vendor_id',$vendor->id)->where('status',0)->sum('amount');
+
+                                   $total_payment_Amount = App\Models\VendorAccount::where('vendor_id',$vendor->id)->where('status',1)->sum('amount');
+
+                                   $nowDueIs = $total_due_Amount  - $total_payment_Amount  ;
+                                //    dd( $nowDueIs );
+
+
+                              @endphp
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
                                     <td>{{ $vendor->name }}</td>
                                     <td>{{ $vendor->address }}</td>
+                                    <td>৳{{ $nowDueIs}}</td>
+
                                 </tr>
                                 @endforeach
                             </tbody>

@@ -35,7 +35,6 @@
                                     <th>Quantity</th>
                                     <th>date</th>
                                     <th>Status</th>
-                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -49,22 +48,47 @@
                                     <td>{{ $item->distributor_name }}</td>
                                     <td>{{ $item->qty }}</td>
                                     <td>{{ $item->date }}</td>
-                                    <td>{{ $item->status }}</td>
+                                    <td>
+                                        <select id="select_status{{ $loop->index+1 }}" onChange="orderStatusChange({{ $item->id }}, 'select_status{{ $loop->index+1 }}')" class="form-select" name="status">
 
-                                    <td><select id="select_status{{ $loop->index+1 }}" onChange="orderStatusChange({{ $item->id }}, 'select_status{{ $loop->index+1 }}')" class="form-select" name="status">
-                                        <option value="" selected hidden disabled>Change Status</option>
-                                        @if (auth()->user()->role == "admin")
-                                        <option value="cancel">Cancel</option>
-                                        <option value="delevered">Delevered</option>
+                                      @if ($item->status == "pending")
+                                       <option {{  $item->status == 'pending'? 'selected disabled hidden': "" }}>Pending</option>
+                                      @endif
+
+                                        @if ((auth()->user()->role == "admin" && $item->status == "pending") or $item->status == 'cancel')
+                                        <option {{  $item->status == 'cancel'? 'selected disabled hidden': "" }} value="cancel">Cancel</option>
                                         @endif
-                                        @if (auth()->user()->role == "sr")
-                                        <option value="due">Due</option>
-                                        <option value="collected">Collected</option>
+
+                                        @if ((auth()->user()->role == "admin" && $item->status == "pending") or $item->status == 'delivered')
+                                        <option  {{  $item->status == 'delivered'? 'selected disabled hidden':""}}  value="delivered">Delivered</option>
                                         @endif
-                                        @if (auth()->user()->role == "account")
-                                        <option value="paid">Paid</option>
+
+                                        @if ((auth()->user()->role == "sr" && $item->status == 'delivered') or $item->status == 'due' )
+
+                                        <option {{  $item->status == 'due'? 'selected disabled hidden':""}} value="due">Due</option>
+
                                         @endif
-                                      </select></td>
+
+                                        @if ((auth()->user()->role == "sr" && ($item->status == 'delivered' || $item->status == 'due')) or $item->status == 'collected')
+                                        <option {{  $item->status == 'collected'? 'selected disabled hidden':""}}  value="collected">Collected</option>
+                                        @endif
+
+
+                                        @if ((auth()->user()->role == "account" && ($item->status == 'due' || $item->status == 'collected'||  $item->status == 'delivered')) or $item->status == 'paid')
+                                        <option {{  $item->status == 'paid'? 'selected disabled hidden':""}}  value="paid">Paid</option>
+                                        @endif
+                                      </select>
+
+                                      {{-- @if(session()->get('qty'))
+                                      <span  class="text-danger ">
+                                          <strong >{{ session()->get('qty') }}</strong>
+                                      </span>
+                                      @endif --}}
+                                      {{-- @php
+                                          session()->forget(['qty']);
+                                      @endphp --}}
+
+                                    </td>
 
                                 </tr>
                             @endforeach
@@ -86,7 +110,11 @@ function orderStatusChange(id, item_id){
     var data = document.getElementById(item_id).value;
     var url= "{{ url()->current()}}"
     $.get('{{ route('change-order-status') }}', {data:data,id:id},function(data){
-        //console.log(data);
+        // console.log(data);
+        // if(data == "Error"){
+        //    document.getElementById('error_message').classList.remove('d-none');
+        //    document.getElementById('error_text').innerText = "e";
+        // }
          $('body').load(url);
     });
 

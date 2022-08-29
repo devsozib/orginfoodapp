@@ -77,6 +77,7 @@ class ProductController extends Controller
                 $data = $request->all();
                 $production = new Production;
                 $production->product_id =  $data['product_id'];
+                $production->branch_id =  $branch_id->id;
                 $production->qty =  $data['qty'];
                 $production->date =  $data['date'];
                 $production->save();
@@ -104,7 +105,15 @@ class ProductController extends Controller
     }
 
     protected function productionList(){
-        $productions = Production::join('products','products.id', '=', 'productions.product_id')->where('productions.is_deleted', 0)
+        if(auth()->user()->role == 'admin'){
+            $branch_id = Branch::where('user_id', auth()->user()->id)->first('id');
+            $condition = ['branch_id', '=', $branch_id->id];
+        }else{
+            $condition = ['branch_id', '!=', 0];
+        }
+        $productions = Production::join('products','products.id', '=', 'productions.product_id')
+        ->where([$condition])
+        ->where('productions.is_deleted', 0)
         ->select('productions.id','products.name as product_name','productions.qty', 'productions.date')
         ->get();
         return view('product.production')->with(compact('productions'));

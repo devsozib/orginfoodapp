@@ -57,16 +57,28 @@
                         </a>
                     </li>
 
-                    <li>
-                        <a href="{{ route('vendors') }}">
-                            <i class="material-icons">local_shipping</i>
-                            <span>Vendors</span>
-                        </a>
-                    </li>
+
 
                 @endif
 
-                @if (auth()->user()->role != "account" )
+                @php
+                $check_factory = App\Models\Branch::where('user_id',auth()->user()->id)->where('type','factory')->exists();
+                @endphp
+
+                @if (auth()->user()->role == 'super_admin' or $check_factory)
+                <li>
+                    <a href="{{ route('vendors') }}">
+                        <i class="material-icons">local_shipping</i>
+                        <span>Vendors</span>
+                    </a>
+                </li>
+                @endif
+
+
+                @php
+                $check_factory = App\Models\Branch::where('user_id',auth()->user()->id)->where('type','factory')->exists();
+                @endphp
+                @if (auth()->user()->role != "account" and !$check_factory)
                     <li>
                         <a href="{{ route('distributors') }}">
                             <i class="material-icons">group</i>
@@ -86,7 +98,7 @@
                </li>
                 @endif
 
-                @if(auth()->user()->role != 'sr' and auth()->user()->role != "account")
+                @if(auth()->user()->role != 'sr' and auth()->user()->role != "account" )
                 <li>
                     <a class="" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample2"> <i class="material-icons">report</i>
                         <span>Product</span><small style="margin-top:-10px"><i class="material-icons">keyboard_arrow_down</i></small></a>
@@ -126,7 +138,7 @@
                @endif
 
 
-                @if (auth()->user()->role == "admin")
+                @if (auth()->user()->role == "admin" and !$check_factory)
                 <li>
                     <a href="{{ route('orders') }}">
                         <i class="material-icons">request_page</i>

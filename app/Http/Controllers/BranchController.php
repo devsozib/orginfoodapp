@@ -12,7 +12,7 @@ class BranchController extends Controller
 {
     protected function index(){
         $all_branches = Branch::get();
-        return view('Branch.index',compact('all_branches'));
+        return view('branch.index',compact('all_branches'));
     }
 
     protected function addBranchForm(){

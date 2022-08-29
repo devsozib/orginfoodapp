@@ -28,7 +28,7 @@
                                     <th>#</th>
                                     <th>NAME</th>
                                     <th>Type</th>
-                                    <th>User</th>
+                                    <th>Admin</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,7 +38,7 @@
                                     <th scope="row">{{ $loop->index+1 }}</th>
                                     <td>{{ $banch->name }}</td>
                                     <td>{{ $banch->type }}</td>
-                                    <td>{{ $banch->user->name }}</td>
+                                    <td>{{ isset($banch->user->name)? $banch->user->name: "No Admin" }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

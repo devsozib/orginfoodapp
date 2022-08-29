@@ -30,8 +30,9 @@
                                     <th>Vendor</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
+                                    <th>Total Price</th>
                                     <th>Purchase Date</th>
-                                    <th>Payment Status</th>
+                                    {{-- <th>Payment Status</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -43,8 +44,9 @@
                                     <td>{{ $item->vendor->name }}</td>
                                     <td>{{ $item->qty }}</td>
                                     <td>{{ $item->price }}</td>
-                                    <td>{{ $item->date }}</td>
-                                    <td>{{$item->status == 'due'? "Due":"Paid"}}</td>
+                                    <td>{{$item->qty * $item->price }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($item->date)->format('d M Y') }}</td>
+
                                 </tr>
                                 @endforeach
                             </tbody>

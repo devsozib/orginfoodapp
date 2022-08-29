@@ -59,7 +59,7 @@
                                         <div class="form-line">
                                             <label class="form-label">SELECT VENDOR</label>
                                             <select class="form-control" name="vendor_id">
-                                                <option value="">-- Please select --</option>
+                                                <option value="" disabled selected hidden>-- Please select --</option>
                                                 @foreach ($vendors as $vendor)
                                                 <option value="{{ $vendor->id }}">{{ $vendor->name }}</option>
                                                 @endforeach
@@ -114,16 +114,13 @@
                                         <div class="col-sm-4">
                                             <div class=" form-float">
                                                 <div class="form-line">
-                                                    <label class="form-label">Select Status</label>
-                                                    <select class="form-control" name="status">
-                                                        <option value="">-- Please select --</option>
-
-                                                        <option value="paid">Paid</option>
-                                                        <option value="due">Due</option>
-
-
-                                                    </select>
-
+                                                    <label class="">Payment Amount</label>
+                                                    <input min="1" value="{{old('payment_amount')}}" type="number" class="form-control" placeholder="Payment Amount" name="payment_amount">
+                                                    @error('payment_amount')
+                                                    <span class="text-danger">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                                 </div>
                                             </div>
                                             </div>

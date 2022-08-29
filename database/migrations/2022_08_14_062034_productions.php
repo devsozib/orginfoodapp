@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products');
+            $table->bigInteger('branch_id')->unsigned();
+            $table->foreign('branch_id')->references('id')->on('branches');
             $table->integer('qty');
             $table->date('date');
             $table->boolean('is_deleted')->default(0);
