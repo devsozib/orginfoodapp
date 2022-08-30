@@ -29,6 +29,7 @@
                                     <th>Name</th>
                                     <th>Address</th>
                                     <th>Due</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -53,6 +54,19 @@
                                     <td>{{ $vendor->name }}</td>
                                     <td>{{ $vendor->address }}</td>
                                     <td>৳{{ $nowDueIs}}</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                               Action
+                                              <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                              <li><a href="{{ route('purchase_history',$vendor->id) }}">See History</a></li>
+                                              <li><a href="{{ route('due_payment',$vendor->id) }}">Pay</a></li>
+
+                                            </ul>
+                                          </div>
+                                    </td>
 
                                 </tr>
                                 @endforeach

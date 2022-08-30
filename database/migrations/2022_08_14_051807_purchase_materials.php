@@ -13,12 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('vendors', function (Blueprint $table) {
+        Schema::create('purchase_materials', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->bigInteger('branch_id')->unsigned();
-            $table->foreign('branch_id')->references('id')->on('branches');
-            $table->string('address');
+            $table->bigInteger('vendor_id')->unsigned();
+            $table->foreign('vendor_id')->references('id')->on('vendors');
+            $table->bigInteger('materials_item_id')->unsigned();
+            $table->foreign('materials_item_id')->references('id')->on('materials_items');
+            $table->integer('qty');
+            $table->integer('price');
+            $table->date('date');
             $table->boolean('is_deleted')->default(0);
             $table->rememberToken();
             $table->timestamps();

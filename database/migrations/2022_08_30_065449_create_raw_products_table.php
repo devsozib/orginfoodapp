@@ -13,17 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('vendors', function (Blueprint $table) {
+        Schema::create('raw_products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->bigInteger('branch_id')->unsigned();
-            $table->foreign('branch_id')->references('id')->on('branches');
-            $table->string('address');
-            $table->boolean('is_deleted')->default(0);
-            $table->rememberToken();
+            $table->string('unit');
             $table->timestamps();
-
-            //->onDelete('cascade')
         });
     }
 
@@ -34,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('raw_products');
     }
 };

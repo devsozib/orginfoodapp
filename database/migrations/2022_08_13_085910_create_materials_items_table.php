@@ -13,20 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('materials', function (Blueprint $table) {
+        Schema::create('materials_items', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('vendor_id')->unsigned();
-            $table->foreign('vendor_id')->references('id')->on('vendors');
             $table->string('name');
-            $table->integer('qty');
-            $table->integer('price');
-            $table->string('status');
-            $table->date('date');
-            $table->boolean('is_deleted')->default(0);
-            $table->rememberToken();
+            $table->string('unit');
             $table->timestamps();
-
-            //->onDelete('cascade')
         });
     }
 
@@ -37,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('materials_items');
     }
 };

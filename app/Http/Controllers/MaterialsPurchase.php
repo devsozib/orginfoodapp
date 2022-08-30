@@ -90,4 +90,42 @@ class MaterialsPurchase extends Controller
     $materials_list = Material::orderBy('id')->get();
     return view('materials.list', compact('materials_list'));
    }
+
+
+   protected function purchaseHistory(Request $request,$id){
+            $purchaseHistory = VendorAccount::join('vendors','vendors.id',"=","vendor_accounts.vendor_id")
+            ->where('vendor_accounts.vendor_id',$id)
+            ->get();
+            // return $purchaseHistory;
+
+            return view('materials.purchase_history', compact('purchaseHistory'));
+   }
+
+   protected function duePayment($id){
+    $vendor_id = $id;
+    return view('materials.due_payment',compact('vendor_id'));
+   }
+
+   protected function makeDuePayment(Request $request){
+    // return $request->all();
+         $request->validate([
+            "amount"=>['required','numeric'],
+            "date"  =>['required','date']
+         ]);
+
+         $vendor_account_last_status = VendorAccount::where('vendor_id',$request->vendor_id)->get()->last();
+         $vendor_acc_adjustment_last_value = $vendor_account_last_status->adjustment_balance;
+
+         $vendorAcc = new VendorAccount;
+
+         $vendorAcc->vendor_id = $request->vendor_id;
+         $vendorAcc->status = "1";
+         $vendorAcc->amount = $request->amount;
+         $vendorAcc->adjustment_balance =$vendor_acc_adjustment_last_value-$request->amount;
+         $vendorAcc->date = $request->date;
+         $vendorAcc->save();
+
+         return redirect()->route('due_payment',$request->vendor_id)->with('success',"Insert successfully");
+
+   }
 }

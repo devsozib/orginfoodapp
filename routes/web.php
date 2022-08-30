@@ -8,8 +8,10 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\MaterialsPurchase;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RawProductController;
 use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\ShiftProductController;
+use App\Http\Controllers\RawMaterialsItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +105,20 @@ Route::middleware(['auth'])->group(function (){
    //Change order status route
 
    Route::get('change-order-status',[OrderController::class,'ChangeStatus'])->name('change-order-status');
+
+   Route::get('/purchase-history/{id}',[MaterialsPurchase::class, 'purchaseHistory'])->name('purchase_history');
+
+   Route::get('/due-payment/{id}',[MaterialsPurchase::class, 'duePayment'])->name('due_payment');
+   Route::post('make-due-payment',[MaterialsPurchase::class, 'makeDuePayment'])->name('make_due_payment');
+
+   //Raw Product Controller
+   Route::get('raw-product',[RawProductController::class, 'rawProduct'])->name('raw_product');
+   Route::get('add-raw-product',[RawProductController::class, 'addRawProduct'])->name('add_raw_product');
+   Route::post('store-raw-product',[RawProductController::class, 'storeRawProduct'])->name('storeRawProduct');
+
+   //Raw materials items
+
+   Route::get('raw-materials-item',[RawMaterialsItemController::class, 'index'])->name('raw_materials_item');
 
 });
 

@@ -91,13 +91,19 @@
                 @endphp
                 @if ($check_factory)
                 <li>
+                    <a href="{{ route('raw_materials_item') }}">
+                        <i class="material-icons">shopping_cart</i>
+                        <span>Raw Materials Items</span>
+                      </a>
+                  </li>
+                <li>
                  <a href="{{ route('purchase_materials') }}">
                      <i class="material-icons">shopping_cart</i>
                      <span>Purchase Raw Materials</span>
                    </a>
                </li>
-                @endif
 
+                @endif
                 @if(auth()->user()->role != 'sr' and auth()->user()->role != "account" )
                 <li>
                     <a class="" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample2"> <i class="material-icons">report</i>
@@ -107,20 +113,29 @@
                     <div  class="collapse multi-collapse" id="multiCollapseExample2">
 
                         <div id="list-example" class="list-group w-50">
-                            @if ($check_factory or auth()->user()->role == 'super_admin')
-                            <a class="list-group-item list-group-item-action" href="{{route('products')}}">Product List</a>
+                            @php
+                            $check_wirehouse = App\Models\Branch::where('user_id',auth()->user()->id)->where('type','wirehouse')->exists();
+                            @endphp
+                            @if ($check_wirehouse or auth()->user()->role == 'super_admin')
+                              <a class="list-group-item list-group-item-action" href="{{route('products')}}">Product List</a>
+                              @endif
+
+                              @if ($check_factory)
+                              <a class="list-group-item list-group-item-action" href="{{route('raw_product')}}">Raw Products</a>
+
                               <a class="list-group-item list-group-item-action" href="{{route('production')}}">Productions</a>
+
 
                               @endif
 
 
 
 
-                            @if (auth()->user()->role =='admin' )
+                            @if ($check_wirehouse)
                             <a class="list-group-item list-group-item-action" href="{{ route('add_stock') }}">Add Stocks</a>
                             @endif
 
-                            @if (auth()->user()->role == 'super_admin' or auth()->user()->role == 'admin')
+                            @if (auth()->user()->role == 'super_admin' or $check_wirehouse)
                             <a class="list-group-item list-group-item-action" href="{{ route('stocks') }}">Stock Lists</a>
                             @endif
 
@@ -129,13 +144,11 @@
                             @if ($check_factory)
                             <a class="list-group-item list-group-item-action" href="{{ route('shift_product') }}">Shift</a>
                             @endif
-
-
-                          </div>
+                           </div>
                    </div>
                   </div>
                 </li>
-               @endif
+                @endif
 
 
                 @if (auth()->user()->role == "admin" and !$check_factory)
