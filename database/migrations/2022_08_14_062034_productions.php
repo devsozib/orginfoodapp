@@ -15,11 +15,14 @@ return new class extends Migration
     {
         Schema::create('productions', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('product_id')->unsigned();
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->bigInteger('raw_product_id')->unsigned();
+            $table->foreign('raw_product_id')->references('id')->on('raw_products');
             $table->bigInteger('branch_id')->unsigned();
             $table->foreign('branch_id')->references('id')->on('branches');
-            $table->integer('qty');
+            $table->bigInteger('raw_materials_id')->unsigned();
+            $table->foreign('raw_materials_id')->references('materials_item_id')->on('materials_stocks');
+            $table->integer('production_qty');
+            $table->integer('raw_materials_qty');
             $table->date('date');
             $table->boolean('is_deleted')->default(0);
             $table->rememberToken();

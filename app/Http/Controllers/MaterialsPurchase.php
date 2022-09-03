@@ -2,24 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
 use App\Models\Vendor;
-use App\Models\Material;
 use Illuminate\Http\Request;
+use App\Models\MaterialsItem;
 use App\Models\VendorAccount;
+use App\Models\MaterialsStock;
+use App\Models\PurchaseMaterial;
 use Illuminate\Support\Facades\Validator;
 
 class MaterialsPurchase extends Controller
 {
    public function purchase(){
        $vendors = Vendor::get();
-      return view('materials.index', compact('vendors'));
+       $raw_materials_items = MaterialsItem::all();
+      return view('materials.index', compact('vendors','raw_materials_items'));
    }
 
    public function store(Request $request){
 
+//    dd($request->all());
 
     $rules = [
-        'name' => ['required', 'string', 'max:255'],
+        'materials_item_id' => ['required', 'numeric'],
         'vendor_id' => ['required', 'numeric'],
         'qty' => ['required', 'numeric','min:1'],
         'price' => ['required', 'numeric','min:1'],
@@ -36,13 +41,30 @@ class MaterialsPurchase extends Controller
         ->withErrors($validator);
     }else{
         try{
-            $material = new Material;
+            $material = new PurchaseMaterial;
             $material->vendor_id = $request->vendor_id;
-            $material->name = $request->name;
+            $material->materials_item_id = $request->materials_item_id;
             $material->qty = $request->qty;
             $material->price =$request->price;
             $material->date = $request->date;
             $material->save();
+
+
+            $branch = Branch::where('user_id',auth()->user()->id)->first();
+            $materials_stock = MaterialsStock::where('id',$request->materials_item_id)
+            ->where('branch_id',$branch->id)
+            ->first();
+             if(!$materials_stock){
+                 $materialsStock = new MaterialsStock;
+                 $materialsStock->materials_item_id = $request->materials_item_id;
+                 $materialsStock->branch_id = $branch->id;
+                 $materialsStock->qty = $request->qty;
+                 $materialsStock->save();
+             }else{
+                $materials_stock->qty += $request->qty;
+                $materials_stock->update();
+             }
+
 
             $vendor_account = VendorAccount::where('vendor_id',$request->vendor_id)->orderBy('id','desc')->first();
             $adjustment_balance = 0;
@@ -87,15 +109,22 @@ class MaterialsPurchase extends Controller
    }
 
    protected function getList(){
-    $materials_list = Material::orderBy('id')->get();
+    $materials_list = PurchaseMaterial::orderBy('id')->get();
     return view('materials.list', compact('materials_list'));
    }
 
 
    protected function purchaseHistory(Request $request,$id){
-            $purchaseHistory = VendorAccount::join('vendors','vendors.id',"=","vendor_accounts.vendor_id")
-            ->where('vendor_accounts.vendor_id',$id)
-            ->get();
+
+            if(auth()->user()->role == "super_admin"){
+                $purchaseHistory = VendorAccount::join('vendors','vendors.id',"=","vendor_accounts.vendor_id")
+                ->get();
+            }else{
+                $purchaseHistory = VendorAccount::join('vendors','vendors.id',"=","vendor_accounts.vendor_id")
+                ->where('vendor_accounts.vendor_id',$id)
+                ->get();
+            }
+
             // return $purchaseHistory;
 
             return view('materials.purchase_history', compact('purchaseHistory'));

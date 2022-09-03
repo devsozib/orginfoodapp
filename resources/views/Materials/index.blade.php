@@ -36,7 +36,7 @@
                     </div>
                     <div class="body">
 
-                        <form id="form_validation"  method="post" action="{{route('store_raw_materials')}}">
+                        <form id="form_validation"  method="post" action="{{route('purchase_raw_materials')}}">
                             @csrf
 
                             <div class="body">
@@ -44,13 +44,14 @@
                                     <div class="col-sm-4">
                                     <div class=" form-float">
                                         <div class="form-line">
-                                            <label class="">Name</label>
-                                            <input value="{{old('name')}}" type="text" class="form-control" placeholder="Name" name="name" required>
-                                            @error('name')
-                                            <span class="text-danger">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                            <label class="">Item Name</label>
+                                            <select class="form-control" name="materials_item_id">
+                                                <option value="" disabled selected hidden>-- Please select --</option>
+                                                @foreach ($raw_materials_items as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                @endforeach
+
+                                            </select>
                                         </div>
                                     </div>
                                     </div>

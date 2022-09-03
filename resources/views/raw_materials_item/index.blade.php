@@ -4,7 +4,7 @@
 <section class="">
     <div class="container-fluid">
         <div class="block-header">
-            <h2> All Product</h2>
+            <h2> All Raw Materials Item</h2>
 
 
         </div>
@@ -14,12 +14,12 @@
                 <div class="card">
                     <div class="header">
                         <h2>
-                           All Raw Product
+                           All Raw Materials Item
 
                         </h2>
 
                         <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('add_raw_product') }}">Add Raw Product</a>
+                            <a class="btn-sm btn-primary float-right"href="{{ route('create_raw_materials') }}">Add Raw Materials Item</a>
                         </ul>
 
 

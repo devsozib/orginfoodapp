@@ -43,9 +43,9 @@
                                     <div class="col-sm-4">
                                             <div class="form-line">
                                                 <label class="form-label">Product</label>
-                                                <select id="product_id" class="form-control" name="product_id" value="">
+                                                <select id="raw_product_id" class="form-control" name="raw_product_id" value="">
                                                     <option value="" selected hidden disabled>--Select Product--</option>
-                                                    @foreach ($products as $product)
+                                                    @foreach ($raw_products as $product)
                                                         <option value="{{$product->id}}">{{ $product->name }}</option>
                                                     @endforeach
 
@@ -54,13 +54,35 @@
                                     </div>
 
 
+                                    <div class="col-sm-4">
+                                        <div class="form-line">
+                                            <label class="form-label">Raw Materials</label>
+                                            <select id="raw_materials_id" class="form-control" name="raw_materials_id" value="">
+                                                <option value="" selected hidden disabled>--Select Raw Materials--</option>
+                                                @foreach ($raw_materials as $raw_materials)
+                                                    <option value="{{$raw_materials->materials_item_id}}">{{ $raw_materials->item_name }}</option>
+                                                @endforeach
 
+                                            </select>
+                                        </div>
+                                </div>
 
 
                                     <div class="col-sm-4">
-                                        <label class="">Qty</label>
-                                        <input type="number" class="form-control" placeholder="Qty" name="qty" required>
-                                        @error('gty')
+                                        <label class="">Raw Materials Quantity</label>
+                                        <input type="number" class="form-control" placeholder="Materials qty" name="raw_materials_qty" required>
+                                        @error('raw_materials_qty')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <label class="">Production Quantity</label>
+                                        <input type="number" class="form-control" placeholder="Production qty" name="production_qty" required>
+                                        @error('production_qty')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

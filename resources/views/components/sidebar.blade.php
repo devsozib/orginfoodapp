@@ -103,6 +103,13 @@
                    </a>
                </li>
 
+               <li>
+                <a href="{{ route('materials_stock') }}">
+                    <i class="material-icons">shopping_cart</i>
+                    <span>Materials Stock</span>
+                  </a>
+              </li>
+
                 @endif
                 @if(auth()->user()->role != 'sr' and auth()->user()->role != "account" )
                 <li>

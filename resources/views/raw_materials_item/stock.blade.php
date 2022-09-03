@@ -4,7 +4,7 @@
 <section class="">
     <div class="container-fluid">
         <div class="block-header">
-            <h2> All Materials List</h2>
+            <h2> All Raw Materials Item Stock</h2>
 
 
         </div>
@@ -14,41 +14,37 @@
                 <div class="card">
                     <div class="header">
                         <h2>
-                            All Materials List
+                           All Raw Materials Item Stock
 
                         </h2>
+
                         <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('purchase_materials') }}">Purchase Materials</a>
+                            <a class="btn-sm btn-primary float-right"href="{{ route('create_raw_materials') }}">Add Raw Materials Item</a>
                         </ul>
+
+
                     </div>
                     <div class="body table-responsive">
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>NAME</th>
-                                    <th>Vendor</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
-                                    <th>Total Price</th>
-                                    <th>Purchase Date</th>
-                                    {{-- <th>Payment Status</th> --}}
+                                    <th>Name</th>
+                                    <th>Unit</th>
+                                    <th>Qty</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
 
-                            @foreach ($materials_list as $item)
+                            @foreach ($materials_Stock as $item)
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
-                                    <td>{{ $item->materialsItem->name }}</td>
-                                    <td>{{ $item->vendor->name }}</td>
+                                    <td>{{ $item->materials_item_id }}</td>
                                     <td>{{ $item->qty }}</td>
-                                    <td>{{ $item->price }}</td>
-                                    <td>{{$item->qty * $item->price }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($item->date)->format('d M Y') }}</td>
-
+                                    <td>{{ _('...') }}</td>
                                 </tr>
-                                @endforeach
+                            @endforeach
                             </tbody>
                         </table>
                     </div>

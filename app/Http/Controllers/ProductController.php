@@ -8,7 +8,10 @@ use App\Models\Branch;
 
 use App\Models\Product;
 use App\Models\Production;
+use App\Models\RawProduct;
+use App\Models\FactoryStock;
 use Illuminate\Http\Request;
+use App\Models\MaterialsStock;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -50,49 +53,75 @@ class ProductController extends Controller
     }
 
     protected function addProductionView(){
-        $products = Product::where('is_deleted', 0)->get();
-        return view('product.addProductionView')->with(compact('products'));
+        $raw_products = RawProduct::get();
+
+        $raw_materials = MaterialsStock::join('materials_items','materials_stocks.materials_item_id','=','materials_items.id')
+        ->select('materials_items.name as item_name','materials_stocks.materials_item_id')
+        ->get();
+
+        return view('product.addProductionView')->with(compact('raw_products','raw_materials'));
     }
 
     protected function storeProduction(Request $request){
 
-        $rols= [
-            'product_id' => ['required', 'numeric'],
-            'qty' => ['required', 'numeric'],
+        // return $request->all();
+
+        $rules= [
+            'raw_product_id' => ['required', 'numeric'],
+            'raw_materials_id' => ['required', 'numeric'],
+            'production_qty' => ['required', 'numeric'],
+            'raw_materials_qty' => ['required', 'numeric'],
             'date' => ['required', 'date'],
         ];
         //dd($request->all());
 
-        $validator = Validator::make($request->all(),$rols);
+        $validator = Validator::make($request->all(),$rules);
         if ($validator->fails()) {
 			return redirect()->route('add_production')->withInput()->withErrors($validator);
 		}
         else{
             try{
-                $branch_id = Branch::where('user_id', auth()->user()->id)->first();
+                $branch = Branch::where('user_id', auth()->user()->id)->first();
 
-                $stock_check = Stock::where('branch_id',$branch_id->id)->where('product_id', $request->product_id)->first();
+                $factory_stock_check = FactoryStock::where('branch_id',$branch->id)->where('raw_product_id', $request->raw_product_id)->first();
 
+                $material_stock = MaterialsStock::where('materials_item_id',$request->raw_materials_id)->where('branch_id',$branch->id)->first();
+
+                // return $material_stock->qty;
              //For Production Table
+             if($material_stock->qty >= $request->raw_materials_qty){
                 $data = $request->all();
                 $production = new Production;
-                $production->product_id =  $data['product_id'];
-                $production->branch_id =  $branch_id->id;
-                $production->qty =  $data['qty'];
+                $production->raw_product_id =  $data['raw_product_id'];
+                $production->raw_materials_id =  $data['raw_materials_id'];
+                $production->branch_id =  $branch->id;
+                $production->production_qty =  $data['production_qty'];
+                $production->raw_materials_qty =  $data['raw_materials_qty'];
                 $production->date =  $data['date'];
                 $production->save();
 
+
+
+                $material_stock->qty -= $request->raw_materials_qty;
+                $material_stock->update();
+
+
+
               //For Stock Table
-                if($stock_check){
-                    $stock_check->qty += $request->qty;
-                    $stock_check->update();
+                if($factory_stock_check){
+                    $factory_stock_check->qty += $request->production_qty;
+                    $factory_stock_check->update();
                   }else{
-                    $stockData = new Stock;
-                    $stockData->branch_id = $branch_id->id;
-                    $stockData->product_id = $request->product_id;
-                    $stockData->qty = $request->qty;
+                    $stockData = new FactoryStock;
+                    $stockData->branch_id = $branch->id;
+                    $stockData->raw_product_id = $request->raw_product_id;
+                    $stockData->qty = $request->production_qty;
                     $stockData->save();
                   }
+
+                }else{
+                    return "You have available materials stock";
+                }
 
                 return redirect()->route('add_production')->with('success',"Insert successfully");
 
@@ -111,10 +140,10 @@ class ProductController extends Controller
         }else{
             $condition = ['branch_id', '!=', 0];
         }
-        $productions = Production::join('products','products.id', '=', 'productions.product_id')
+        $productions = Production::join('raw_products','raw_products.id', '=', 'productions.raw_product_id')
         ->where([$condition])
         ->where('productions.is_deleted', 0)
-        ->select('productions.id','products.name as product_name','productions.qty', 'productions.date')
+        ->select('productions.id','raw_products.name as product_name','productions.production_qty', 'productions.date')
         ->get();
         return view('product.production')->with(compact('productions'));
     }

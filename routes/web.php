@@ -62,8 +62,8 @@ Route::middleware(['auth'])->group(function (){
 
   //Purchase Materials Routes Start
 
-  Route::get('/purchase_materials', [MaterialsPurchase::class, 'purchase'])->name('purchase_materials');
-  Route::post('/store_raw_materials',[MaterialsPurchase::class, 'store'])->name('store_raw_materials');
+  Route::get('/purchase-materials', [MaterialsPurchase::class, 'purchase'])->name('purchase_materials');
+  Route::post('/purchase-raw-materials',[MaterialsPurchase::class, 'store'])->name('purchase_raw_materials');
   Route::get('raw-materials-lists',[MaterialsPurchase::class, 'getList'])->name('materials_list');
   //Purchase Materials Routes end
 
@@ -117,8 +117,10 @@ Route::middleware(['auth'])->group(function (){
    Route::post('store-raw-product',[RawProductController::class, 'storeRawProduct'])->name('storeRawProduct');
 
    //Raw materials items
-
    Route::get('raw-materials-item',[RawMaterialsItemController::class, 'index'])->name('raw_materials_item');
+   Route::get('create-raw-materials',[RawMaterialsItemController::class, 'create'])->name('create_raw_materials');
+   Route::post('store-raw-materials',[RawMaterialsItemController::class, 'store'])->name('store_raw_materials');
+   Route::get('material-stock',[RawMaterialsItemController::class, 'materialsStock'])->name('materials_stock');
 
 });
 

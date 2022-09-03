@@ -41,7 +41,7 @@
 
                             <div class="body">
                                 <div class="row clearfix">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                     <div class=" form-float">
                                         <div class="form-line">
                                             <label class="">Name</label>
@@ -54,7 +54,20 @@
                                         </div>
                                     </div>
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
+                                        <div class="form-line">
+                                            <label class="">Branch</label>
+                                            <select class="form-control" name="branch_id">
+                                                <option value="" disabled selected hidden>-- Please select --</option>
+                                                @foreach ($branch as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                @endforeach
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
                                         <div class="form-line">
                                             <label class="">Address</label>
                                             <input type="text" {{old('address')}} class="form-control" placeholder="Address" name="address" required>
@@ -65,6 +78,8 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    </div>
+
 
                                 </div>
 

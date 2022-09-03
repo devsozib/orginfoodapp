@@ -18,7 +18,9 @@
 
                         </h2>
                         <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('create_vendors') }}">Add Vendor</a>
+                           @if (auth()->user()->role == "super_admin")
+                                <a class="btn-sm btn-primary float-right"href="{{ route('create_vendors') }}">Add Vendor</a>
+                           @endif
                         </ul>
                     </div>
                     <div class="body table-responsive">
@@ -27,6 +29,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
+                                    <th>Branch</th>
                                     <th>Address</th>
                                     <th>Due</th>
                                     <th>Action</th>
@@ -34,12 +37,8 @@
                             </thead>
                             <tbody>
 
-                            @foreach ($vendors as $vendor)
+                            @foreach ($own_vendors as $vendor)
                               @php
-
-
-
-
                                    $total_due_Amount = App\Models\VendorAccount::where('vendor_id',$vendor->id)->where('status',0)->sum('amount');
 
                                    $total_payment_Amount = App\Models\VendorAccount::where('vendor_id',$vendor->id)->where('status',1)->sum('amount');
@@ -47,11 +46,11 @@
                                    $nowDueIs = $total_due_Amount  - $total_payment_Amount  ;
                                 //    dd( $nowDueIs );
 
-
                               @endphp
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
-                                    <td>{{ $vendor->name }}</td>
+                                    <td>{{ $vendor->vendor_name }}</td>
+                                    <td>{{ $vendor->branch_name }}</td>
                                     <td>{{ $vendor->address }}</td>
                                     <td>৳{{ $nowDueIs}}</td>
                                     <td>
@@ -62,8 +61,9 @@
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                               <li><a href="{{ route('purchase_history',$vendor->id) }}">See History</a></li>
+                                              @if (auth()->user()->role == "admin")
                                               <li><a href="{{ route('due_payment',$vendor->id) }}">Pay</a></li>
-
+                                              @endif
                                             </ul>
                                           </div>
                                     </td>
