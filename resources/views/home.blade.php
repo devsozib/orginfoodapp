@@ -1,8 +1,10 @@
 @extends('layouts.app')
 @section('content')
-<div class="container-fluid">
-    <div class="block-header">
+<div class="container-fluid" >
+
+    <div class="block-header" id="app">
         <h2>DASHBOARD</h2>
+        <hello-vue></hello-vue>
     </div>
 
     <!-- Widgets -->

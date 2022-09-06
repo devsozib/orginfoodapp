@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RawProductController;
 use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\ShiftProductController;
+use App\Http\Controllers\MaterialsStockController;
 use App\Http\Controllers\RawMaterialsItemController;
 
 /*
@@ -87,6 +88,8 @@ Route::middleware(['auth'])->group(function (){
    Route::post('store-stock',[StockController::class, 'store'])->name('store_stock');
   //Stock Routes emd here
 
+  //RawProductStock
+   Route::get('raw-product-stocks',[StockController::class, 'rawProductStock'])->name('raw_product_stocks');
 
    //Shift Route start here
     Route::get('shift-product', [ShiftProductController::class, 'index'])->name('shift_product');
@@ -116,11 +119,12 @@ Route::middleware(['auth'])->group(function (){
    Route::get('add-raw-product',[RawProductController::class, 'addRawProduct'])->name('add_raw_product');
    Route::post('store-raw-product',[RawProductController::class, 'storeRawProduct'])->name('storeRawProduct');
 
+
    //Raw materials items
    Route::get('raw-materials-item',[RawMaterialsItemController::class, 'index'])->name('raw_materials_item');
    Route::get('create-raw-materials',[RawMaterialsItemController::class, 'create'])->name('create_raw_materials');
    Route::post('store-raw-materials',[RawMaterialsItemController::class, 'store'])->name('store_raw_materials');
-   Route::get('material-stock',[RawMaterialsItemController::class, 'materialsStock'])->name('materials_stock');
+   Route::get('material-stock',[MaterialsStockController::class, 'materialsStock'])->name('materials_stock');
 
 });
 

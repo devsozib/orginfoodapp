@@ -33,15 +33,5 @@ class RawMaterialsItemController extends Controller
            return back()->with('success', "Insert Successful");
     }
 
-    public function materialsStock(){
-        if(auth()->user()->role == 'admin'){
-            $branch_id = Branch::where('user_id', auth()->user()->id)->first('id');
-            $condition = ['branch_id', '=', $branch_id->id];
-        }else{
-            $condition = ['branch_id', '!=', 0];
-        }
 
-        $materials_Stock = MaterialsStock::get();
-        return view('raw_materials_item.stock',compact('materials_Stock'));
-    }
 }

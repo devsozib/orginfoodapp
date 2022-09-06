@@ -26,6 +26,8 @@
     <!-- Custom Css -->
     <link href="{{ asset('assets') }}/css/style.css" rel="stylesheet">
     <link href="{{ asset('assets') }}/css/themes/all-themes.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}" />
+    <script defer src="{{ mix('js/app.js') }}"></script>
 </head>
 <body>
     <div id="app">
@@ -60,6 +62,8 @@
       <script src="{{ asset('assets') }}/plugins/jquery-validation/jquery.validate.js"></script>
       <!--Sweet Alert -->
       <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+      <script src="https://unpkg.com/vue@3"></script>
       <!-- Custom Js -->
       <script src="{{ asset('assets') }}/js/admin.js"></script>
       <script src="{{ asset('assets') }}/js/pages/examples/sign-in.js"></script>

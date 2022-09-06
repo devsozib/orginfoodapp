@@ -4,7 +4,7 @@
 <section class="">
     <div class="container-fluid">
         <div class="block-header">
-            <h2> All Raw Materials Item Stock</h2>
+            <h2> All Raw Product Stock</h2>
 
 
         </div>
@@ -14,41 +14,39 @@
                 <div class="card">
                     <div class="header">
                         <h2>
-                           All Raw Materials Item Stock
+                            All Raw Product Stock
 
                         </h2>
-
-                        <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('create_raw_materials') }}">Add Raw Materials Item</a>
-                        </ul>
-
-
+                        {{-- <ul class="header-dropdown m-r--5">
+                            @if (auth()->user()->role != 'super_admin')
+                            <a class="btn-sm btn-primary float-right"href="{{ route('add_stock') }}">Add Stock</a>
+                            @endif
+                        </ul> --}}
                     </div>
                     <div class="body table-responsive">
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
                                     @if (auth()->user()->role == "super_admin")
                                     <th>Branch</th>
                                     @endif
-                                    <th>Qty</th>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
                                     <th>Unit</th>
                                 </tr>
                             </thead>
                             <tbody>
 
-                            @foreach ($materials_Stock as $item)
+                            @foreach ($factoryStock as $stock)
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
-                                    <td>{{ $item->materials_name }}</td>
                                     @if (auth()->user()->role == "super_admin")
-                                    <td>{{ $item->branch_name }}</td>
+                                    <td>{{ $stock->branch_name }}</td>
                                     @endif
-                                    <td>{{ $item->qty }}</td>
-                                    <td>{{ $item->unit }}</td>
-
+                                    <td>{{ $stock->product_name}}</td>
+                                    <td>{{ $stock->qty }}</td>
+                                    <td>{{ $stock->unit }}</td>
                                 </tr>
                             @endforeach
                             </tbody>

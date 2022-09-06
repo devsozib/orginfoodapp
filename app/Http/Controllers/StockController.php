@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Stock;
 use App\Models\Branch;
 use App\Models\Product;
+use App\Models\FactoryStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
@@ -29,7 +30,21 @@ class StockController extends Controller
 
           return view('stock.index',compact('stocks'));
     }
+    public function rawProductStock(){
+          if(auth()->user()->role =="admin"){
+            $branch = Branch::where('user_id',auth()->user()->id)->first();
+            $condition = ['branch_id',$branch->id];
+          }else{
+            $condition = ['branch_id','!=',0];
+          }
 
+          $factoryStock = FactoryStock::join('raw_products','raw_products.id','=','factory_stocks.raw_product_id')
+          ->join('branches','branches.id','=','factory_stocks.branch_id')
+          ->where([$condition])
+          ->select('raw_products.name as product_name','branches.name as branch_name','factory_stocks.qty','raw_products.unit')
+          ->get();
+          return view('stock.rawProductStock',compact('factoryStock'));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -119,4 +134,6 @@ class StockController extends Controller
     {
         //
     }
+
+
 }

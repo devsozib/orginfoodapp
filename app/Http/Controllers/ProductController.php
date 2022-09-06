@@ -141,9 +141,10 @@ class ProductController extends Controller
             $condition = ['branch_id', '!=', 0];
         }
         $productions = Production::join('raw_products','raw_products.id', '=', 'productions.raw_product_id')
+        ->join('branches','branches.id','=','productions.branch_id')
         ->where([$condition])
         ->where('productions.is_deleted', 0)
-        ->select('productions.id','raw_products.name as product_name','productions.production_qty', 'productions.date')
+        ->select('productions.id','raw_products.name as product_name','productions.production_qty', 'productions.date', 'raw_products.unit as unit', 'productions.raw_materials_qty','branches.name as branch_name')
         ->get();
         return view('product.production')->with(compact('productions'));
     }

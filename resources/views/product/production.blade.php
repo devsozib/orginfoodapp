@@ -1,15 +1,9 @@
 @extends('layouts.app')
 @section('content')
-
-
-
-
 <section class="">
     <div class="container-fluid">
         <div class="block-header">
             <h2> All Production</h2>
-
-
         </div>
         <!-- Basic Table -->
         <div class="row clearfix">
@@ -34,7 +28,12 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Product</th>
-                                    <th>Qty</th>
+                                    @if (auth()->user()->role == "super_admin")
+                                    <th>Branch</th>
+                                    @endif
+                                    <th>Production Qty</th>
+                                    <th>Raw Materials Qty</th>
+                                    <th>Unit</th>
                                     <th>Date</th>
                                     <th>Actions</th>
                                 </tr>
@@ -46,7 +45,13 @@
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
                                     <td>{{ $production->product_name }}</td>
-                                    <td>{{ $production->qty }}</td>
+                                    @if (auth()->user()->role == "super_admin")
+                                    <td>{{ $production->branch_name }}</td>
+                                    @endif
+
+                                    <td>{{ $production->production_qty }}</td>
+                                    <td>{{ $production->raw_materials_qty }}</td>
+                                    <td>{{ $production->unit }}</td>
                                     <td>{{ $production->date }}</td>
                                     <td>...</td>
 
