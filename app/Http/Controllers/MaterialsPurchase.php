@@ -157,4 +157,31 @@ class MaterialsPurchase extends Controller
          return redirect()->route('due_payment',$request->vendor_id)->with('success',"Insert successfully");
 
    }
+
+   public function searchItem(Request $request){
+
+    $data = PurchaseMaterial::join('vendors','vendors.id','=','purchase_materials.vendor_id')
+    ->join('materials_items','materials_items.id','=','purchase_materials.materials_item_id')
+    ->select('materials_items.name as item_name', 'vendors.name as vendor_name', 'purchase_materials.price','purchase_materials.qty','purchase_materials.id','purchase_materials.date')
+    ->get();
+      return response()->json($data);
+   }
+
+   public function dateWise(Request $request){
+
+       $condition = 1;
+
+       if(($request->fromDate && $request->fromDate !='')
+       && ($request->toDate && $request->toDate !='') ){
+           $condition = [''];
+       }else{
+        $condition = [''];
+       }
+
+       $data = PurchaseMaterial::join('vendors','vendors.id','=','purchase_materials.vendor_id')
+       ->join('materials_items','materials_items.id','=','purchase_materials.materials_item_id')
+       ->select('materials_items.name as item_name', 'vendors.name as vendor_name', 'purchase_materials.price','purchase_materials.qty','purchase_materials.id','purchase_materials.date')
+       ->get();
+       return response()->json($data);
+   }
 }

@@ -21,6 +21,7 @@
         "vue": "^3.2.37"
     },
     "dependencies": {
-        "vue-loader": "^17.0.0"
+        "vue-loader": "^17.0.0",
+        "vuejs-datepicker": "^1.6.2"
     }
 }

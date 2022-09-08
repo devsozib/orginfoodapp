@@ -26,8 +26,7 @@
     <!-- Custom Css -->
     <link href="{{ asset('assets') }}/css/style.css" rel="stylesheet">
     <link href="{{ asset('assets') }}/css/themes/all-themes.css" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}" />
-    <script defer src="{{ mix('js/app.js') }}"></script>
+    <link rel="stylesheet" href="{{ mix('/css/app.css') }}" />
 </head>
 <body>
     <div id="app">
@@ -46,7 +45,9 @@
     </div>
 
       <!-- Jquery Core Js -->
+
       <script src="{{ asset('assets') }}/plugins/jquery/jquery.min.js"></script>
+      <script src="{{ mix('/js/app.js') }}"></script>
 
       <!-- Bootstrap Core Js -->
       <script src="{{ asset('assets') }}/plugins/bootstrap/js/bootstrap.js"></script>
