@@ -13,16 +13,24 @@
                             All Materials List
                         </h2>
                         <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right" href="">Purchase Materials</a>
+                            <a class="btn-sm btn-primary float-right" :href="this.routeName" >Purchase Materials</a>
                         </ul>
                     </div>
                     <div class="body table-responsive">
-                        <ul class="header-dropdown m-r--5">
+                        <div>
+                            <p>From <input v-model="fromDate" v-on:change ="getResults('date')" name="fromDate" type="date"/>To <input v-model="toDate"  v-on:change ="getResults('date')" name="toDate" type="date"/></p>
 
-                        </ul>
-                        <input v-model="keyword" type="text" class="form-control" name="keyword" placeholder="Search">
-                        <p>From <input v-model="fromDate" name="fromDate" type="date"/>To <input v-model="toDate" name="toDate" type="date"/> </p>
-                        <input type='button' @click='fetchRecords()' value='Search'>
+                            <select v-model="filter_by" name="filter_by" v-on:change ="getResults('dropdown')"  class="form-control" style="width:100px; float:right" >
+                                <option value="" disabled selected hidden>Filter By</option>
+                                <option value="all">All</option>
+                                <option value="today">Today</option>
+                                <option value="this_week">This week</option>
+                                <option value="this_month">This month</option>
+                                <option value="this_year">This Year</option>
+                                </select>
+                             </div>
+
+
                         <table class="table">
 
                             <thead>
@@ -38,13 +46,13 @@
                                 </tr>
                             </thead>
                             <tbody v-if="results.length > 0">
-                                <tr v-for="item in results" :key="item.id">
-                                    <th scope="row">{{ item.id }}</th>
+                                <tr v-for="(item, index) in results" :key="item.id">
+                                    <th scope="row">{{ index+1 }}</th>
                                     <td>{{ item.item_name }}</td>
                                     <td>{{ item.vendor_name }}</td>
                                     <td>{{ item.qty }}</td>
                                     <td>{{ item.price }}</td>
-                                    <td>{{ item.price }}</td>
+                                    <td>{{ item.price*item.qty }}</td>
                                     <td>{{ item.date }}</td>
                                 </tr>
 
@@ -73,84 +81,38 @@ export default {
             keyword: null,
             fromDate: "",
             toDate: "",
+            filter_by:"",
             results:[],
+            routeName: "/purchase-materials",
             recordNotFound: true
 
         };
     },
     watch: {
         keyword(after, before) {
-            this.getResults();
+            this.getResults('date');
         }
     },
     mounted(){
-        this.getResults();
+           this.getResults('date');
     },
     methods:{
-          getResults(){
-              axios.get('/search-data', {params:{keyword:this.keyword}})
-              .then(res => this.results = res.data)
+          getResults(searchItem){
+              axios.get('/search-data', {params:
+                {fromDate: this.fromDate,
+                 toDate: this.toDate,
+                 filterBy:this.filter_by,
+                 searchValue: searchItem,
+                }
+            })
+               .then(res => this.results = res.data)
+            //   .then(res => console.log(res.data))
               .catch(error => {});
           },
 
-          fetchRecords(){
-            if(this.fromDate !='' && this.toDate != ''){
-
-                axios.get('/date-wise', {
-                params: {
-                fromDate: this.fromDate,
-                toDate: this.toDate
-                }
-                })
-                .then(function (response) {
-                  this.results = response.data;
-                if(results.length == 0){
-                    this.recordNotFound = true;
-                }else{
-                    this.recordNotFound = false;
-                }
-                })
-                .catch(function (error) {
-                console.log(error);
-                });
-
-            }
-          }
     },
 
-//     methods: {
-//      fetchRecords: function(){
 
-//         if(this.fromDate !='' && this.toDate != ''){
-
-//           axios.get('/date-wise', {
-//             params: {
-//               fromDate: this.fromDate,
-//               toDate: this.toDate
-//             }
-//           })
-//           .then(function (response) {
-//              console.log(response.data);
-//              this.results = response.data;
-
-//              // Display no record found <tr> if record not found
-//              if(results.length == 0){
-//                app.recordNotFound = true;
-//              }else{
-//                app.recordNotFound = false;
-//              }
-//           })
-//           .catch(function (error) {
-//              console.log(error);
-//           });
-
-//         }
-
-//      }
-//    },
-    components:{
-        Datepicker
-    }
 }
 </script>
 

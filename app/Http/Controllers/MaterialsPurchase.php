@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\MaterialsItem;
 use App\Models\VendorAccount;
 use App\Models\MaterialsStock;
+use Illuminate\Support\Carbon;
 use App\Models\PurchaseMaterial;
 use Illuminate\Support\Facades\Validator;
 
@@ -160,28 +161,56 @@ class MaterialsPurchase extends Controller
 
    public function searchItem(Request $request){
 
-    $data = PurchaseMaterial::join('vendors','vendors.id','=','purchase_materials.vendor_id')
-    ->join('materials_items','materials_items.id','=','purchase_materials.materials_item_id')
-    ->select('materials_items.name as item_name', 'vendors.name as vendor_name', 'purchase_materials.price','purchase_materials.qty','purchase_materials.id','purchase_materials.date')
-    ->get();
-      return response()->json($data);
+    $searchValue = $request->searchValue;
+
+    $filterBy = $request->filterBy;
+
+  if( $searchValue =='date'){
+    $fromDate = $request->fromDate;
+    $toDate = $request->toDate;
+    if($fromDate==null and $toDate ==null){
+        $fromDate = '0000-01-01';
+        $toDate   =  Date('Y-m-d');
+    }
+    else if($fromDate == null){
+           $fromDate = $toDate;
+    }
+    else if($toDate == null){
+           $toDate = Date('Y-m-d');
+    }
+  }else if( $searchValue = 'dropdown'){
+    if($filterBy == 'today'){
+        $fromDate =  Date('Y-m-d');
+        $toDate   =  Date('Y-m-d');
+    }
+    else if($filterBy == 'this_week'){
+        $fromDate = Carbon::now()->startOfWeek();
+        $toDate = Carbon::now()->endOfWeek();
+    }
+    else if($filterBy == 'this_month'){
+        $fromDate =Date('Y-m-').'01';
+        $toDate = date("Y-m-t", strtotime(Date('Y-m-d')));
+    }else if($filterBy == 'this_year'){
+        $fromDate =Date('Y-').'01-01';
+        $toDate = Date('Y-').'12-31';
+    }
+    else if($filterBy == 'all'){
+        $fromDate = '0000-01-01';
+        $toDate   =  Date('Y-m-d');
+    }
+  }
+
+    // return $fromDate.' '.$toDate;
+     $data = PurchaseMaterial::join('vendors','vendors.id','=','purchase_materials.vendor_id')
+     ->join('materials_items','materials_items.id','=','purchase_materials.materials_item_id')
+     ->whereBetween('date',[$fromDate, $toDate])
+     ->select('materials_items.name as item_name', 'vendors.name as vendor_name', 'purchase_materials.price','purchase_materials.qty','purchase_materials.id','purchase_materials.date')
+     ->orderBy('date','desc')
+     ->get();
+
+
+    return response()->json($data);
+
    }
 
-   public function dateWise(Request $request){
-
-       $condition = 1;
-
-       if(($request->fromDate && $request->fromDate !='')
-       && ($request->toDate && $request->toDate !='') ){
-           $condition = [''];
-       }else{
-        $condition = [''];
-       }
-
-       $data = PurchaseMaterial::join('vendors','vendors.id','=','purchase_materials.vendor_id')
-       ->join('materials_items','materials_items.id','=','purchase_materials.materials_item_id')
-       ->select('materials_items.name as item_name', 'vendors.name as vendor_name', 'purchase_materials.price','purchase_materials.qty','purchase_materials.id','purchase_materials.date')
-       ->get();
-       return response()->json($data);
-   }
 }

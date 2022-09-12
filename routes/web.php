@@ -67,7 +67,7 @@ Route::middleware(['auth'])->group(function (){
   Route::post('/purchase-raw-materials',[MaterialsPurchase::class, 'store'])->name('purchase_raw_materials');
   Route::get('raw-materials-lists',[MaterialsPurchase::class, 'getList'])->name('materials_list');
   Route::get('/search-data',[MaterialsPurchase::class,'searchItem']);
-  Route::get('/date-wise',[MaterialsPurchase::class,'dateWise']);
+//   Route::get('/date-wise',[MaterialsPurchase::class,'dateWise']);
   //Purchase Materials Routes end
 
 
