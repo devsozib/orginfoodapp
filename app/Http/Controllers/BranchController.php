@@ -47,4 +47,35 @@ class BranchController extends Controller
 
         }
     }
+
+    public function editBranch($id){
+
+                 $branch = Branch::find($id);
+                //  return $branch;
+
+                return view('branch.edit_branch',compact('branch'));
+
+    }
+
+    public function updateBranch(Request $request, $id){
+                    // return $request;
+                    $request->validate([
+                        'name' => ['required', 'string', 'max:255'],
+                        'type' => ['required', 'string', 'in:factory,wirehouse'],
+                    ]);
+                    $branch_name = $request->name;
+                    $branch_type = $request->type;
+                    $user_id = $request->user_id;
+
+                    $branch =Branch::find($id);
+                    $branch->name = $branch_name;
+                    $branch->user_id = $user_id;
+                    $branch->type = $branch_type;
+                    $branch->update();
+
+
+
+                    return redirect()->route('branches')->with('success',"Updated Successful");
+
+    }
 }

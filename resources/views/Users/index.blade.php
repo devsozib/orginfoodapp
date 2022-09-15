@@ -23,6 +23,13 @@
                     </div>
                     <div class="body table-responsive">
                         <table class="table">
+                            @if (session('error'))
+                            <div class="alert alert-danger" role="alert">
+                                <p class="alert-link">{{ session('error') }}</p>
+                              </div>
+                        @endif
+
+
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -30,6 +37,7 @@
                                     <th>BRANCH</th>
                                     <th>EMAIL</th>
                                     <th>ROLE</th>
+                                    <th>ACTION</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -41,6 +49,10 @@
                                     <td>{{ $user->branch_name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->role }}</td>
+                                    <td class="float-left">
+                                        <a class="btn btn-sm btn-info" href="{{ route('userEdit',$user->id)}}"> <i class="material-icons">edit_square</i>Edit</a>
+                                        <a class="btn btn-sm btn-danger ml-2"> <i class="material-icons">delete</i>Delete</a>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>

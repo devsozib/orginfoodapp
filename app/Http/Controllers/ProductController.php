@@ -12,6 +12,7 @@ use App\Models\RawProduct;
 use App\Models\FactoryStock;
 use Illuminate\Http\Request;
 use App\Models\MaterialsStock;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -134,6 +135,7 @@ class ProductController extends Controller
     }
 
     protected function productionList(){
+
         if(auth()->user()->role == 'admin'){
             $branch_id = Branch::where('user_id', auth()->user()->id)->first('id');
             $condition = ['branch_id', '=', $branch_id->id];
@@ -147,6 +149,78 @@ class ProductController extends Controller
         ->select('productions.id','raw_products.name as product_name','productions.production_qty', 'productions.date', 'raw_products.unit as unit', 'productions.raw_materials_qty','branches.name as branch_name')
         ->get();
         return view('product.production')->with(compact('productions'));
+
+    }
+
+    public function searchItem(Request $request){
+
+        if(auth()->user()->role == 'admin'){
+            $branch_id = Branch::where('user_id', auth()->user()->id)->first('id');
+            $condition = ['branch_id', '=', $branch_id->id];
+        }else{
+            $condition = ['branch_id', '!=', 0];
+        }
+
+        if(auth()->user()->role == "super_admin"){
+             $superAdmin = true;
+        }else{
+            $superAdmin = false;
+        }
+
+
+        //Searching start here
+        $searchValue = $request->searchValue;
+
+        $filterBy = $request->filterBy;
+
+      if( $searchValue =='date'){
+        $fromDate = $request->fromDate;
+        $toDate = $request->toDate;
+        if($fromDate==null and $toDate ==null){
+            $fromDate = '0000-01-01';
+            $toDate   =  Date('Y-m-d');
+        }
+        else if($fromDate == null){
+               $fromDate = $toDate;
+        }
+        else if($toDate == null){
+               $toDate = Date('Y-m-d');
+        }
+      }else if( $searchValue = 'dropdown'){
+        if($filterBy == 'today'){
+            $fromDate =  Date('Y-m-d');
+            $toDate   =  Date('Y-m-d');
+        }
+        else if($filterBy == 'this_week'){
+            $fromDate = Carbon::now()->startOfWeek();
+            $toDate = Carbon::now()->endOfWeek();
+        }
+        else if($filterBy == 'this_month'){
+            $fromDate =Date('Y-m-').'01';
+            $toDate = date("Y-m-t", strtotime(Date('Y-m-d')));
+        }else if($filterBy == 'this_year'){
+            $fromDate =Date('Y-').'01-01';
+            $toDate = Date('Y-').'12-31';
+        }
+        else if($filterBy == 'all'){
+            $fromDate = '0000-01-01';
+            $toDate   =  Date('Y-m-d');
+        }
+      }
+
+        $productions = Production::join('raw_products','raw_products.id', '=', 'productions.raw_product_id')
+        ->join('branches','branches.id','=','productions.branch_id')
+        ->where([$condition])
+        ->whereBetween('date',[$fromDate, $toDate])
+        ->where('productions.is_deleted', 0)
+        ->select('productions.id','raw_products.name as product_name','productions.production_qty', 'productions.date', 'raw_products.unit as unit', 'productions.raw_materials_qty','branches.name as branch_name')
+        ->get();
+
+        return response()->json(
+            [
+            'productions'=>$productions,
+            'superAdmin'=>$superAdmin
+            ]);
     }
 
 }

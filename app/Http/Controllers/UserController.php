@@ -15,13 +15,10 @@ use App\Models\Sr;
 class UserController extends Controller
 {
 
-
-
-
-
     protected function index(){
         $users = User::leftJoin('branches', 'branches.user_id','=','users.id')
         ->select('users.id','users.name as user_name','users.email','users.role','branches.name as branch_name')
+        ->whereNot('users.role','super_admin')
         ->get();
         return view('users.index',compact('users'));
 
@@ -29,8 +26,9 @@ class UserController extends Controller
 
     protected function create(){
         $branches = Branch::where('is_deleted', 0)->get();
-        // $branches_for_sr = Branch::where('is_deleted', 0)->where('type','wirehouse')->get();
-        return view('users.create')->with(compact('branches'));
+        // return $branches;
+        $branches_for_sr = Branch::where('is_deleted', 0)->where('type','wirehouse')->get();
+        return view('users.create')->with(compact('branches','branches_for_sr'));
     }
 
     protected function storeAdmin(Request $request){
@@ -92,4 +90,75 @@ class UserController extends Controller
         return $user->id;
     }
 
+    public function editUser($id){
+        //   return $id;
+          $users= User::where('id',$id)->first('role');
+        //   return $users->role;
+          if($users->role == 'admin'){
+              $admin = User::where('id',$id)->first();
+            //   return $admin->id;
+              return view('users.admin_edit',compact('admin'));
+          }else if($users->role == 'sr'){
+            $sr = User::join('srs','users.id','=','srs.user_id')
+            ->where('users.id',$id)
+            ->select('users.id','users.name as srs_name', 'users.email','srs.address', 'srs.phone','srs.user_id','srs.branch_id')->first();
+
+            return view('users.sr_edit',compact('sr'));
+          }
+          else{
+              return redirect()->back()->with('error','You are hit illegal route');
+          }
+    }
+
+    public function updateAdmin(Request $request, $id){
+                $request->validate([
+                    'name'=>'required','string','max:255',
+                    'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
+                    'password' => 'required', 'string', 'min:8',
+                    ]);
+                    $name = $request->name;
+                    $email = $request->email;
+                    $password = $request->password;
+
+                    $admin = User::find($id);
+                    $admin->name = $name;
+                    $admin->role = 'admin';
+                    $admin->email = $email;
+                    $admin->password = Hash::make($password);
+                    $admin->update();
+                return redirect()->route('users')->with('success','Update Success');
+    }
+
+    public function updateSr(Request $request, $id){
+            $request->validate([
+                'name'=>'required','string','max:255',
+                'address' => 'required', 'string',
+                'phone' => 'required', 'string',
+                'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
+                'password' => 'required', 'string', 'min:8',
+                ]);
+
+                   $name = $request->name;
+                   $email = $request->email;
+                   $address = $request->address;
+                   $phone = $request->phone;
+                   $password = $request->password;
+                   $branch_id = $request->branch_id;
+                   $sr_form_user  = User::find($id);
+
+                   $sr_form_user->name = $name;
+                   $sr_form_user->email = $email;
+                   $sr_form_user->password = Hash::make($password);
+                   $sr_form_user->update();
+                   $sr = Sr::where('user_id', $id)->first();
+
+                   $sr->user_id = $id;
+                   $sr->branch_id = $branch_id;
+                   $sr->address = $address;
+                   $sr->phone = $phone;
+                   $sr->update();
+
+                   return redirect()->route('users')->with('success', 'Updated Success');
+
+    }
 }

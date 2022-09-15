@@ -42,7 +42,6 @@
                                             <option value="wirehouse">Wirehouse</option>
                                         </select>
                                     </div>
-
                                 </div>
                             </div>
                             <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>

@@ -26,7 +26,7 @@ use App\Http\Controllers\RawMaterialsItemController;
 */
 
 
-Route::middleware(['auth'])->group(function (){
+Route::middleware(['auth','checkSuperAdmin'])->group(function (){
     //Route::get('/', function () { return view('home');});
 
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('/');
@@ -35,9 +35,13 @@ Route::middleware(['auth'])->group(function (){
 
     //Users Routes Start Here
     Route::get('/users', [UserController::class, 'index'])->name('users');
+
     Route::get('/create-users', [UserController::class, 'create'])->name('create_user');
     Route::post('/store_admin',[UserController::class, 'storeAdmin'])->name('store_admin');
     Route::post('/store_sr',[UserController::class, 'storeSR'])->name('store_sr');
+    Route::get('user-edit/{id}',[UserController::class, 'editUser'])->name('userEdit');
+    Route::patch('update-admin/{id}',[UserController::class, 'updateAdmin'])->name('updateAdmin');
+    Route::patch('update-sr/{id}',[UserController::class, 'updateSr'])->name('updateSr');
    //Users Routes End Here
 
 
@@ -45,6 +49,8 @@ Route::middleware(['auth'])->group(function (){
     Route::get("/all-branches", [BranchController::class, 'index'])->name('branches');
     Route::get('/add_branch_form', [BranchController::class, 'addBranchForm'])->name('add_branch_form');
     Route::post('/add_branch', [BranchController::class, 'addBranch'])->name('add_branch');
+    Route::get('edit-branch/{id}', [BranchController::class, 'editBranch'])->name('branchEdit');
+    Route::patch('update-branch/{id}', [BranchController::class, 'updateBranch'])->name('updateBranch');
    //Branch End Start
 
 
@@ -81,6 +87,7 @@ Route::middleware(['auth'])->group(function (){
   Route::get('/production', [ProductController::class, 'productionList'])->name('production');
   Route::get('/add_production', [ProductController::class, 'addProductionView'])->name('add_production');
   Route::post('/store_production', [ProductController::class, 'storeProduction'])->name('store_production');
+  Route::get('/search-production',[ProductController::class,'searchItem']);
   //production route end here
 
 

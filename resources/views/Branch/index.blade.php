@@ -29,16 +29,21 @@
                                     <th>NAME</th>
                                     <th>Type</th>
                                     <th>Admin</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
 
-                            @foreach ($all_branches as $banch)
+                            @foreach ($all_branches as $branch)
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
-                                    <td>{{ $banch->name }}</td>
-                                    <td>{{ $banch->type }}</td>
-                                    <td>{{ isset($banch->user->name)? $banch->user->name: "No Admin" }}</td>
+                                    <td>{{ $branch->name }}</td>
+                                    <td>{{ $branch->type }}</td>
+                                    <td>{{ isset($branch->user->name)? $branch->user->name: "No Admin" }}</td>
+                                    <td class="float-left">
+                                        <a class="btn btn-sm btn-info" href="{{ route('branchEdit',$branch->id)}}"> <i class="material-icons">edit_square</i>Edit</a>
+                                        <a class="btn btn-sm btn-danger ml-2"> <i class="material-icons">delete</i>Delete</a>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>

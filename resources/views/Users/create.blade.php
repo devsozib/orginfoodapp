@@ -58,9 +58,9 @@
                                             <option value="" selected hidden disabled>-- Please select --</option>
                                             @foreach ($branches as $branch)
 
-                                                @if(!(isset($branch->user_id)))
+
                                                 <option value="{{$branch->id}}">{{$branch->name}}</option>
-                                                @endif
+
 
                                             @endforeach
                                         </select>
@@ -153,7 +153,7 @@
                                         <label class="form-label">Branch</label>
                                         <select class="form-control" name="branch_id">
                                             <option value="" selected hidden disabled>-- Please select --</option>
-                                            @foreach ($branches as $branch)
+                                            @foreach ($branches_for_sr as $branch)
                                              @if ($branch->type == "wirehouse")
                                                 <option value="{{$branch->id}}">{{$branch->name}}</option>
                                                 @endif
