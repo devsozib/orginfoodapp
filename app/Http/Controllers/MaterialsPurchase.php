@@ -76,7 +76,6 @@ class MaterialsPurchase extends Controller
             $total_price = $request->qty*$request->price;
             $updateAdjustment = $adjustment_balance + $total_price;
 
-
             $vendorAcc = new VendorAccount;
             $vendorAcc->vendor_id = $request->vendor_id;
             $vendorAcc->status = "0";
@@ -94,11 +93,6 @@ class MaterialsPurchase extends Controller
                 $vendorAccForPayment->date = $request->date;
                 $vendorAccForPayment->save();
          }
-
-
-
-
-
 
 
             return redirect()->route('purchase_materials')->with('success',"Insert successfully");
@@ -154,7 +148,6 @@ class MaterialsPurchase extends Controller
          $vendorAcc->adjustment_balance =$vendor_acc_adjustment_last_value-$request->amount;
          $vendorAcc->date = $request->date;
          $vendorAcc->save();
-
          return redirect()->route('due_payment',$request->vendor_id)->with('success',"Insert successfully");
 
    }

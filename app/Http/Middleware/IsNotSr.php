@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use App\Providers\RouteServiceProvider;
 
-class CheckSuperAdmin
+class IsNotSr
 {
     /**
      * Handle an incoming request.
@@ -17,11 +17,10 @@ class CheckSuperAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        $role = auth()->user()->role;
-         if($role != 'super_admin'){
-             return redirect(RouteServiceProvider::HOME);
-            }
-            return $next($request);
-
+         $role = auth()->user()->role;
+        if($role == 'sr'){
+            return redirect(RouteServiceProvider::HOME);
+        }
+        return $next($request);
     }
 }
