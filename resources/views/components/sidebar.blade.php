@@ -61,6 +61,15 @@
 
                 @endif
 
+                <li>
+                    <a href="{{route('consumers')}}">
+
+                        <i class="material-icons">person</i>
+                        <span>Consumer</span>
+                    </a>
+                </li>
+
+
                 @php
                 $check_factory = App\Models\Branch::where('user_id',auth()->user()->id)->where('type','factory')->exists();
                 @endphp
@@ -150,8 +159,13 @@
 
 
 
-                            @if ($check_factory)
+                            {{-- @if ($check_factory)
                             <a class="list-group-item list-group-item-action" href="{{ route('shift_product') }}">Shift</a>
+                            @endif
+                           </div> --}}
+
+                            @if ($check_factory)
+                            <a class="list-group-item list-group-item-action" href="{{ route('raw_product_sale') }}">Raw Product Sale</a>
                             @endif
                            </div>
                    </div>

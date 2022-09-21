@@ -26,7 +26,9 @@
     <!-- Custom Css -->
     <link href="{{ asset('assets') }}/css/style.css" rel="stylesheet">
     <link href="{{ asset('assets') }}/css/themes/all-themes.css" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ mix('/css/app.css') }}" />
+    @vite([ 'resources/js/app.js'])
+  <!--<link rel="stylesheet" href="{{ asset('build/assets/app.b4f7846d.css') }}">-->
+  <!--  <script src="{{ asset('build/assets/app.3dababaa.js') }}"></script> -->
 </head>
 <body>
     <div id="app">
@@ -47,7 +49,7 @@
       <!-- Jquery Core Js -->
 
       <script src="{{ asset('assets') }}/plugins/jquery/jquery.min.js"></script>
-      <script src="{{ mix('/js/app.js') }}"></script>
+      {{-- <script src="{{ mix('/js/app.js') }}"></script> --}}
 
       <!-- Bootstrap Core Js -->
       <script src="{{ asset('assets') }}/plugins/bootstrap/js/bootstrap.js"></script>

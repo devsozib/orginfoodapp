@@ -18,7 +18,7 @@
 
                         </h2>
                         <ul class="header-dropdown m-r--5">
-                           @if (auth()->user()->role == "super_admin")
+                           @if (auth()->user()->role == "super_admin" or auth()->user()->role == "admin")
                                 <a class="btn-sm btn-primary float-right"href="{{ route('create_vendors') }}">Add Vendor</a>
                            @endif
                         </ul>

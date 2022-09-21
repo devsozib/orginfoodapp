@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('vendor_accounts', function (Blueprint $table) {
+        Schema::create('consumers', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('vendor_id')->unsigned();
-            $table->foreign('vendor_id')->references('id')->on('vendors');
-            $table->boolean('status');
-            $table->integer('amount');
-            $table->integer('adjustment_balance');
-            $table->date('date');
+            $table->bigInteger('branch_id')->unsigned();
+            $table->foreign('branch_id')->references('id')->on('branches');
+            $table->string('name');
+            $table->string('address');
+            $table->string('phone',14)->unique();
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vendor_accounts');
+        Schema::dropIfExists('consumers');
     }
 };

@@ -13,14 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('vendor_accounts', function (Blueprint $table) {
+        Schema::create('stock_outs', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('vendor_id')->unsigned();
-            $table->foreign('vendor_id')->references('id')->on('vendors');
-            $table->boolean('status');
-            $table->integer('amount');
-            $table->integer('adjustment_balance');
-            $table->date('date');
             $table->timestamps();
         });
     }
@@ -32,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vendor_accounts');
+        Schema::dropIfExists('stock_outs');
     }
 };

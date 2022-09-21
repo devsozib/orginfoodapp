@@ -52,6 +52,17 @@
                                             </div>
                                     </div>
 
+                                    <div class="col-sm-4">
+                                        <label class="">Price</label>
+                                        <input type="number" min="1" class="form-control" placeholder="Price" name="price" required>
+                                        @error('price')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+
+                                    </div>
+
                                 </div>
 
                             </div>

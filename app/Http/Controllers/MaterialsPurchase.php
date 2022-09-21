@@ -22,8 +22,6 @@ class MaterialsPurchase extends Controller
 
    public function store(Request $request){
 
-//    dd($request->all());
-
     $rules = [
         'materials_item_id' => ['required', 'numeric'],
         'vendor_id' => ['required', 'numeric'],
@@ -76,7 +74,6 @@ class MaterialsPurchase extends Controller
             $total_price = $request->qty*$request->price;
             $updateAdjustment = $adjustment_balance + $total_price;
 
-
             $vendorAcc = new VendorAccount;
             $vendorAcc->vendor_id = $request->vendor_id;
             $vendorAcc->status = "0";
@@ -96,11 +93,6 @@ class MaterialsPurchase extends Controller
          }
 
 
-
-
-
-
-
             return redirect()->route('purchase_materials')->with('success',"Insert successfully");
         }catch(Exception $e){
 
@@ -110,7 +102,13 @@ class MaterialsPurchase extends Controller
    }
 
    protected function getList(){
-    $materials_list = PurchaseMaterial::orderBy('id')->get();
+
+  $materials_list = PurchaseMaterial::join('vendors','vendors.id','=','purchase_materials.vendor_id')
+     ->join('materials_items','materials_items.id','=','purchase_materials.materials_item_id')
+     ->select('materials_items.name as item_name', 'vendors.name as vendor_name', 'purchase_materials.price','purchase_materials.qty','purchase_materials.id','purchase_materials.date')
+     ->orderBy('date','desc')
+     ->get();
+
     return view('materials.list', compact('materials_list'));
    }
 
@@ -154,7 +152,6 @@ class MaterialsPurchase extends Controller
          $vendorAcc->adjustment_balance =$vendor_acc_adjustment_last_value-$request->amount;
          $vendorAcc->date = $request->date;
          $vendorAcc->save();
-
          return redirect()->route('due_payment',$request->vendor_id)->with('success',"Insert successfully");
 
    }

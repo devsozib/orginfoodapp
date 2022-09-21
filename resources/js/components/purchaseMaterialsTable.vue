@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import Datepicker from 'vuejs-datepicker'
+
 
 export default {
 
@@ -95,7 +95,7 @@ export default {
     },
     methods: {
         getResults(searchItem) {
-            axios.get('/search-data', {
+            axios.get('search-data', {
                     params: {
                         fromDate: this.fromDate,
                         toDate: this.toDate,

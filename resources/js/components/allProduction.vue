@@ -60,7 +60,7 @@ export default {
 
     methods: {
         getProduction(searchItem) {
-            axios.get('/search-production',{
+            axios.get('search-production',{
                 params:{
                     fromDate: this.fromDate,
                     toDate:this.toDate,
@@ -69,6 +69,7 @@ export default {
                 }
             })
                 .then((res) => {
+
                     this.productions = res.data.productions,
                         this.superAdminCheck = res.data.superAdmin
                 })

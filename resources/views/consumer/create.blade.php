@@ -21,7 +21,7 @@
     <div class="container-fluid">
         <div class="block-header">
             <h2>
-               Add Vendors
+               Add Consumer
             </h2>
         </div>
         <!-- Basic Validation -->
@@ -29,14 +29,14 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                     <div class="header">
-                        <h2>Add Vendors</h2>
+                        <h2>Add Consumer</h2>
                         <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('vendors') }}">All Vendors</a>
+                            <a class="btn-sm btn-primary float-right"href="{{ route('consumers') }}">All Consumer</a>
                         </ul>
                     </div>
                     <div class="body">
 
-                        <form id="form_validation"  method="post" action="{{route('store_vendors')}}">
+                        <form id="form_validation"  method="post" action="{{route('store_consumer')}}">
                             @csrf
 
                             <div class="body">
@@ -55,36 +55,37 @@
                                     </div>
                                     </div>
                                     <div class="col-sm-4">
-                                        <div class="form-line">
-                                            <label class="">Branch</label>
-                                            <select class="form-control" name="branch_id">
-                                                <option value="" disabled selected hidden>-- Please select --</option>
-                                                @foreach ($branch as $item)
-                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                @endforeach
-
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-4">
-                                        <div class="form-line">
-                                            <label class="">Address</label>
-                                            <input type="text" {{old('address')}} class="form-control" placeholder="Address" name="address" required>
-                                            @error('address')
-                                            <span class="text-danger">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                        <div class=" form-float">
+                                            <div class="form-line">
+                                                <label class="">Address</label>
+                                                <input type="text" {{old('address')}} class="form-control" placeholder="Address" name="address">
+                                                @error('address')
+                                                <span class="text-danger">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
                                             @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                                    </div>
+                                        </div>
 
+                                        <div class="col-sm-4">
+                                            <div class=" form-float">
+                                                <div class="form-line">
+                                                    <label class="">Phone</label>
+                                                    <input type="text" {{old('phone')}} class="form-control" placeholder="Phone no" name="phone">
+                                                    @error('phone')
+                                                    <span class="text-danger">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                                </div>
+                                            </div>
+                                            </div>
 
                                 </div>
-                                <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
-                            </div>
 
+                            </div>
+                            <button class="btn btn-primary waves-effect" type="submit">SUBMIT</button>
                         </form>
                     </div>
                 </div>

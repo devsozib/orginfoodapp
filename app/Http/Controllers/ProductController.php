@@ -154,6 +154,7 @@ class ProductController extends Controller
 
     public function searchItem(Request $request){
 
+
         if(auth()->user()->role == 'admin'){
             $branch_id = Branch::where('user_id', auth()->user()->id)->first('id');
             $condition = ['branch_id', '=', $branch_id->id];
@@ -221,6 +222,9 @@ class ProductController extends Controller
             'productions'=>$productions,
             'superAdmin'=>$superAdmin
             ]);
+
+            // return $productions;
+
     }
 
 }

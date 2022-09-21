@@ -1,0 +1,15 @@
+[20-Sep-2022 13:13:04 America/New_York] PHP Warning:  require(/home/tzinxdzk/orginfood.com/app/public/../orginfood.com/app/vendor/autoload.php): Failed to open stream: No such file or directory in /home/tzinxdzk/orginfood.com/app/public/index.php on line 34
+[20-Sep-2022 13:13:04 America/New_York] PHP Fatal error:  Uncaught Error: Failed opening required '/home/tzinxdzk/orginfood.com/app/public/../orginfood.com/app/vendor/autoload.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/tzinxdzk/orginfood.com/app/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/tzinxdzk/orginfood.com/app/public/index.php on line 34
+[20-Sep-2022 13:13:23 America/New_York] PHP Warning:  require(/home/tzinxdzk/orginfood.com/app/public/../orginfood.com/app/vendor/autoload.php): Failed to open stream: No such file or directory in /home/tzinxdzk/orginfood.com/app/public/index.php on line 34
+[20-Sep-2022 13:13:23 America/New_York] PHP Fatal error:  Uncaught Error: Failed opening required '/home/tzinxdzk/orginfood.com/app/public/../orginfood.com/app/vendor/autoload.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/tzinxdzk/orginfood.com/app/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/tzinxdzk/orginfood.com/app/public/index.php on line 34
+[20-Sep-2022 13:13:44 America/New_York] PHP Warning:  require(/home/tzinxdzk/orginfood.com/app/public/../app/vendor/autoload.php): Failed to open stream: No such file or directory in /home/tzinxdzk/orginfood.com/app/public/index.php on line 34
+[20-Sep-2022 13:13:44 America/New_York] PHP Fatal error:  Uncaught Error: Failed opening required '/home/tzinxdzk/orginfood.com/app/public/../app/vendor/autoload.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/tzinxdzk/orginfood.com/app/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/tzinxdzk/orginfood.com/app/public/index.php on line 34

@@ -19,10 +19,12 @@ class RawProductController extends Controller
     protected function storeRawProduct(Request $request){
         $request->validate([
             "name" => ["required"],
+            "price" => ["required",'numeric'],
         ]);
         $rawProduct = new RawProduct;
         $rawProduct->name = $request->name;
         $rawProduct->unit = "kg";
+        $rawProduct->price = $request->price;
         $rawProduct->save();
         return back()->with('success', "Insert Successful");
     }

@@ -1,0 +1,20 @@
+[20-Sep-2022 13:21:29 America/New_York] PHP Warning:  require(/home/tzinxdzk/orginfood.com/app/../../app/vendor/autoload.php): Failed to open stream: No such file or directory in /home/tzinxdzk/orginfood.com/app/index.php on line 33
+[20-Sep-2022 13:21:29 America/New_York] PHP Fatal error:  Uncaught Error: Failed opening required '/home/tzinxdzk/orginfood.com/app/../../app/vendor/autoload.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/tzinxdzk/orginfood.com/app/index.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/tzinxdzk/orginfood.com/app/index.php on line 33
+[20-Sep-2022 13:25:22 America/New_York] PHP Warning:  require(/home/tzinxdzk/orginfood.com/app/../../vendor/autoload.php): Failed to open stream: No such file or directory in /home/tzinxdzk/orginfood.com/app/index.php on line 33
+[20-Sep-2022 13:25:22 America/New_York] PHP Fatal error:  Uncaught Error: Failed opening required '/home/tzinxdzk/orginfood.com/app/../../vendor/autoload.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/tzinxdzk/orginfood.com/app/index.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/tzinxdzk/orginfood.com/app/index.php on line 33
+[20-Sep-2022 13:25:45 America/New_York] PHP Warning:  require(/home/tzinxdzk/orginfood.com/app/../../orginfood.com/app/bootstrap/autoload.php): Failed to open stream: No such file or directory in /home/tzinxdzk/orginfood.com/app/index.php on line 33
+[20-Sep-2022 13:25:45 America/New_York] PHP Fatal error:  Uncaught Error: Failed opening required '/home/tzinxdzk/orginfood.com/app/../../orginfood.com/app/bootstrap/autoload.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/tzinxdzk/orginfood.com/app/index.php:33
+Stack trace:
+#0 {main}
+  thrown in /home/tzinxdzk/orginfood.com/app/index.php on line 33
+[20-Sep-2022 13:38:18 America/New_York] PHP Warning:  require(/home/tzinxdzk/orginfood.com/app/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/tzinxdzk/orginfood.com/app/index.php on line 34
+[20-Sep-2022 13:38:18 America/New_York] PHP Fatal error:  Uncaught Error: Failed opening required '/home/tzinxdzk/orginfood.com/app/../vendor/autoload.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/tzinxdzk/orginfood.com/app/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/tzinxdzk/orginfood.com/app/index.php on line 34
