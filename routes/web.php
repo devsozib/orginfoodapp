@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StockController;
@@ -52,12 +53,15 @@ Route::middleware(['auth'])->group(function (){
     Route::get('consumers',[ConsumerController::class, 'index'])->name('consumers');
     Route::get('create-consumers',[ConsumerController::class, 'create'])->name('create_consumer');
     Route::post('store-consumer',[ConsumerController::class, 'store'])->name('store_consumer');
-
+    Route::get('consumer-payment-history/{id}',[ConsumerController::class, 'paymentHistory'])->name('consumer_payment_history');
+    Route::get('consumer-sales-history/{id}',[ConsumerController::class,'salesHistroy'])->name('consumer_sales_history');
     //Raw product sales
 
     Route::get('raw-product-sale',[RawProductSalesController::class,'index'])->name('raw_product_sale');
     Route::get('raw-product-sale-create',[RawProductSalesController::class,'create'])->name('raw_product_sale_create');
     Route::post('raw-product-sale-store',[RawProductSalesController::class,'store'])->name('raw_product_sale_store');
+    Route::get('collect-due-payment/{id}',[RawProductSalesController::class,'collectPayment'])->name('collect_due_payment');
+    Route::post('makeCollectionPayment',[RawProductSalesController::class,'makeCollectionPayment'])->name('makeCollectionPayment');
 
     //Vendors
     Route::get('/create_vendors', [VendorController::class, 'create'])->name('create_vendors');
@@ -98,6 +102,8 @@ Route::middleware(['auth'])->group(function (){
             Route::post('/store_product', [ProductController::class, 'store'])->name('store_product');
             //Product route end here
 
+
+
     });
 
 
@@ -119,6 +125,9 @@ Route::middleware(['auth'])->group(function (){
         Route::get('raw-materials-item',[RawMaterialsItemController::class, 'index'])->name('raw_materials_item');
         Route::get('create-raw-materials',[RawMaterialsItemController::class, 'create'])->name('create_raw_materials');
         Route::post('store-raw-materials',[RawMaterialsItemController::class, 'store'])->name('store_raw_materials');
+
+        Route::get('testing',[TestController::class, 'index'])->name('testing');
+
     });
 
 
@@ -149,8 +158,8 @@ Route::middleware(['auth'])->group(function (){
 
    //Change order status route
    Route::get('change-order-status',[OrderController::class,'ChangeStatus'])->name('change-order-status');
-   Route::get('/purchase-history/{id}',[MaterialsPurchase::class, 'purchaseHistory'])->name('purchase_history');
-
+   Route::get('/payment-history/{id}',[MaterialsPurchase::class, 'payment_history'])->name('payment_history');
+  Route::get('purchase-history/{id}',[MaterialsPurchase::class, 'purchase_history'])->name('purchase_history');
    //session testing function
 
 });

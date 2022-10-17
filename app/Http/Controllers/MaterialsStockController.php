@@ -16,6 +16,8 @@ class MaterialsStockController extends Controller
             $condition = ['branch_id', '!=', 0];
         }
 
+
+
         $materials_Stock = MaterialsStock::join('materials_items','materials_stocks.materials_item_id','=','materials_items.id')
         ->join('branches','branches.id','=','materials_stocks.branch_id')
         ->where([$condition])

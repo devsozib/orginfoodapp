@@ -29,7 +29,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                     <div class="header">
-                        <h2>Purchase Raw Materials</h2>
+                        <h2>Sale Raw Product</h2>
                         <ul class="header-dropdown m-r--5">
                             <a class="btn-sm btn-primary float-right"href="{{ route('materials_list') }}">Raw Materials sales list</a>
                         </ul>

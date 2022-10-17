@@ -25,6 +25,7 @@
                 <th>Actions</th>
             </tr>
         </thead>
+
         <tbody v-if="productions.length > 0">
             <tr v-for="(item,index) in productions" :key="index">
                 <th scope="row">{{ index+1 }}</th>
@@ -60,6 +61,7 @@ export default {
 
     methods: {
         getProduction(searchItem) {
+
             axios.get('search-production',{
                 params:{
                     fromDate: this.fromDate,

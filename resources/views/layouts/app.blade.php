@@ -26,9 +26,11 @@
     <!-- Custom Css -->
     <link href="{{ asset('assets') }}/css/style.css" rel="stylesheet">
     <link href="{{ asset('assets') }}/css/themes/all-themes.css" rel="stylesheet" />
-    @vite([ 'resources/js/app.js'])
-  <!--<link rel="stylesheet" href="{{ asset('build/assets/app.b4f7846d.css') }}">-->
-  <!--  <script src="{{ asset('build/assets/app.3dababaa.js') }}"></script> -->
+      @vite(['resources/js/app.js'])
+     {{-- <script src="{{ asset('js/app.25fef93c.js')}}" defer></script> --}}
+
+
+
 </head>
 <body>
     <div id="app">

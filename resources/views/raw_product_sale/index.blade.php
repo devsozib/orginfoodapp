@@ -15,8 +15,7 @@
                 <div class="card">
                     <div class="header">
                         <h2>
-                           All Raw materials sales history
-
+                           All raw product sales history
                         </h2>
 
                         @if (auth()->user()->role != 'super_admin')

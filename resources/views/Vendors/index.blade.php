@@ -60,7 +60,8 @@
                                               <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                              <li><a href="{{ route('purchase_history',$vendor->id) }}">See History</a></li>
+                                              <li><a href="{{ route('payment_history',$vendor->id) }}">Payment History</a></li>
+                                              <li><a href="{{ route('purchase_history',$vendor->id) }}">Purchase History</a></li>
                                               @if (auth()->user()->role == "admin")
                                               <li><a href="{{ route('due_payment',$vendor->id) }}">Pay</a></li>
                                               @endif

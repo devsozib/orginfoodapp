@@ -118,6 +118,36 @@ class RawProductSalesController extends Controller
 
     }
 
+    protected function collectPayment($id){
+          $consumer_id  = $id;
+          $consumer_name  = Consumer::where('id',$id)->first('name');
+          return view('consumer.collection_due_payment',compact('consumer_id','consumer_name'));
+    }
+
+    protected function makeCollectionPayment(Request $request){
+
+           $consumer_id = $request->consumer_id;
+           $collectionAmount = $request->collection_amount;
+           $lastDueOfConsumer = ConsumerAccount::where('consumer_id',$consumer_id)->get()->last();
+           $lastAddBalance = $lastDueOfConsumer->adjustment_balance;
+           $date = $request->date;
+        //    return $lastDueOfConsumer->adjustment_balance;
+           $branch = Branch::where('user_id', auth()->user()->id)->first('id');
+           $consumer = Consumer::where('branch_id',$branch->id)->first('branch_id');
+        //    return $consumer->branch_id;
+           $consumerAcc = new ConsumerAccount;
+           $consumerAcc->consumer_id =   $consumer_id;
+           $consumerAcc->branch_id =  $consumer->branch_id;
+           $consumerAcc->status = '1';
+           $consumerAcc->amount = $collectionAmount;
+           $consumerAcc->adjustment_balance = $lastAddBalance- $collectionAmount;
+           $consumerAcc->date = $date;
+           $consumerAcc->save();
+
+           return redirect()->route('consumers')->with('success','Collection payment added success');
+
+    }
+
     /**
      * Display the specified resource.
      *

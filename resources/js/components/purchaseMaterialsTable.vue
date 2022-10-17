@@ -95,6 +95,7 @@ export default {
     },
     methods: {
         getResults(searchItem) {
+
             axios.get('search-data', {
                     params: {
                         fromDate: this.fromDate,

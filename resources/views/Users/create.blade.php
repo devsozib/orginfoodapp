@@ -1,22 +1,5 @@
 @extends('layouts.app')
 @section('content')
-{{-- <div>
-    <form method="post" action="{{route('add_branch')}}">
-        @csrf
-
-        <input type="text" name="name" placeholder="name">
-
-        <select name="type" id="ff">
-            <option value="" selected hidden disabled>--Select Factory--</option>
-            <option value="factory">Factory</option>
-            <option value="outlet_branch">Outlet Branch</option>
-        </select>
-
-    <button type="submit">Submit</button>
-    </form>
-</div> --}}
-
-
 <section class="">
     <div class="container-fluid">
         <div class="block-header">
@@ -110,10 +93,6 @@
 
     </div>
 </section>
-
-
-
-
 <section class="">
     <div class="container-fluid">
         <div class="block-header">
@@ -217,19 +196,5 @@
 
     </div>
 </section>
-<script>
-    // function setInputField(){
-    //     role  = document.getElementById('role').value;
-    //     if(role == 'sr'){
-    //         document.getElementById('myRow').classList.remove('dNone');
-    //         document.getElementById("address").required = true;
-    //         document.getElementById("phone").required = true;
-    //     }else{
-    //         document.getElementById('myRow').classList.add('dNone');
-    //         document.getElementById("address").removeAttribute('required');
-    //         document.getElementById("phone").removeAttribute('required');
-    //     }
-    // }
-    // setInputField();
-</script>
+
 @endsection

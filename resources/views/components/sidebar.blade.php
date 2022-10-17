@@ -81,6 +81,12 @@
                         <span>Vendors</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ url('testing') }}">
+                        <i class="material-icons">local_shipping</i>
+                        <span>Testing</span>
+                    </a>
+                </li>
                 @endif
 
 

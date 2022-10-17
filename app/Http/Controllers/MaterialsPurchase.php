@@ -113,21 +113,34 @@ class MaterialsPurchase extends Controller
    }
 
 
-   protected function purchaseHistory(Request $request,$id){
+   protected function payment_history(Request $request,$id){
 
             if(auth()->user()->role == "super_admin"){
-                $purchaseHistory = VendorAccount::join('vendors','vendors.id',"=","vendor_accounts.vendor_id")
+                $paymentHistory = VendorAccount::join('vendors','vendors.id',"=","vendor_accounts.vendor_id")
                 ->get();
             }else{
-                $purchaseHistory = VendorAccount::join('vendors','vendors.id',"=","vendor_accounts.vendor_id")
-                ->where('vendor_accounts.vendor_id',$id)
+                $paymentHistory = VendorAccount::join('vendors','vendors.id',"=","vendor_accounts.vendor_id")
+                ->where('vendor_accounts.vendor_id',$id)->where('status',1)
                 ->get();
             }
+               $vendor_name = VendorAccount::join('vendors','vendors.id',"=","vendor_accounts.vendor_id")
+               ->where('vendor_id', $id)->select('vendors.name as vendor_name')->first();
+            // return $vendor_name;
 
-            // return $purchaseHistory;
-
-            return view('materials.purchase_history', compact('purchaseHistory'));
+            return view('materials.payment_history', compact('paymentHistory','vendor_name'));
    }
+
+  protected function purchase_history($id){
+            $purchaseHistory = PurchaseMaterial::join('vendors','vendors.id','=','purchase_materials.vendor_id')
+            ->join('materials_items','materials_items.id','=','purchase_materials.materials_item_id')
+            ->where('vendor_id',$id)
+            ->select('vendors.name as vendor_name','materials_items.name as item_name', 'purchase_materials.qty','purchase_materials.price','purchase_materials.date')
+            ->get();
+
+             $vendor_name = VendorAccount::join('vendors','vendors.id',"=","vendor_accounts.vendor_id")
+            ->where('vendor_id', $id)->select('vendors.name as vendor_name')->first();
+             return view('materials.purchase_history', compact('purchaseHistory','vendor_name'));
+  }
 
    protected function duePayment($id){
     $vendor_id = $id;
@@ -209,5 +222,6 @@ class MaterialsPurchase extends Controller
     return response()->json($data);
 
    }
+
 
 }

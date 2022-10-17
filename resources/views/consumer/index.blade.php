@@ -30,16 +30,24 @@
                                     <th>#</th>
                                     <th>NAME</th>
                                     @if (auth()->user()->role == 'super_admin')
-                                    <td>Branch Name</td>
+                                    <th>Branch Name</th>
                                     @endif
-                                    <td>Address</td>
-                                    <td>Phone</td>
+                                    <th>Address</th>
+                                    <th>Phone</th>
+                                    <th>Due</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
 
 
                             @foreach ($consumers as $consumer)
+                            @php
+                                $due_amount = App\Models\ConsumerAccount::where('consumer_id',$consumer->id)->where('status',0)->sum('amount');
+
+                                $paymentAmont = App\Models\ConsumerAccount::where('consumer_id',$consumer->id)->where('status',1)->sum('amount');
+                                $dueIs = $due_amount - $paymentAmont;
+                            @endphp
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
                                     <td>{{ $consumer->name }}</td>
@@ -48,6 +56,22 @@
                                     @endif
                                     <td>{{ $consumer->address }}</td>
                                     <td>{{ $consumer->phone }}</td>
+                                    <td>{{ $dueIs }}</td>
+                                     <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                               Action
+                                              <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                              <li><a href="{{ route('consumer_payment_history',$consumer->id) }}">Payment History</a></li>
+                                              <li><a href="{{ route('consumer_sales_history',$consumer->id) }}">Sales History</a></li>
+                                              @if (auth()->user()->role == "admin")
+                                              <li><a href="{{ route('collect_due_payment',$consumer->id) }}">Pay</a></li>
+                                              @endif
+                                            </ul>
+                                          </div>
+                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>

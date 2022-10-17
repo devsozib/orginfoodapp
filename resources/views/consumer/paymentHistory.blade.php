@@ -4,7 +4,7 @@
 <section class="">
     <div class="container-fluid">
         <div class="block-header">
-            <h2>Purchase History</h2>
+            <h2>Payment History</h2>
         </div>
         <!-- Basic Table -->
         <div class="row clearfix">
@@ -12,10 +12,10 @@
                 <div class="card">
                     <div class="header">
                         <h2>
-                            Purchase Historis of <a href="">{{ $vendor_name->vendor_name }}</a>
+                            Payment Historis of <a href="">{{ $consumerName->name }}</a>
                         </h2>
                         <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('purchase_materials') }}">Purchase Materials</a>
+                            <a class="btn-sm btn-primary float-right"href="{{ route('raw_product_sale_create') }}">Sale Raw Product</a>
                         </ul>
                     </div>
                     <div class="body table-responsive">
@@ -23,23 +23,17 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Materials Name</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
-                                    <th>Total Price</th>
                                     <th>Purchase Date</th>
+                                    <th>Paid Amaount</th>
                                 </tr>
                             </thead>
                             <tbody>
 
-                            @foreach ($purchaseHistory as $item)
+                            @foreach ($paymentHistory as $item)
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
-                                    <td>{{ $item->item_name }}</td>
-                                    <td>{{ $item->qty }}</td>
-                                    <td>{{ $item->price }}</td>
-                                    <td>{{ $item->qty*$item->price }}</td>
                                     <td>{{ \Carbon\Carbon::parse($item->date)->format('d M Y') }}</td>
+                                    <td>৳{{ $item->amount }}</td>
                                     {{-- <td>{{$item->qty * $item->price }}</td> --}}
                                 </tr>
                                 @endforeach
