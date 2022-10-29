@@ -60,7 +60,7 @@
 
 
                 @endif
-
+                @if (auth()->user()->role == 'admin' && auth()->user()->role == 'super_admin')
                 <li>
                     <a href="{{route('consumers')}}">
 
@@ -68,6 +68,8 @@
                         <span>Consumer</span>
                     </a>
                 </li>
+                @endif
+
 
 
                 @php
@@ -142,6 +144,7 @@
                             @endphp
                              @if ($check_wirehouse or auth()->user()->role == 'super_admin')
                               <a class="list-group-item list-group-item-action" href="{{route('products')}}">Product List</a>
+                              <a class="list-group-item list-group-item-action" href="{{route('product_grade')}}">Product Grade</a>
                               @endif
 
                               @if ($check_factory or auth()->user()->role == 'super_admin')
@@ -192,7 +195,13 @@
                 <li>
                     <a href="{{ route('order_place') }}">
                         <i class="material-icons">move_up</i>
-                        <span>Palce Order and Order Staus</span>
+                        <span>Palce Order to your branch</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('orders') }}">
+                        <i class="material-icons">move_up</i>
+                        <span>Order Status</span>
                     </a>
                 </li>
                 @endif

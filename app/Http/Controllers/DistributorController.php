@@ -30,7 +30,7 @@ class DistributorController extends Controller
                                        ->join('distributors','distributors.sr_id', '=','srs.id')
                                        ->where([$condition2])
                                        ->where([$condition])
-                                       ->select('users.name as sr_name','distributors.name','distributors.id','distributors.address')->get();
+                                       ->select('users.name as sr_name','distributors.name','distributors.id','distributors.address','distributors.phone')->get();
 
         //dd( $get_distributor_details);
 
@@ -49,9 +49,20 @@ class DistributorController extends Controller
 
     protected function store(Request $request){
 
+
+         $sr = Sr::where('user_id', auth()->user()->id)->first();
+
+         $sr_id = '';
+         if($request->sr_id){
+            $sr_id = $request->sr_id;
+         }else{
+            $sr_id= $sr->id;
+         }
+
         $rules = [
             'name' => ['required', 'string', 'max:255'],
-            'sr_id' => ['required', 'numeric'],
+            'sr_id' => ['numeric'],
+            'phone' => ['required', 'string', 'max:20'],
             'address' => ['required', 'string'],
         ];
 
@@ -65,8 +76,9 @@ class DistributorController extends Controller
         else{
 
               $distributor = new Distributor;
-              $distributor->sr_id = $request->sr_id;
+              $distributor->sr_id = $sr_id;
               $distributor->name = $request->name;
+              $distributor->phone = $request->phone;
               $distributor->address = $request->address;
               $distributor->save();
               return back()->with('success',"Insert successfully");

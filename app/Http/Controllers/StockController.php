@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Grade;
 use App\Models\Stock;
 use App\Models\Branch;
 use App\Models\Product;
@@ -52,8 +53,9 @@ class StockController extends Controller
      */
     public function create()
     {
+        $grades = Grade::get();
         $products = Product::get();
-        return view('stock.create', compact('products'));
+        return view('stock.create', compact('products','grades'));
     }
 
     /**
@@ -64,6 +66,8 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
+         $product_id = $request->product_id;
+         $qty = $request->qty;
 
             $request->validate([
             'product_id'=>'required','numeric',
@@ -71,19 +75,21 @@ class StockController extends Controller
              ]);
 
     $branch_id = Branch::where('user_id', auth()->user()->id)->first('id');
+    $product = Product::where('id', $product_id)->first();
 
     if($branch_id){
-    $stock_check = Stock::where('branch_id',$branch_id->id)->where('product_id', $request->product_id)->first();
+    $stock_check = Stock::where('branch_id',$branch_id->id)->where('product_id', $product_id)->first();
 
           if($stock_check){
-            $stock_check->qty += $request->qty;
+            $stock_check->qty +=  $qty;
             $stock_check->update();
             return back()->with('success', "Updated successful");
           }else{
             $stockData = new Stock;
             $stockData->branch_id = $branch_id->id;
-            $stockData->product_id = $request->product_id;
-            $stockData->qty = $request->qty;
+            $stockData->product_id = $product_id;
+            $stockData->qty = $qty;
+            $stockData->price = $qty*$product->price;
             $stockData->save();
             return back()->with('success', "Insert successfully");
           }

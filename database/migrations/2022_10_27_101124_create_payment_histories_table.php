@@ -13,18 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('payment_histories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('unit');
-            $table->bigInteger('grade_id')->unsigned();
-            $table->foreign('grade_id')->references('id')->on('grades');
-            $table->integer('price');
-            $table->boolean('is_deleted')->default(0);
-            $table->rememberToken();
+            $table->bigInteger('order_id')->unsigned();
+            $table->foreign('order_id')->references('id')->on('orders');
+            $table->integer('collected_amount');
+            $table->integer('paid_amount');
+            $table->date('date');
             $table->timestamps();
-
-            //->onDelete('cascade')
         });
     }
 
@@ -35,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('payment_histories');
     }
 };

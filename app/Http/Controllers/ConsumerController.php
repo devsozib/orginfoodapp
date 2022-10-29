@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use App\Models\Consumer;
+use PDF;
 use Illuminate\Http\Request;
 use App\Models\RawProductSale;
 use App\Models\ConsumerAccount;
@@ -153,5 +154,13 @@ class ConsumerController extends Controller
             //   return $salesHistory;
 
             return view('consumer.salesHistory',compact('salesHistory','consumerName'));
+    }
+
+    public function consumerPdf(){
+             $consumers = Consumer::get();
+             $pdf = PDF::loadView('pdf.consumer',[
+                'consumers' => $consumers
+             ]);
+             return $pdf->stream();
     }
 }

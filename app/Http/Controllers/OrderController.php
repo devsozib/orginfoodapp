@@ -70,6 +70,7 @@ class OrderController extends Controller
          $product_information = Sr::join('stocks','stocks.branch_id','=','srs.branch_id')
          ->join('products','products.id','=','stocks.product_id')
          ->where('srs.user_id', auth()->user()->id)
+         ->where('stocks.qty','>', 0)
          ->select('stocks.product_id','stocks.qty','products.name')
          ->get();
 
@@ -86,6 +87,12 @@ class OrderController extends Controller
     public function store(Request $request)
     {
 
+        // return $request->all();
+        $product_id = $request->product_id;
+        $distributors_id = $request->distributor_id;
+        $qty = $request->qty;
+        $date = $request->date;
+
         $request->validate([
             "product_id" => ['required','numeric'],
             "distributor_id" => ['required','numeric'],
@@ -96,16 +103,16 @@ class OrderController extends Controller
 
         $sr = Sr::where('user_id', auth()->user()->id)->first(['id','branch_id']);
 
-        $old_stock_qty = Stock::where('branch_id', $sr->branch_id)->where('product_id',$request->product_id)->first('qty');
-        if($request->qty <= $old_stock_qty->qty){
+        $old_stock_qty = Stock::where('branch_id', $sr->branch_id)->where('product_id',$product_id)->first('qty');
+        if( $qty <= $old_stock_qty->qty){
             $orders = new Order;
             $orders->sr_id = $sr->id;
             $orders->branch_id = $sr->branch_id;
-            $orders->distributor_id = $request->distributor_id;
-            $orders->product_id = $request->product_id;
-            $orders->qty = $request->qty;
+            $orders->distributor_id = $distributors_id;
+            $orders->product_id = $product_id;
+            $orders->qty =  $qty;
             $orders->status = "pending";
-            $orders->date = $request->date;
+            $orders->date =  $date ;
             $orders->save();
             return back()->with('success', "Order Place successful");
         }

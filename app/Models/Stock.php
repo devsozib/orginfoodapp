@@ -16,4 +16,8 @@ class Stock extends Model
     protected function product(){
         return $this->hasOne(Product::class,'id', 'product_id');
     }
+
+    protected function grade(){
+        return $this->hasOne(Grade::class,'id','grade_id');
+    }
 }

@@ -40,7 +40,7 @@
 
                             <div class="body">
                                 <div class="row clearfix">
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                             <div class="form-line">
                                                 <label class="">Name</label>
                                                 <input type="text" class="form-control" placeholder="Name" name="name" required>
@@ -53,7 +53,7 @@
                                     </div>
 
 
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-3">
                                         <div class="form-line">
                                             <label class="form-label">Unit</label>
                                         <select id="unit" class="form-control" name="unit" value="">
@@ -68,9 +68,22 @@
                                         </div>
                                 </div>
 
+                                <div class="col-sm-3">
+                                    <div class="form-line">
+                                        <label class="form-label">Grade(Optional)</label>
+                                    <select id="grade" class="form-control" name="grade" value="">
+                                        <option value="" selected hidden disabled>-- Please select --</option>
+                                        @foreach ($grade as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @endforeach
 
 
-                                    <div class="col-sm-4">
+                                    </select>
+                                    </div>
+                            </div>
+
+
+                                    <div class="col-sm-3">
                                         <label class="">Price</label>
                                         <input type="number" class="form-control" placeholder="Price" name="price" required>
                                         @error('price')

@@ -6,15 +6,22 @@ const store = createStore({
     },
 
     mutations:{
-        addBookName(){
-                 
+        addBookName(state, data){
+               state.bookList.push(data);
+        }
+        ,
+        removeItem(state, data){
+             this.bookList.pop(data);
         }
     },
 
     actions:{
-         addBook(context, data){
-            context.commit("addBookName", data)
+         addBook({commit}, data){
+               commit("addBookName", data)
 
+         },
+         removeItem({commit},data){
+                commit('removeItem'.data)
          }
     }
 

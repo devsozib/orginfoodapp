@@ -4,7 +4,9 @@
         <ul>
             <li v-for="(item,index) in bookList" :key="index">
             {{ item }}
+            <button @click="removeItem(index)">Delete</button>
             </li>
+
         </ul>
    </div>
 </template>
@@ -25,7 +27,11 @@ export default {
     methods:{
 
         addName(){
-            alert(this.name);
+            this.$store.dispatch("addBook",this.name);
+        },
+
+        removeItem(index){
+            this.$store.dispatch('removeItem',index);
         }
     }
 }

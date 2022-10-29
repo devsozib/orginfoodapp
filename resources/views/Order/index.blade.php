@@ -35,6 +35,9 @@
                                     <th>Quantity</th>
                                     <th>date</th>
                                     <th>Status</th>
+                                    {{-- @if ($item->status == 'delivered')
+                                    <th>Payment Status</th>
+                                    @endif --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -49,7 +52,7 @@
                                     <td>{{ $item->qty }}</td>
                                     <td>{{ $item->date }}</td>
                                     <td>
-                                        <select id="select_status{{ $loop->index+1 }}" onChange="orderStatusChange({{ $item->id }}, 'select_status{{ $loop->index+1 }}')" class="form-select" name="status">
+                                        <select id="select_status{{ $loop->index+1 }}" onChange="orderStatusChange({{ $item->id }}, 'select_status{{ $loop->index+1 }}')" class="form-select form-control" name="status">
 
                                       @if ($item->status == "pending")
                                        <option {{  $item->status == 'pending'? 'selected disabled hidden': "" }}>Pending</option>
@@ -89,6 +92,23 @@
                                       @endphp --}}
 
                                     </td>
+                                    @if ($item->status == 'delivered')
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                   Action
+                                                  <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                                  {{-- <li><a href="{{ route('consumer_payment_history',$consumer->id) }}">Payment History</a></li>
+                                                  <li><a href="{{ route('consumer_sales_history',$consumer->id) }}">Sales History</a></li>
+                                                  @if (auth()->user()->role == "admin")
+                                                  <li><a href="{{ route('collect_due_payment',$consumer->id) }}">Pay</a></li>
+                                                  @endif --}}
+                                                </ul>
+                                              </div>
+                                        </td>
+                                    @endif
 
                                 </tr>
                             @endforeach

@@ -41,7 +41,7 @@
 
                             <div class="body">
                                 <div class="row clearfix">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-3">
                                     <div class=" form-float">
                                         <div class="form-line">
                                             <label class="">Name</label>
@@ -54,8 +54,8 @@
                                         </div>
                                     </div>
                                     </div>
-                                    <div class="col-sm-6">
-
+                                    @if (auth()->user()->role == 'super_admin')
+                                    <div class="col-sm-3">
                                         <div class="form-line">
                                             <label class="form-label">SELECT SR</label>
                                             <select class="form-control" name="sr_id">
@@ -63,28 +63,37 @@
                                                 @foreach ($srS as $sr)
                                                 <option value="{{ $sr->id }}">{{ $sr->sr_name }}</option>
                                                 @endforeach
-
                                             </select>
-
+                                        </div>
+                                    </div>
+                                    @endif
+                                    <div class="col-sm-3">
+                                        <div class=" form-float">
+                                            <div class="form-line">
+                                                <label class="">Address</label>
+                                                <input type="text" {{old('address')}} class="form-control" placeholder="Address" name="address">
+                                                @error('address')
+                                                <span class="text-danger">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                            </div>
                                         </div>
                                     </div>
 
-                                </div>
-                                <div class="row clearfix">
-                                    <div class="col-sm-12">
-                                    <div class=" form-float">
-                                        <div class="form-line">
-                                            <label class="">Address</label>
-                                            <input type="text" {{old('address')}} class="form-control" placeholder="Address" name="address">
-                                            @error('address')
-                                            <span class="text-danger">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                    <div class="col-sm-3">
+                                        <div class=" form-float">
+                                            <div class="form-line">
+                                                <label class="">Phone</label>
+                                                <input type="text" {{old('phone')}} class="form-control" placeholder="Phone" name="phone">
+                                                @error('phone')
+                                                <span class="text-danger">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                            </div>
                                         </div>
                                     </div>
-                                    </div>
-
 
                                 </div>
                             </div>

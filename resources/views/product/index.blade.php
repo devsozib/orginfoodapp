@@ -17,7 +17,7 @@
                            All Product
 
                         </h2>
-                        @if (auth()->user()->role == "super_admin")
+                        @if (auth()->user()->role == "super_admin" || auth()->user()->role == "admin" )
                         <ul class="header-dropdown m-r--5">
                             <a class="btn-sm btn-primary float-right"href="{{ route('add_product') }}">Add Product</a>
                         </ul>
@@ -31,6 +31,7 @@
                                     <th>#</th>
                                     <th>Name</th>
                                     <th>Unit</th>
+                                    <th>Grade</th>
                                     <th>Price</th>
                                     <th>Actions</th>
                                 </tr>
@@ -45,6 +46,7 @@
                                     <th scope="row">{{ $loop->index+1 }}</th>
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $product->unit }}</td>
+                                    <td>{{ $product->grade->name }}</td>
                                     <td>{{ $product->price }}</td>
                                     <td>{{ _('...') }}</td>
                                 </tr>

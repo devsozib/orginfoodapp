@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Grade;
+
 use App\Models\Stock;
 
 use App\Models\Branch;
-
 use App\Models\Product;
 use App\Models\Production;
 use App\Models\RawProduct;
@@ -23,16 +24,20 @@ class ProductController extends Controller
     }
 
     protected function addProductView(){
-        return view('product.addProductVidew');
+        $grade = Grade::get();
+        return view('product.addProductVidew',compact('grade'));
     }
 
     protected function store(Request $request){
         $rules = [
             'name' => ['required', 'string', 'max:255'],
             'unit' => ['required', 'string', 'in:kg,gm,Ltr,ml,piece'],
+            'grade' => ['required', 'numeric'],
             'price' => ['required', 'numeric'],
         ];
         //dd($request->all());
+        $grade_id = $request->grade;
+        $gradeName = Grade::where('id',$grade_id)->first('name');
 
         $validator = Validator::make($request->all(),$rules);
         if ($validator->fails()) {
@@ -42,8 +47,9 @@ class ProductController extends Controller
             try{
                 $data = $request->all();
                 $product = new Product;
-                $product->name = $data['name'];
+                $product->name = $data['name'].'-'.$gradeName->name;
                 $product->unit = $data['unit'];
+                $product->grade_id = $grade_id;
                 $product->price = $data['price'];
                 $product->save();
                 return redirect()->route('add_product')->with('success',"Insert successfully");

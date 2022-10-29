@@ -17,7 +17,7 @@
                            All Distributor
 
                         </h2>
-                        @if(auth()->user()->role == 'super_admin')
+                        @if(auth()->user()->role == 'super_admin' or auth()->user()->role == 'sr')
                             <ul class="header-dropdown m-r--5">
                                 <a class="btn-sm btn-primary float-right"href="{{ route('create_distributors') }}">Add Distributor</a>
                             </ul>
@@ -35,6 +35,8 @@
                                     @endif
 
                                     <th>ADDRESS</th>
+                                    <th>PHONE</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -48,6 +50,22 @@
                                     <td>{{ $distributor->sr_name }}</td>
                                     @endif
                                     <td>{{ $distributor->address }}</td>
+                                    <td>{{ $distributor->phone }}</td>
+                                    <td>
+                                        <div class="dropdown">
+                                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                           Action
+                                          <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                          {{-- <li><a href="{{ route('consumer_payment_history',$consumer->id) }}">Payment History</a></li>
+                                          <li><a href="{{ route('consumer_sales_history',$consumer->id) }}">Sales History</a></li>
+                                          @if (auth()->user()->role == "admin")
+                                          <li><a href="{{ route('collect_due_payment',$consumer->id) }}">Pay</a></li>
+                                          @endif --}}
+                                        </ul>
+                                      </div>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>

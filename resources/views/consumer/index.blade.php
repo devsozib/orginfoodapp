@@ -22,6 +22,9 @@
                                 <a class="btn-sm btn-primary float-right"href="{{ route('create_consumer') }}">Add Consumer</a>
                             </ul>
                         @endif
+                        <a href="{{ route('consumer-pdf') }}">
+                            <button type="button" class="btn btn-primary">Print</button>
+                        </a>
                     </div>
                     <div class="body table-responsive">
                         <table class="table">
