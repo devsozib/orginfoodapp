@@ -61,7 +61,7 @@ class NotificationController extends Controller
                                        ->join('users','srs.user_id','=','users.id')
                                        ->where([$condition])
                                        ->where('status',1)
-                                       ->select('users.name as sr_name','products.name as product_name','branches.name as  branch_name','notifications.request_quantity','notifications.in_need_date','products.id as product_id')
+                                       ->select('users.name as sr_name','products.name as product_name','branches.name as  branch_name','notifications.request_quantity','notifications.in_need_date','products.id as product_id','notifications.status')
                                        ->orderBy('notifications.id','desc')
                                        ->get();
         return view('notification.list',compact('notifications'));
@@ -71,8 +71,10 @@ class NotificationController extends Controller
           $stocks = Stock::join('products','products.id','=','stocks.product_id')
           ->join('notifications','notifications.product_id','=','products.id')
           ->where('stocks.product_id',$id)
-          ->select('products.name as product_name', 'stocks.qty as qty','notifications.request_quantity')
+          ->select('products.name as product_name', 'stocks.qty as qty','notifications.request_quantity','stocks.id as stock_id','notifications.id as notification_id')
           ->first();
+
+
 
           return view('notification.addStock',compact('stocks'));
      }

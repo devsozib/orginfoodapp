@@ -7,6 +7,7 @@ use App\Models\Stock;
 use App\Models\Branch;
 use App\Models\Product;
 use App\Models\FactoryStock;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
@@ -139,6 +140,31 @@ class StockController extends Controller
     public function destroy(Stock $stock)
     {
         //
+    }
+
+    public function stockForSrRequest(Request $request){
+        //   return $request->all();
+
+        $newStockQty = $request->new_stock_qty;
+        $stock_id = $request->stock_id;
+        $request_qty = $request->request_qty;
+        $notification_id = $request->notification_id;
+
+
+        $stock = Stock::where('id',$stock_id)->first();
+        $notification = Notification::where('id',$notification_id)->first();
+        if($newStockQty >= $request_qty){
+            $stock->qty += $newStockQty;
+            $stock->update();
+            $notification->status = '0';
+            $notification->update();
+            return redirect()->back()->with('success','New stock quantity added success');
+        }else{
+            $stock->qty += $newStockQty;
+            $stock->update();
+            return redirect()->back()->with('success','New stock quantity added success');
+        }
+
     }
 
 

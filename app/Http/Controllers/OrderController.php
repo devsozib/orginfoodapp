@@ -27,7 +27,7 @@ class OrderController extends Controller
         if(auth()->user()->role == "admin"){
              $branch= Branch::where('user_id', auth()->user()->id)->first('id');
              $condition= ['orders.branch_id','=', $branch->id];
-             $condition2= [['orders.status','!=', 'cancel']];
+            $condition2= [['orders.status','!=', 'cancel']];
         }else if(auth()->user()->role == "sr"){
             $sr = Sr::where('user_id', auth()->user()->id)->first('id');
             $condition= ['orders.sr_id','=', $sr->id];
@@ -41,16 +41,22 @@ class OrderController extends Controller
             $condition2= [['orders.id','!=',0]];
         }
 
+        // return  $condition2;
+
         $orders = Order::join('branches', 'orders.branch_id','=','branches.id')
         ->join('srs', 'srs.id', '=', 'orders.sr_id')
         ->join('products', 'products.id', '=', 'orders.product_id')
         ->join('distributors', 'distributors.id', '=', 'orders.distributor_id')
         ->join('users' , 'srs.user_id', '=', 'users.id')
+        ->leftJoin('stocks','stocks.product_id','=','products.id')
         ->where([$condition])
         ->where($condition2)
-        ->select('orders.id','users.name as sr_name', 'products.name as product_name', 'products.price',
-         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'orders.collected_amount', 'orders.paid_amount', 'orders.date', 'orders.status')
-        ->get();
+        ->select('orders.id','users.name as sr_name', 'products.name as product_name',    'products.price',
+         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'orders.collected_amount', 'orders.paid_amount', 'orders.date', 'orders.status','stocks.qty as available_qty')
+         ->orderBy('orders.id','desc')
+         ->get();
+
+        // return  $orders;
 
 
 
@@ -68,12 +74,7 @@ class OrderController extends Controller
 
          $sr = Sr::where('user_id', auth()->user()->id)->first('id');
          $distributors = Distributor::where('sr_id', $sr->id)->get();
-         $product_information = Sr::join('stocks','stocks.branch_id','=','srs.branch_id')
-         ->join('products','products.id','=','stocks.product_id')
-         ->where('srs.user_id', auth()->user()->id)
-         ->where('stocks.qty','>', 0)
-         ->select('stocks.product_id','stocks.qty','products.name')
-         ->get();
+         $product_information = Product::get();
 
 
          return view('order.placeorder',compact('distributors','product_information'));
@@ -91,21 +92,17 @@ class OrderController extends Controller
         // return $request->all();
         $product_id = $request->product_id;
         $distributors_id = $request->distributor_id;
-        $qty = $request->qty;
-        $date = $request->date;
+        $qty = $request->request_qty;
+        $date = $request->in_date;
 
         $request->validate([
             "product_id" => ['required','numeric'],
             "distributor_id" => ['required','numeric'],
-            "qty" => ['required','numeric'],
-            'date' => ['required', 'date'],
+            "request_qty" => ['required','numeric'],
+            'in_date' => ['required', 'date'],
         ]);
 
-
         $sr = Sr::where('user_id', auth()->user()->id)->first(['id','branch_id']);
-
-        $old_stock_qty = Stock::where('branch_id', $sr->branch_id)->where('product_id',$product_id)->first('qty');
-        if( $qty <= $old_stock_qty->qty){
             $orders = new Order;
             $orders->sr_id = $sr->id;
             $orders->branch_id = $sr->branch_id;
@@ -118,13 +115,6 @@ class OrderController extends Controller
             $orders->paid_amount  = 0;
             $orders->save();
             return back()->with('success', "Order Place successful");
-        }
-        else{
-            return back()->withErrors(['qty'=> "Quantity is not available,Now Quantity is $old_stock_qty->qty"]);
-        }
-
-
-
     }
 
     public function collectPayment($id){
@@ -134,6 +124,10 @@ class OrderController extends Controller
 
     }
 
+    public function getPayment($id){
+        $order = Order::findOrFail($id);
+        return view('Order/getPayment')->with(compact('order'));
+    }
     public function collectEntry(Request $request){
         //dd($request->all());
         $order = Order::findOrFail($request->order_id);
@@ -147,6 +141,28 @@ class OrderController extends Controller
 
         $paymentHistory->order_id = $order->id;
         $paymentHistory->collected_amount = $request->collection_amount;
+        $paymentHistory->paid_amount = 0;
+        $paymentHistory->date = $order->date;
+        $paymentHistory->save();
+
+        return back();
+    }
+
+
+  public function getEntry(Request $request){
+        //dd($request->all());
+        $order = Order::findOrFail($request->order_id);
+
+        $order->paid_amount += $request->get_amount;
+        $order->save();
+
+        $paymentHistory = PaymentHistory::where('order_id',$order->id)->first();
+
+        $paymentHistory = new PaymentHistory;
+
+        $paymentHistory->order_id = $order->id;
+        $paymentHistory->collected_amount = 0;
+        $paymentHistory->paid_amount = $request->get_amount;
         $paymentHistory->date = $order->date;
         $paymentHistory->save();
 
@@ -208,7 +224,7 @@ class OrderController extends Controller
 
             $stock = Stock::where('product_id', $product_id)->where('branch_id', $branch_id)->first();
 
-            if($request->data== 'delivered' && $orders->qty > $stock->qty){
+            if(($request->data== 'delivered') && ($orders->qty > $stock->qty)){
                 session()->flash('qty', 'Quantity not available');
            }
            else{

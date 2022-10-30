@@ -29,7 +29,19 @@
       @vite(['resources/js/app.js'])
      {{-- <script src="{{ asset('js/app.25fef93c.js')}}" defer></script> --}}
 
+     <style>
+        .custom-select{
+    display: block;
+    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+    -moz-padding-start: calc(0.75rem - 3px);
+    font-size: 1.5rem;
+    color: #767676;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
 
+        }
+     </style>
 
 </head>
 <body>

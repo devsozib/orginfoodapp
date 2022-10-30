@@ -32,9 +32,12 @@
                                     @if (auth()->user()->role != 'admin')
                                     <th>Branch</th>
                                     @endif
+                                    @if (auth()->user()->role != 'sr')
                                     <th>Sr</th>
+                                    @endauth
                                     <th>Request Quantity</th>
                                     <th>In Date</th>
+                                    <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -48,13 +51,15 @@
                                     @if (auth()->user()->role != 'admin')
                                     <td>{{ $item->branch_name }}</td>
                                     @endif
+                                    @if (auth()->user()->role != 'sr')
                                     <td>{{ $item->sr_name }}</td>
+                                    @endauth
                                     <td>{{ $item->request_quantity }}</td>
                                     <td>{{ $item->in_need_date }}</td>
+                                    <td>{{ $item->status?"Stock not added":"" }}</td>
                                     @if (auth()->user()->role != 'sr')
                                     <td><a class="btn btn-primary" href="{{ route('add_stock_for_request',$item->product_id) }}">Add Stcok</a></td>
                                     @endif
-
                                 </tr>
                             @endforeach
                             </tbody>

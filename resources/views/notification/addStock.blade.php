@@ -24,10 +24,13 @@
                     </div>
 
                     <div class="body">
-                        <form id="form_validation"  method="post" action="{{route('store_stock')}}">
+                        <form id="form_validation"  method="post" action="{{route('stock_for_sr_request')}}">
                             @csrf
                             <div class="body">
                                 <div class="row clearfix">
+
+                                    <input type="hidden" value="{{ $stocks->stock_id }}" name="stock_id">
+                                    <input type="hidden" value="{{ $stocks->notification_id }}" name="notification_id">
                                     <div class="col-sm-3">
                                             <div class="form-line">
                                                 <label class="">Products</label>
@@ -44,12 +47,12 @@
 
                                     <div class="col-sm-3">
                                         <label class="">Request Quantity From SR</label>
-                                        <input type="number" value="{{ $stocks->request_quantity }}" class="form-control" placeholder="Quantity" disabled name="qty" required>
+                                        <input type="number" value="{{ $stocks->request_quantity }}" class="form-control" placeholder="Quantity" readonly name="request_qty" required>
                                     </div>
 
                                     <div class="col-sm-3">
                                         <label class="">New Stock Quantity</label>
-                                        <input type="number" value="{{ $stocks->request_quantity }}" class="form-control" placeholder="Quantity"  name="new_stock_qty" required>
+                                        <input type="number" class="form-control" placeholder="Stock quantity"  name="new_stock_qty" required>
                                     </div>
 
 

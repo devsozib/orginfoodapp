@@ -162,23 +162,27 @@ Route::middleware(['auth'])->group(function (){
    Route::post('store-orders',[OrderController::class,'store'])->name('store_orders');
 
 
+
    //product request route start here
     Route::get('request-product',[NotificationController::class, 'index'])->name('request_product');
     Route::get('for-notification-data',[NotificationController::class, 'forNotificationData']);
     Route::post('send-notification',[NotificationController::class, 'sendNotification']);
     Route::get('sending-request',[NotificationController::class, 'seeYourSendingRequest'])->name('your_sending_request');
-
     Route::get('add-stock-for-request/{id}',[NotificationController::class, 'addStockForRequest'])->name('add_stock_for_request');
+    Route::post('stock-for-sr-request',[StockController::class, 'stockForSrRequest'])->name('stock_for_sr_request');
+    Route::get('distributor-payment-history/{id}',[DistributorController::class, 'paymentHistory'])->name('distributor_payment_history');
 
    //Change order status route
    Route::get('change-order-status',[OrderController::class,'ChangeStatus'])->name('change-order-status');
    Route::get('/payment-history/{id}',[MaterialsPurchase::class, 'payment_history'])->name('payment_history');
-  Route::get('purchase-history/{id}',[MaterialsPurchase::class, 'purchase_history'])->name('purchase_history');
+   Route::get('purchase-history/{id}',[MaterialsPurchase::class, 'purchase_history'])->name('purchase_history');
    //session testing function
 
    Route::get('collect-payment/{id}',[OrderController::class, 'collectPayment'])->name('collect_payment');
+   Route::get('get-payment/{id}',[OrderController::class, 'getPayment'])->name('get_payment');
 
    Route::post('collect-entry',[OrderController::class, 'collectEntry'])->name('collect_entry');
+   Route::post('get-entry',[OrderController::class, 'getEntry'])->name('get_entry');
 
 
 
