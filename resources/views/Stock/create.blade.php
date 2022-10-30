@@ -56,9 +56,9 @@
                                         <input type="number" class="form-control" placeholder="Quantity" name="qty" required>
                                         @error('qty')
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
+                                                <strong>{{ $message}}</strong>
                                             </span>
-                                        @enderror
+                                         @enderror
                                     </div>
 
                                 </div>

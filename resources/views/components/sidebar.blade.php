@@ -183,7 +183,7 @@
                 @endif
 
 
-                @if (auth()->user()->role == "admin" and !$check_factory)
+                @if (auth()->user()->role == "admin" and !$check_factory )
                 <li>
                     <a href="{{ route('orders') }}">
                         <i class="material-icons">request_page</i>
@@ -191,6 +191,16 @@
                     </a>
                 </li>
                 @endif
+                @if ((auth()->user()->role == "admin" and !$check_factory) || auth()->user()->role == 'sr')
+                <li>
+                    <a href="{{ route('your_sending_request') }}">
+                        <i class="material-icons">notifications_active</i>
+                        <span>Notification</span>
+                    </a>
+                </li>
+                @endif
+
+
               @if (auth()->user()->role == "sr")
                 <li>
                     <a href="{{ route('order_place') }}">

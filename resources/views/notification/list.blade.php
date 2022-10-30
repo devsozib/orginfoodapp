@@ -4,9 +4,7 @@
 <section class="">
     <div class="container-fluid">
         <div class="block-header">
-            <h2> All Product</h2>
-
-
+            <h2> Your Notification </h2>
         </div>
         <!-- Basic Table -->
         <div class="row clearfix">
@@ -14,44 +12,57 @@
                 <div class="card">
                     <div class="header">
                         <h2>
-                           All Shift Stock
+                        Your Notification
 
                         </h2>
 
+                        @if (auth()->user()->role =='sr' )
                         <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('shift_stock_create') }}">Add Shift Stock</a>
+                            <a class="btn-sm btn-primary float-right"href="{{ route('request_product') }}">Request for product</a>
                         </ul>
                         @endif
-
                     </div>
+
                     <div class="body table-responsive">
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Branch</th>
                                     <th>Product</th>
-                                    <th>Quantity</th>
-                                    <th>date</th>
+                                    @if (auth()->user()->role != 'admin')
+                                    <th>Branch</th>
+                                    @endif
+                                    <th>Sr</th>
+                                    <th>Request Quantity</th>
+                                    <th>In Date</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
 
 
-                            @foreach ($shift_product_info as $item)
+                            @foreach ($notifications as $item)
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
-                                    <td>{{ $item->branch->name }}</td>
-                                    <td>{{ $item->product->name }}</td>
-                                    <td>{{ $item->qty }}</td>
-                                    <td>{{ $item->date }}</td>
-                                    <td>...</td>
+                                    <td>{{ $item->product_name }}</td>
+                                    @if (auth()->user()->role != 'admin')
+                                    <td>{{ $item->branch_name }}</td>
+                                    @endif
+                                    <td>{{ $item->sr_name }}</td>
+                                    <td>{{ $item->request_quantity }}</td>
+                                    <td>{{ $item->in_need_date }}</td>
+                                    @if (auth()->user()->role != 'sr')
+                                    <td><a class="btn btn-primary" href="{{ route('add_stock_for_request',$item->product_id) }}">Add Stcok</a></td>
+                                    @endif
+
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
                     </div>
+
+
+
                 </div>
             </div>
         </div>

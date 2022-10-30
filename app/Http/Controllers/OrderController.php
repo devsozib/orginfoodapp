@@ -117,7 +117,7 @@ class OrderController extends Controller
             return back()->with('success', "Order Place successful");
         }
         else{
-            return back()->withErrors(['qty'=> "Quantity is not available"]);
+            return back()->withErrors(['qty'=> "Quantity is not available,Now Quantity is $old_stock_qty->qty"]);
         }
 
 

@@ -82,8 +82,9 @@
                                         @error('qty')
                                         <span class="text-danger">
                                             <strong>{{ $message }}</strong>
+                                            <a href="{{ route('request_product') }}">Requst to zaf</a>
                                         </span>
-                                    @enderror
+                                      @enderror
 
                                     </div>
 

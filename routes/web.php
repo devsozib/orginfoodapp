@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ConsumerController;
 use App\Http\Controllers\RawProductController;
 use App\Http\Controllers\DistributorController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ShiftProductController;
 use App\Http\Controllers\MaterialsStockController;
 use App\Http\Controllers\RawProductSalesController;
@@ -160,6 +161,14 @@ Route::middleware(['auth'])->group(function (){
    Route::get('order-place',[OrderController::class,'create'])->name('order_place');
    Route::post('store-orders',[OrderController::class,'store'])->name('store_orders');
 
+
+   //product request route start here
+    Route::get('request-product',[NotificationController::class, 'index'])->name('request_product');
+    Route::get('for-notification-data',[NotificationController::class, 'forNotificationData']);
+    Route::post('send-notification',[NotificationController::class, 'sendNotification']);
+    Route::get('sending-request',[NotificationController::class, 'seeYourSendingRequest'])->name('your_sending_request');
+
+    Route::get('add-stock-for-request/{id}',[NotificationController::class, 'addStockForRequest'])->name('add_stock_for_request');
 
    //Change order status route
    Route::get('change-order-status',[OrderController::class,'ChangeStatus'])->name('change-order-status');
