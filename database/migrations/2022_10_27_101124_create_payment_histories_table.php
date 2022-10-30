@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('order_id')->unsigned();
             $table->foreign('order_id')->references('id')->on('orders');
-            $table->integer('collected_amount');
-            $table->integer('paid_amount');
+            $table->integer('collected_amount')->default(0);
+            $table->integer('paid_amount')->default(0);
             $table->date('date');
             $table->timestamps();
         });

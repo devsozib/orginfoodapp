@@ -33,6 +33,10 @@
                                     <th>PRODUCT</th>
                                     <th>DISTRIBUTOR</th>
                                     <th>Quantity</th>
+                                    <th>Price <span style="font-size: 10px; text-style: none;">(Per Unit)</span> </th>
+                                    <th>Total</th>
+                                    <th>Collected</th>
+                                    <th>Paied</th>
                                     <th>date</th>
                                     <th>Status</th>
                                     {{-- @if ($item->status == 'delivered')
@@ -50,6 +54,10 @@
                                     <td>{{ $item->product_name }}</td>
                                     <td>{{ $item->distributor_name }}</td>
                                     <td>{{ $item->qty }}</td>
+                                    <td>{{ $item->price }}</td>
+                                    <td>{{ $item->qty *  $item->price}}</td>
+                                    <td>{{$item->collected_amount}}</td>
+                                    <td>{{$item->paid_amount}}</td>
                                     <td>{{ $item->date }}</td>
                                     <td>
                                         <select id="select_status{{ $loop->index+1 }}" onChange="orderStatusChange({{ $item->id }}, 'select_status{{ $loop->index+1 }}')" class="form-select form-control" name="status">
@@ -100,11 +108,14 @@
                                                   <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                                  {{-- <li><a href="{{ route('consumer_payment_history',$consumer->id) }}">Payment History</a></li>
-                                                  <li><a href="{{ route('consumer_sales_history',$consumer->id) }}">Sales History</a></li>
-                                                  @if (auth()->user()->role == "admin")
-                                                  <li><a href="{{ route('collect_due_payment',$consumer->id) }}">Pay</a></li>
-                                                  @endif --}}
+                                                  <li><a href="">Payment History</a></li>
+                                                  {{-- <li><a href="">Sales History</a></li> --}}
+                                                  @if (auth()->user()->role == "sr")
+                                                    <li><a href="{{route('collect_payment', $item->id)}}">Collect Payment</a></li>
+                                                  @endif
+                                                  @if (auth()->user()->role == "account")
+                                                    <li><a href="{{route('collect_payment', $item->id)}}">Get Payment</a></li>
+                                                  @endif
                                                 </ul>
                                               </div>
                                         </td>
