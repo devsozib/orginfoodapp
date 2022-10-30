@@ -10,6 +10,7 @@ use App\Models\Branch;
 use App\Models\Product;
 use App\Models\Distributor;
 use Illuminate\Http\Request;
+use App\Models\PaymentHistory;
 
 class OrderController extends Controller
 {
@@ -47,8 +48,8 @@ class OrderController extends Controller
         ->join('users' , 'srs.user_id', '=', 'users.id')
         ->where([$condition])
         ->where($condition2)
-        ->select('orders.id','users.name as sr_name', 'products.name as product_name',
-         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'orders.date', 'orders.status')
+        ->select('orders.id','users.name as sr_name', 'products.name as product_name', 'products.price',
+         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'orders.collected_amount', 'orders.paid_amount', 'orders.date', 'orders.status')
         ->get();
 
 
@@ -113,6 +114,8 @@ class OrderController extends Controller
             $orders->qty =  $qty;
             $orders->status = "pending";
             $orders->date =  $date ;
+            $orders->collected_amount = 0;
+            $orders->paid_amount  = 0;
             $orders->save();
             return back()->with('success', "Order Place successful");
         }
@@ -122,6 +125,32 @@ class OrderController extends Controller
 
 
 
+    }
+
+    public function collectPayment($id){
+
+        $order = Order::findOrFail($id);
+        return view('Order/collectPayment')->with(compact('order'));
+
+    }
+
+    public function collectEntry(Request $request){
+        //dd($request->all());
+        $order = Order::findOrFail($request->order_id);
+
+        $order->collected_amount += $request->collection_amount;
+        $order->save();
+
+        $paymentHistory = PaymentHistory::where('order_id',$order->id)->first();
+
+        $paymentHistory = new PaymentHistory;
+
+        $paymentHistory->order_id = $order->id;
+        $paymentHistory->collected_amount = $request->collection_amount;
+        $paymentHistory->date = $order->date;
+        $paymentHistory->save();
+
+        return back();
     }
 
     /**
