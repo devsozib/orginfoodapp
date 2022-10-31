@@ -62,32 +62,32 @@
                                     <td>
                                         <select id="select_status{{ $loop->index+1 }}" onChange="orderStatusChange({{ $item->id }}, 'select_status{{ $loop->index+1 }}')" class="form-select form-control" name="status">
 
-                                      @if ($item->status == "pending")
-                                       <option {{  $item->status == 'pending'? 'selected disabled hidden': "" }}>Pending</option>
-                                      @endif
+                                            @if ($item->status == "pending")
+                                            <option {{  $item->status == 'pending'? 'selected disabled hidden': "" }}>Pending</option>
+                                            @endif
 
-                                        @if ((auth()->user()->role == "admin" && $item->status == "pending") or $item->status == 'cancel')
-                                        <option {{  $item->status == 'cancel'? 'selected disabled hidden': "" }} value="cancel">Cancel</option>
-                                        @endif
+                                            @if ((auth()->user()->role == "admin" && $item->status == "pending") or $item->status == 'cancel')
+                                            <option {{  $item->status == 'cancel'? 'selected disabled hidden': "" }} value="cancel">Cancel</option>
+                                            @endif
 
-                                        @if ((auth()->user()->role == "admin" && $item->status == "pending") or $item->status == 'delivered')
-                                        <option  {{  $item->status == 'delivered'? 'selected disabled hidden':""}}  value="delivered">Delivered</option>
-                                        @endif
+                                            @if ((auth()->user()->role == "admin" && $item->status == "pending") or $item->status == 'delivered')
+                                            <option  {{  $item->status == 'delivered'? 'selected disabled hidden':""}}  value="delivered">Delivered</option>
+                                            @endif
 
-                                        @if ((auth()->user()->role == "sr" && $item->status == 'delivered') or $item->status == 'due' )
+                                            {{-- @if ((auth()->user()->role == "sr" && $item->status == 'delivered') or $item->status == 'due' )
 
-                                        <option {{  $item->status == 'due'? 'selected disabled hidden':""}} value="due">Due</option>
+                                            <option {{  $item->status == 'due'? 'selected disabled hidden':""}} value="due">Due</option>
 
-                                        @endif
+                                            @endif
 
-                                        @if ((auth()->user()->role == "sr" && ($item->status == 'delivered' || $item->status == 'due')) or $item->status == 'collected')
-                                        <option {{  $item->status == 'collected'? 'selected disabled hidden':""}}  value="collected">Collected</option>
-                                        @endif
+                                            @if ((auth()->user()->role == "sr" && ($item->status == 'delivered' || $item->status == 'due')) or $item->status == 'collected')
+                                            <option {{  $item->status == 'collected'? 'selected disabled hidden':""}}  value="collected">Collected</option>
+                                            @endif
 
 
-                                        @if ((auth()->user()->role == "account" && ($item->status == 'due' || $item->status == 'collected'||  $item->status == 'delivered')) or $item->status == 'paid')
-                                        <option {{  $item->status == 'paid'? 'selected disabled hidden':""}}  value="paid">Paid</option>
-                                        @endif
+                                            @if ((auth()->user()->role == "account" && ($item->status == 'due' || $item->status == 'collected'||  $item->status == 'delivered')) or $item->status == 'paid')
+                                            <option {{  $item->status == 'paid'? 'selected disabled hidden':""}}  value="paid">Paid</option>
+                                            @endif --}}
                                       </select>
 
                                       {{-- @if(session()->get('qty'))

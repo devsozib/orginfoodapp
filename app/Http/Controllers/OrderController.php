@@ -66,14 +66,14 @@ class OrderController extends Controller
     {
         //  $branches = Branch::get();
 
-         $sr = Sr::where('user_id', auth()->user()->id)->first('id');
-         $distributors = Distributor::where('sr_id', $sr->id)->get();
-         $product_information = Sr::join('stocks','stocks.branch_id','=','srs.branch_id')
-         ->join('products','products.id','=','stocks.product_id')
-         ->where('srs.user_id', auth()->user()->id)
-         ->where('stocks.qty','>', 0)
-         ->select('stocks.product_id','stocks.qty','products.name')
-         ->get();
+        $sr = Sr::where('user_id', auth()->user()->id)->first('id');
+        $distributors = Distributor::where('sr_id', $sr->id)->get();
+        $product_information = Sr::join('stocks','stocks.branch_id','=','srs.branch_id')
+            ->join('products','products.id','=','stocks.product_id')
+            ->where('srs.user_id', auth()->user()->id)
+            ->where('stocks.qty','>', 0)
+            ->select('stocks.product_id','stocks.qty','products.name')
+            ->get();
 
 
          return view('order.placeorder',compact('distributors','product_information'));
