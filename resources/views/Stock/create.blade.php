@@ -45,7 +45,7 @@
                                                 <select id="unit" class="form-control" name="product_id" value="">
                                                     <option value="" selected hidden disabled>-- Please select --</option>
                                                     @foreach ($products as $product)
-                                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                                    <option value="{{ $product->product_id }}">{{ $product->product_name.'-'.$product->grade_name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

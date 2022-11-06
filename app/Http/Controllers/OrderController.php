@@ -48,11 +48,12 @@ class OrderController extends Controller
         ->join('products', 'products.id', '=', 'orders.product_id')
         ->join('distributors', 'distributors.id', '=', 'orders.distributor_id')
         ->join('users' , 'srs.user_id', '=', 'users.id')
+        ->join('grades','products.grade_id','=','grades.id')
         ->leftJoin('stocks','stocks.product_id','=','products.id')
         ->where([$condition])
         ->where($condition2)
         ->select('orders.id','users.name as sr_name', 'products.name as product_name',    'products.price',
-         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'orders.collected_amount', 'orders.paid_amount', 'orders.date', 'orders.status','stocks.qty as available_qty')
+         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'orders.collected_amount', 'orders.paid_amount', 'orders.date', 'orders.status','stocks.qty as available_qty','grades.name as grade_name')
          ->orderBy('orders.id','desc')
          ->get();
 
@@ -74,8 +75,9 @@ class OrderController extends Controller
 
          $sr = Sr::where('user_id', auth()->user()->id)->first('id');
          $distributors = Distributor::where('sr_id', $sr->id)->get();
-         $product_information = Product::get();
-
+         $product_information = Product::join('grades','products.grade_id','=','grades.id')
+         ->select('products.id as product_id','products.name as product_name','grades.name as   grade_name')
+         ->get();
 
          return view('order.placeorder',compact('distributors','product_information'));
     }
@@ -312,7 +314,9 @@ class OrderController extends Controller
 
         if(auth()->user()->role  == 'super_admin'){
             $branches = Branch::where('type', 'wirehouse')->get();
-            $products = Product::get();
+            $products = Product::join('grades','products.grade_id','=','grades.id')
+            ->select('products.id as product_id','products.name as product_name','grades.name as   grade_name')
+            ->get();
             return view('order.salesHistory', compact('branches', 'products'));
         }
 

@@ -14,7 +14,7 @@
                     <div class="header">
                         <h2>Add Admin</h2>
                         <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('users') }}">All User</a>
+                            <a class="btn-sm btn-primary float-right"href="{{ route('all_admin') }}">All Admin</a>
                         </ul>
                     </div>
                     <div class="body">
@@ -107,7 +107,7 @@
                     <div class="header">
                         <h2>Add SR</h2>
                         <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('users') }}">All Users</a>
+                            <a class="btn-sm btn-primary float-right"href="{{ route('all_srs') }}">All SR'S</a>
                         </ul>
                     </div>
                     <div class="body">

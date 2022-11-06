@@ -75,6 +75,8 @@ Route::middleware(['auth'])->group(function (){
         Route::middleware(['checkSuperAdmin'])->group(function (){
             //Users Routes Start Here
             Route::get('/users', [UserController::class, 'index'])->name('users');
+            Route::get('/all-admin', [UserController::class, 'allAdmin'])->name('all_admin');
+            Route::get('/all-srs', [UserController::class, 'allSrs'])->name('all_srs');
             Route::get('/create-users', [UserController::class, 'create'])->name('create_user');
             Route::post('/store_admin',[UserController::class, 'storeAdmin'])->name('store_admin');
             Route::post('/store_sr',[UserController::class, 'storeSR'])->name('store_sr');

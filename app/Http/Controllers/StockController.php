@@ -55,9 +55,12 @@ class StockController extends Controller
      */
     public function create()
     {
-        $grades = Grade::get();
-        $products = Product::get();
-        return view('stock.create', compact('products','grades'));
+        // $grades = Grade::get();
+        $products = Product::join('grades','products.grade_id','=','grades.id')
+        ->select('products.id as product_id','products.name as product_name','grades.name as   grade_name')
+        ->get();
+        // return $products;
+        return view('stock.create', compact('products'));
     }
 
     /**

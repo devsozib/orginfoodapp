@@ -11,7 +11,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
                     <div class="header  d-print-none">
-                        <h2 class="mb-3">All Sales</h2><br>
+                        <h2 class="mb-3">All Sales History</h2><br>
                         <div class="row mt-3 d-print-none">
                             <div class="col-12 col-md-2">
                                 @if(auth()->user()->role == 'super_admin')
@@ -44,7 +44,7 @@
                                 <select onchange="getHistoryTable()" class="form-select form-control" aria-label="Default select example" id="product">
                                     <option value="" selected>All</option>
                                     @foreach ($products as $product)
-                                        <option value="{{$product->id}}">{{$product->name}}</option>
+                                        <option value="{{$product->product_id}}">{{$product->product_name.'-'.$product->grade_name}}</option>
                                     @endforeach
                                   </select>
                             </div>
@@ -59,13 +59,19 @@
                         </div>
 
                     </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
                     <div class="body printable" >
                         <div class="table-responsive printable" id="sales_history_table">
-
                         </div>
-
                     </div>
                 </div>
+
             </div>
         </div>
         <!-- #END# Basic Table -->
