@@ -56,7 +56,7 @@
                                         <th scope="row">{{ $loop->index+1 }}</th>
                                         <td colspan="1">{{ $item->sr_name }}</td>
                                         <td>{{ $item->branch_name }}</td>
-                                        <td>{{ $item->product_name }}</td>
+                                        <td>{{ $item->product_name.'-'.$item->grade_name }}</td>
                                         <td>{{ $item->distributor_name }}</td>
                                         @if (auth()->user()->role != 'sr')
                                         <td>{{ $item->available_qty ? $item->available_qty : 0 }}</td>
@@ -154,7 +154,7 @@
     </div>
 </section>
 
-<script type="text/javascript">
+<script>
 function orderStatusChange(id, item_id){
 
 

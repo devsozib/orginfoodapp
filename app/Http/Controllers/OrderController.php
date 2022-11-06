@@ -76,8 +76,9 @@ class OrderController extends Controller
 
          $sr = Sr::where('user_id', auth()->user()->id)->first('id');
          $distributors = Distributor::where('sr_id', $sr->id)->get();
-         $product_information = Product::get();
-
+         $product_information = Product::join('grades','products.grade_id','=','grades.id')
+         ->select('products.id as product_id','products.name as product_name','grades.name as   grade_name')
+         ->get();
 
          return view('order.placeorder',compact('distributors','product_information'));
     }
@@ -314,7 +315,9 @@ class OrderController extends Controller
 
         if(auth()->user()->role  == 'super_admin'){
             $branches = Branch::where('type', 'wirehouse')->get();
-            $products = Product::get();
+            $products = Product::join('grades','products.grade_id','=','grades.id')
+            ->select('products.id as product_id','products.name as product_name','grades.name as   grade_name')
+            ->get();
             return view('order.salesHistory', compact('branches', 'products'));
         }
 

@@ -20,10 +20,27 @@ class UserController extends Controller
         ->select('users.id','users.name as user_name','users.email','users.role','branches.name as branch_name')
         ->whereNot('users.role','super_admin')
         ->get();
+
         return view('users.index',compact('users'));
 
     }
+  public function allAdmin(){
+    $users = User::leftJoin('branches', 'branches.user_id','=','users.id')
+    ->select('users.id','users.name as user_name','users.email','users.role','branches.name as branch_name')
+    ->where('users.role','admin')
+    ->get();
 
+
+    return view('users.admins',compact('users'));
+  }
+
+  public function allSrs(){
+            $srs = User::join('srs','srs.user_id','=','users.id')
+            ->join('branches','srs.branch_id','=','branches.id')
+            ->select('users.name as user_name','branches.name as branch_name','users.email','srs.phone as phone')
+            ->get();
+            return view('users.srs',compact('srs'));
+  }
     protected function create(){
         $branches = Branch::where('is_deleted', 0)->get();
         // return $branches;
@@ -32,7 +49,7 @@ class UserController extends Controller
     }
 
     protected function storeAdmin(Request $request){
-
+        //   return $request->all();
         $request->validate([
             'name'=>'required','string','max:255',
             'email' => 'required', 'string', 'email', 'max:255', 'unique:users',

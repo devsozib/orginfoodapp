@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sr;
+use App\Models\Order;
 use App\Models\Branch;
+use App\Models\Distributor;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -25,6 +28,10 @@ class HomeController extends Controller
     public function index(Request $request)
     {
 
-        return view('home');
+        $branch = Branch::count();
+        $sr = Sr::count();
+        $distributor = Distributor::count();
+        $order = Order::where('status','delivered')->count();
+        return view('home',compact('branch','sr','distributor','order'));
     }
 }

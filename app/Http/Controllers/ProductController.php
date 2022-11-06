@@ -48,7 +48,7 @@ class ProductController extends Controller
             try{
                 $data = $request->all();
                 $product = new Product;
-                $product->name = $data['name'].'-'.$gradeName->name;
+                $product->name = $data['name'];
                 $product->unit = $data['unit'];
                 $product->grade_id = $grade_id;
                 $product->price = $data['price'];
