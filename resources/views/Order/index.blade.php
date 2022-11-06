@@ -154,7 +154,7 @@
     </div>
 </section>
 
-<script type="text/javascript">
+<script>
 function orderStatusChange(id, item_id){
 
 

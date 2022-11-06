@@ -8,7 +8,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>OrginFood Application</title>
     <!-- Favicon-->
-    <link rel="icon" href="images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="{{ asset('assets') }}/images/cropped-Orgin-English-Logo-01-1-270x270.png" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&amp;subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
@@ -26,7 +26,7 @@
     <!-- Custom Css -->
     <link href="{{ asset('assets') }}/css/style.css" rel="stylesheet">
     <link href="{{ asset('assets') }}/css/themes/all-themes.css" rel="stylesheet" />
-      @vite(['resources/js/app.js'])
+      {{-- @vite(['resources/js/app.js']) --}}
      {{-- <script src="{{ asset('js/app.25fef93c.js')}}" defer></script> --}}
 
      <style>
