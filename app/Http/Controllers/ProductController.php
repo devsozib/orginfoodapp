@@ -10,6 +10,7 @@ use App\Models\Branch;
 use App\Models\Product;
 use App\Models\Production;
 use App\Models\RawProduct;
+use App\Models\StockinHistory;
 use App\Models\FactoryStock;
 use Illuminate\Http\Request;
 use App\Models\MaterialsStock;
@@ -230,6 +231,64 @@ class ProductController extends Controller
             ]);
 
             // return $productions;
+
+    }
+
+
+    protected function purchaseHistory(){
+        if(auth()->user()->role  == 'super_admin'){
+            $branches = Branch::where('type', 'wirehouse')->get();
+            $products = Product::get();
+            return view('order.purchaseHistory', compact('branches', 'products'));
+        }
+
+        if(auth()->user()->role  == 'admin' || auth()->user()->role  == 'sr'){
+            $products = Product::get();
+            return view('order.purchaseHistory', compact('products'));
+        }
+    }
+
+    function purchaseHistoryTable(Request $request){
+        $branchId = $request->branch;
+        $productId = $request->product;
+        $from = $request->from;
+        $to = $request->to;
+
+        if(auth()->user()->role == 'admin'){
+            $brance = Branch::where('user_id', auth()->user()->id)->first();
+            if( !($brance && $brance->type == "wirehouse") ){
+                return abort(404);
+            }
+            $branchId =  $brance->id;
+        }
+
+        if($branchId == ''){
+            $condition = ['branches.id', '!=', 0];
+        }else{
+            $condition = ['branches.id', '=', $branchId];
+        }
+
+        if($productId == ''){
+            $condition2 = ['products.id', '!=', 0];
+        }else{
+            $condition2 = ['products.id', '=', $productId];
+        }
+
+        if($from == ''){
+            $from = "0000-00-00";
+        }
+        if($to == ''){
+            $to = date('Y-m-d');
+        }
+
+       $stockinHistories = StockinHistory::join('branches', 'branches.id', '=', 'stockin_histories.branch_id')
+                            ->join('products', 'products.id', '=', 'stockin_histories.product_id')
+                            ->where([$condition])
+                            ->where([$condition2])
+                            ->whereBetween('stockin_histories.created_at',array($from,$to))
+                            ->select('branches.name as branch_name','products.id', 'products.name', 'stockin_histories.qty', 'stockin_histories.created_at')
+                            ->get();
+        return view('product.purchaseHistoryTable')->with(compact('stockinHistories'));
 
     }
 

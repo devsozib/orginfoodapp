@@ -1,6 +1,6 @@
 <section>
     <!-- Left Sidebar -->
-    <aside id="leftsidebar" class="sidebar">
+    <aside id="leftsidebar" class="sidebar d-print-none">
         <!-- User Info -->
         <div class="user-info">
             <div class="image">
@@ -183,7 +183,7 @@
                 @endif
 
 
-                @if (auth()->user()->role == "admin" and !$check_factory)
+                @if (auth()->user()->role == "admin" and !$check_factory )
                 <li>
                     <a href="{{ route('orders') }}">
                         <i class="material-icons">request_page</i>
@@ -191,6 +191,13 @@
                     </a>
                 </li>
                 @endif
+
+
+
+
+
+
+
               @if (auth()->user()->role == "sr")
                 <li>
                     <a href="{{ route('order_place') }}">
@@ -212,6 +219,33 @@
                         <span>SR Order Status</span>
                     </a>
                 </li>
+               @endif
+
+               @if ( auth()->user()->role == "super_admin" or (auth()->user()->role == "admin" and !$check_factory))
+               <li>
+                   <a href="{{ route('purchase_history') }}">
+                       <i class="material-icons">history</i>
+                       <span>Purchase History</span>
+                   </a>
+               </li>
+               @endif
+
+               @if ( auth()->user()->role == "super_admin" or (auth()->user()->role == "admin" and !$check_factory) or auth()->user()->role == "sr")
+               <li>
+                   <a href="{{ route('sales_history') }}">
+                       <i class="material-icons">history</i>
+                       <span>Sales History</span>
+                   </a>
+               </li>
+               @endif
+
+               @if ( auth()->user()->role == "super_admin" or (auth()->user()->role == "admin" and !$check_factory) or auth()->user()->role == "sr")
+               <li>
+                   <a href="{{ route('payment_history') }}">
+                       <i class="material-icons">history</i>
+                       <span>payment History</span>
+                   </a>
+               </li>
                @endif
 
 

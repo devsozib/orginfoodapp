@@ -47,7 +47,7 @@
                                                 <select id="unit" class="form-control" name="product_id" value="">
                                                     <option value="" selected hidden disabled>-- Please select --</option>
                                                     @foreach ($product_information as $product)
-                                                    <option value="{{ $product->product_id }}">{{ $product->name }}</option>
+                                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -63,23 +63,14 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                </div>
-
-
-
-
+                                  </div>
                                 </div>
 
                                 <div class="row clearfix">
-
-
                                     <div class="col-sm-6">
-                                        <label class="">Quantity</label>
-
-                                        <input type="number" class="form-control" placeholder="Quantity" name="qty" required>
-
-
-                                        @error('qty')
+                                        <label class="">Request Quantity</label>
+                                        <input type="number" class="form-control" placeholder="Quantity" name="request_qty" required>
+                                        @error('request_qty')
                                         <span class="text-danger">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -89,8 +80,8 @@
 
                                     <div class="col-sm-6">
                                             <div class="form-line">
-                                                <label class="">Date</label>
-                                                <input type="date" class="form-control" placeholder="" name="date" required>
+                                                <label class="">In Date</label>
+                                                <input type="date" class="form-control" placeholder="" name="in_date" required>
                                                 @error('date')
                                                     <span class="text-danger">
                                                         <strong>{{ $message }}</strong>

@@ -17,9 +17,12 @@
                            All Shift Stock
 
                         </h2>
+
                         <ul class="header-dropdown m-r--5">
                             <a class="btn-sm btn-primary float-right"href="{{ route('shift_stock_create') }}">Add Shift Stock</a>
                         </ul>
+                        @endif
+
                     </div>
                     <div class="body table-responsive">
                         <table class="table">

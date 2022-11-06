@@ -13,24 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('stockin_histories', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('sr_id')->unsigned();
-            $table->foreign('sr_id')->references('id')->on('srs');
-
             $table->bigInteger('branch_id')->unsigned();
             $table->foreign('branch_id')->references('id')->on('branches');
-            $table->bigInteger('distributor_id')->unsigned();
-            $table->foreign('distributor_id')->references('id')->on('distributors');
-
             $table->bigInteger('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products');
             $table->integer('qty');
-
-            $table->string('status');
-            $table->string('date');
-            $table->string('delivery_date')->nullable();
-
             $table->boolean('is_deleted')->default(0);
             $table->rememberToken();
             $table->timestamps();

@@ -10,9 +10,11 @@ const app = createApp({});
 import purchaseMaterialsTable from './components/purchaseMaterialsTable.vue';
 import allProduction from './components/allProduction.vue';
 import fileUpload from './components/file_upload.vue';
+import notificationSend from './components/notificationSend.vue';
 
 app.component('purchase-materials-table', purchaseMaterialsTable);
 app.component('all-production', allProduction);
+app.component('notification-send', notificationSend);
 // app.component('vue-x', vueEx);
 app.component('file-upload', fileUpload);
 

@@ -27,7 +27,7 @@ class OrderController extends Controller
         if(auth()->user()->role == "admin"){
              $branch= Branch::where('user_id', auth()->user()->id)->first('id');
              $condition= ['orders.branch_id','=', $branch->id];
-             $condition2= [['orders.status','!=', 'cancel']];
+            $condition2= [['orders.status','!=', 'cancel']];
         }else if(auth()->user()->role == "sr"){
             $sr = Sr::where('user_id', auth()->user()->id)->first('id');
             $condition= ['orders.sr_id','=', $sr->id];
@@ -41,16 +41,22 @@ class OrderController extends Controller
             $condition2= [['orders.id','!=',0]];
         }
 
+        // return  $condition2;
+
         $orders = Order::join('branches', 'orders.branch_id','=','branches.id')
         ->join('srs', 'srs.id', '=', 'orders.sr_id')
         ->join('products', 'products.id', '=', 'orders.product_id')
         ->join('distributors', 'distributors.id', '=', 'orders.distributor_id')
         ->join('users' , 'srs.user_id', '=', 'users.id')
+        ->leftJoin('stocks','stocks.product_id','=','products.id')
         ->where([$condition])
         ->where($condition2)
-        ->select('orders.id','users.name as sr_name', 'products.name as product_name', 'products.price',
-         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'orders.collected_amount', 'orders.paid_amount', 'orders.date', 'orders.status')
-        ->get();
+        ->select('orders.id','users.name as sr_name', 'products.name as product_name',    'products.price',
+         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'orders.collected_amount', 'orders.paid_amount', 'orders.date', 'orders.status','stocks.qty as available_qty')
+         ->orderBy('orders.id','desc')
+         ->get();
+
+        // return  $orders;
 
 
 
@@ -66,14 +72,9 @@ class OrderController extends Controller
     {
         //  $branches = Branch::get();
 
-        $sr = Sr::where('user_id', auth()->user()->id)->first('id');
-        $distributors = Distributor::where('sr_id', $sr->id)->get();
-        $product_information = Sr::join('stocks','stocks.branch_id','=','srs.branch_id')
-            ->join('products','products.id','=','stocks.product_id')
-            ->where('srs.user_id', auth()->user()->id)
-            ->where('stocks.qty','>', 0)
-            ->select('stocks.product_id','stocks.qty','products.name')
-            ->get();
+         $sr = Sr::where('user_id', auth()->user()->id)->first('id');
+         $distributors = Distributor::where('sr_id', $sr->id)->get();
+         $product_information = Product::get();
 
 
          return view('order.placeorder',compact('distributors','product_information'));
@@ -91,21 +92,17 @@ class OrderController extends Controller
         // return $request->all();
         $product_id = $request->product_id;
         $distributors_id = $request->distributor_id;
-        $qty = $request->qty;
-        $date = $request->date;
+        $qty = $request->request_qty;
+        $date = $request->in_date;
 
         $request->validate([
             "product_id" => ['required','numeric'],
             "distributor_id" => ['required','numeric'],
-            "qty" => ['required','numeric'],
-            'date' => ['required', 'date'],
+            "request_qty" => ['required','numeric'],
+            'in_date' => ['required', 'date'],
         ]);
 
-
         $sr = Sr::where('user_id', auth()->user()->id)->first(['id','branch_id']);
-
-        $old_stock_qty = Stock::where('branch_id', $sr->branch_id)->where('product_id',$product_id)->first('qty');
-        if( $qty <= $old_stock_qty->qty){
             $orders = new Order;
             $orders->sr_id = $sr->id;
             $orders->branch_id = $sr->branch_id;
@@ -118,13 +115,6 @@ class OrderController extends Controller
             $orders->paid_amount  = 0;
             $orders->save();
             return back()->with('success', "Order Place successful");
-        }
-        else{
-            return back()->withErrors(['qty'=> "Quantity is not available"]);
-        }
-
-
-
     }
 
     public function collectPayment($id){
@@ -134,6 +124,10 @@ class OrderController extends Controller
 
     }
 
+    public function getPayment($id){
+        $order = Order::findOrFail($id);
+        return view('Order/getPayment')->with(compact('order'));
+    }
     public function collectEntry(Request $request){
         //dd($request->all());
         $order = Order::findOrFail($request->order_id);
@@ -147,6 +141,28 @@ class OrderController extends Controller
 
         $paymentHistory->order_id = $order->id;
         $paymentHistory->collected_amount = $request->collection_amount;
+        $paymentHistory->paid_amount = 0;
+        $paymentHistory->date = $order->date;
+        $paymentHistory->save();
+
+        return back();
+    }
+
+
+  public function getEntry(Request $request){
+        //dd($request->all());
+        $order = Order::findOrFail($request->order_id);
+
+        $order->paid_amount += $request->get_amount;
+        $order->save();
+
+        $paymentHistory = PaymentHistory::where('order_id',$order->id)->first();
+
+        $paymentHistory = new PaymentHistory;
+
+        $paymentHistory->order_id = $order->id;
+        $paymentHistory->collected_amount = 0;
+        $paymentHistory->paid_amount = $request->get_amount;
         $paymentHistory->date = $order->date;
         $paymentHistory->save();
 
@@ -206,18 +222,270 @@ class OrderController extends Controller
             $orders_qty = $orders->qty;
 
 
+
             $stock = Stock::where('product_id', $product_id)->where('branch_id', $branch_id)->first();
 
-            if($request->data== 'delivered' && $orders->qty > $stock->qty){
+            if(($request->data== 'delivered') && ($orders->qty > $stock->qty)){
                 session()->flash('qty', 'Quantity not available');
            }
            else{
                 $orders->status = $request->data;
+                $orders->delivery_date = date('Y-m-d');
                 $orders->update();
                 if($request->data== 'delivered'){
                     $stock->qty -= $orders_qty;
                     $stock->update();
                 }
            }
+    }
+
+    protected function getSRs(Request $request){
+
+            $options = "<option value='' selected>All</option>";
+            $branchId = $request->branch_id;
+            if(auth()->user()->role == 'admin'){
+                $brance = Branch::where('user_id', auth()->user()->id)->first();
+                if( !($brance && $brance->type == "wirehouse") ){
+                    return abort(404);
+                }
+                $branchId = $brance->id;
+            }
+            if($branchId == ""){
+                $condition = ['srs.branch_id', '!=', 0];
+            }else{$condition = ['srs.branch_id', '=', $branchId];}
+
+            $srs = Sr::join('users', 'users.id', '=', 'srs.user_id')
+                        ->where([$condition])
+                        ->select('srs.id', 'users.name', 'srs.phone')
+                        ->get();
+
+            foreach ($srs as $sr){
+                $options .=  "<option value='$sr->id'>$sr->name</option>";
+            }
+            return $options;
+
+    }
+
+    protected function getDistributors(Request $request){
+
+        $branchId = $request->branch_id;
+        $srId = $request->sr_id;
+        $options = "<option value='' selected>All</option>";
+
+        if(auth()->user()->role == 'admin'){
+            $brance = Branch::where('user_id', auth()->user()->id)->first();
+            if( !($brance && $brance->type == "wirehouse") ){
+                return abort(404);
+            }
+            $branchId = $brance->id;
+        }
+        if(auth()->user()->role == 'sr'){
+            $sr = Sr::where('user_id', auth()->user()->id)->first();
+            $branchId = $sr->branch_id;
+            $srId = $sr->id;
+        }
+
+        if($branchId == ""){
+            $condition1 = ['branches.id', '!=', 0];
+        }else{$condition1 = ['branches.id', '=', $branchId];}
+
+        if($srId == ""){
+            $condition2 = ['srs.id', '!=', 0];
+        }else{$condition2 = ['srs.id', '=', $srId];}
+
+        // return $condition1;
+        $distributors = Distributor::join('srs', 'srs.id', '=', 'distributors.sr_id')
+                        ->join('branches', 'branches.id', '=', 'srs.branch_id')
+                        ->where('branches.type', 'wirehouse')
+                        ->where([$condition1])
+                        ->where([$condition2])
+                        ->select('distributors.id', 'distributors.name', 'distributors.phone')
+                        ->get();
+
+        foreach ($distributors as $key => $distributor) {
+            $options .= "<option value='$distributor->id'>$distributor->name</option>";
+        }
+        return $options;
+    }
+
+    protected function salesHistory(){
+
+        if(auth()->user()->role  == 'super_admin'){
+            $branches = Branch::where('type', 'wirehouse')->get();
+            $products = Product::get();
+            return view('order.salesHistory', compact('branches', 'products'));
+        }
+
+        if(auth()->user()->role  == 'admin' || auth()->user()->role  == 'sr'){
+            $products = Product::get();
+            return view('order.salesHistory', compact('products'));
+        }
+    }
+
+    protected function salesHistoryTable(Request $request){
+        $branchId = $request->branch;
+        $srId = $request->sr;
+        $distributorId = $request->distributor;
+        $productId = $request->product;
+        $from = $request->from;
+        $to = $request->to;
+
+        if(auth()->user()->role == 'admin'){
+            $brance = Branch::where('user_id', auth()->user()->id)->first();
+            if( !($brance && $brance->type == "wirehouse") ){
+                return abort(404);
+            }
+            $branchId =  $brance->id;
+        }
+
+
+        if(auth()->user()->role == 'sr'){
+            $sr = Sr::where('user_id', auth()->user()->id)->first();
+            $branchId = $sr->branch_id;
+            $srId = $sr->id;
+        }
+
+
+        if($branchId == ''){
+            $condition0 = ['branches.id', '!=', 0];
+        }else{
+            $condition0 = ['branches.id', '=', $branchId];
+        }
+
+        if($srId == ''){
+            $condition = ['srs.id', '!=', 0];
+        }else{
+            $condition = ['srs.id', '=', $srId];
+        }
+        if($distributorId == ''){
+            $condition1 = ['distributors.id', '!=', 0];
+        }else{
+            $condition1 = ['distributors.id', '=', $distributorId];
+        }
+        if($productId == ''){
+            $condition2 = ['products.id', '!=', 0];
+        }else{
+            $condition2 = ['products.id', '=', $productId];
+        }
+
+        if($from == ''){
+            $from = "0000-00-00";
+        }
+        if($to == ''){
+            $to = date('Y-m-d');
+        }
+
+
+
+        $orders = Order::join('branches', 'orders.branch_id','=','branches.id')
+        ->join('srs', 'srs.id', '=', 'orders.sr_id')
+        ->join('products', 'products.id', '=', 'orders.product_id')
+        ->join('distributors', 'distributors.id', '=', 'orders.distributor_id')
+        ->join('users' , 'srs.user_id', '=', 'users.id')
+        ->where('orders.status', 'delivered')
+        ->where([ $condition0])
+        ->where([$condition])
+        ->where([$condition1])
+        ->where([$condition2])
+        ->whereBetween('delivery_date',array($from,$to))
+        ->select('orders.id','users.name as sr_name', 'products.name as product_name',    'products.price',
+         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'orders.collected_amount', 'orders.paid_amount', 'orders.delivery_date as date')
+         ->orderBy('orders.id','desc')
+         ->get();
+
+
+        return view('Order.historyTable', compact('orders'));
+    }
+
+    protected function paymentHistoryTable(Request $request){
+        // return 5/0;
+        $branchId = $request->branch;
+        $srId = $request->sr;
+        $distributorId = $request->distributor;
+        $productId = $request->product;
+        $from = $request->from;
+        $to = $request->to;
+
+        if(auth()->user()->role == 'admin'){
+            $brance = Branch::where('user_id', auth()->user()->id)->first();
+            if( !($brance && $brance->type == "wirehouse") ){
+                return abort(404);
+            }
+            $branchId =  $brance->id;
+        }
+
+
+        if(auth()->user()->role == 'sr'){
+            $sr = Sr::where('user_id', auth()->user()->id)->first();
+            $branchId = $sr->branch_id;
+            $srId = $sr->id;
+        }
+
+
+        if($branchId == ''){
+            $condition0 = ['branches.id', '!=', 0];
+        }else{
+            $condition0 = ['branches.id', '=', $branchId];
+        }
+
+        if($srId == ''){
+            $condition = ['srs.id', '!=', 0];
+        }else{
+            $condition = ['srs.id', '=', $srId];
+        }
+        if($distributorId == ''){
+            $condition1 = ['distributors.id', '!=', 0];
+        }else{
+            $condition1 = ['distributors.id', '=', $distributorId];
+        }
+        if($productId == ''){
+            $condition2 = ['products.id', '!=', 0];
+        }else{
+            $condition2 = ['products.id', '=', $productId];
+        }
+
+        if($from == ''){
+            $from = "0000-00-00";
+        }
+        if($to == ''){
+            $to = date('Y-m-d');
+        }
+
+
+
+
+        $orders = PaymentHistory::join('orders','orders.id', '=', 'payment_histories.order_id')
+        ->join('branches', 'orders.branch_id','=','branches.id')
+        ->join('srs', 'srs.id', '=', 'orders.sr_id')
+        ->join('products', 'products.id', '=', 'orders.product_id')
+        ->join('distributors', 'distributors.id', '=', 'orders.distributor_id')
+        ->join('users' , 'srs.user_id', '=', 'users.id')
+        ->where('orders.status', 'delivered')
+        ->where([ $condition0])
+        ->where([$condition])
+        ->where([$condition1])
+        ->where([$condition2])
+        ->whereBetween('payment_histories.date',array($from,$to))
+        ->select('payment_histories.id','users.name as sr_name', 'products.name as product_name',    'products.price',
+         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'payment_histories.collected_amount', 'payment_histories.paid_amount', 'payment_histories.date')
+         ->orderBy('payment_histories.id','desc')
+         ->get();
+
+         return view('Order.paymentHistoryTable', compact('orders'));
+
+
+    }
+
+    protected function paymentHistory(){
+        if(auth()->user()->role  == 'super_admin'){
+            $branches = Branch::where('type', 'wirehouse')->get();
+            $products = Product::get();
+            return view('order.warehousePaymentHistory', compact('branches', 'products'));
+        }
+
+        if(auth()->user()->role  == 'admin' || auth()->user()->role  == 'sr'){
+            $products = Product::get();
+            return view('order.warehousePaymentHistory', compact('products'));
+        }
     }
 }

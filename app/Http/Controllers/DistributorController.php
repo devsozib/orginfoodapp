@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Branch;
 use App\Models\Distributor;
 use Illuminate\Http\Request;
+use App\Models\PaymentHistory;
 use Illuminate\Support\Facades\Validator;
 
 class DistributorController extends Controller
@@ -83,5 +84,15 @@ class DistributorController extends Controller
               $distributor->save();
               return back()->with('success',"Insert successfully");
         }
+    }
+
+    public function paymentHistory($id){
+
+            $paymentHistories = PaymentHistory::where('order_id',$id)->get();
+            // return $paymentHistories;
+            return view('order.paymentHistory',compact('paymentHistories'));
+
+
+
     }
 }

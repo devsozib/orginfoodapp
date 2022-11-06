@@ -26,10 +26,64 @@
     <!-- Custom Css -->
     <link href="{{ asset('assets') }}/css/style.css" rel="stylesheet">
     <link href="{{ asset('assets') }}/css/themes/all-themes.css" rel="stylesheet" />
-      @vite(['resources/js/app.js'])
+      {{-- @vite(['resources/js/app.js']) --}}
      {{-- <script src="{{ asset('js/app.25fef93c.js')}}" defer></script> --}}
 
+     <style>
+        .custom-select{
+            display: block;
+            padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+            -moz-padding-start: calc(0.75rem - 3px);
+            font-size: 1.5rem;
+            color: #767676;
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
 
+        }
+
+
+        @media print {
+            *{
+                /* display: none; */
+            }
+            .d-print-inline {
+                display:inline!important
+            }
+            .d-print-inline-block {
+                display:inline-block!important
+            }
+            .d-print-block {
+                display:block!important
+            }
+            .d-print-grid {
+                display:grid!important
+            }
+            .d-print-table {
+                display:table!important
+            }
+            .d-print-table-row {
+                display:table-row!important
+            }
+            .d-print-table-cell {
+                display:table-cell!important
+            }
+            .d-print-flex {
+                display:flex!important
+            }
+            .d-print-inline-flex {
+                display:inline-flex!important
+            }
+            .d-print-none {
+                display:none!important
+            }
+            .printable{
+                width: 100% !important;
+                margin: 0px !important;
+            }
+
+        }
+     </style>
 
 </head>
 <body>
@@ -41,7 +95,7 @@
 
 
 
-        <section class="content">
+        <section class="content printable">
             @yield('content')
         </section>
 
@@ -74,6 +128,9 @@
       <script src="{{ asset('assets') }}/js/pages/examples/sign-in.js"></script>
 
       <script src="{{ asset('assets') }}/js/demo.js"></script>
+
+
+
 
       @if (session('success'))
       <script>

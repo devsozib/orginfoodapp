@@ -7,6 +7,8 @@ use App\Models\Stock;
 use App\Models\Branch;
 use App\Models\Product;
 use App\Models\FactoryStock;
+use App\Models\StockinHistory;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
@@ -69,30 +71,39 @@ class StockController extends Controller
          $product_id = $request->product_id;
          $qty = $request->qty;
 
-            $request->validate([
+        $request->validate([
             'product_id'=>'required','numeric',
             'qty' => 'required', 'numeric'
-             ]);
+        ]);
 
-    $branch_id = Branch::where('user_id', auth()->user()->id)->first('id');
-    $product = Product::where('id', $product_id)->first();
+        $branch = Branch::where('user_id', auth()->user()->id)->first('id');
+        $product = Product::where('id', $product_id)->first();
 
-    if($branch_id){
-    $stock_check = Stock::where('branch_id',$branch_id->id)->where('product_id', $product_id)->first();
+        if($branch){
+            $stock_check = Stock::where('branch_id',$branch->id)->where('product_id', $product_id)->first();
 
-          if($stock_check){
-            $stock_check->qty +=  $qty;
-            $stock_check->update();
-            return back()->with('success', "Updated successful");
-          }else{
-            $stockData = new Stock;
-            $stockData->branch_id = $branch_id->id;
-            $stockData->product_id = $product_id;
-            $stockData->qty = $qty;
-            $stockData->price = $qty*$product->price;
-            $stockData->save();
+            if($stock_check){
+                $stock_check->qty +=  $qty;
+                $stock_check->update();
+                //return back()->with('success', "Updated successful");
+            }else{
+                $stockData = new Stock;
+                $stockData->branch_id = $branch->id;
+                $stockData->product_id = $product_id;
+                $stockData->qty = $qty;
+                $stockData->price = $qty*$product->price;
+                $stockData->save();
+
+            }
+
+            $stockinHistory = new StockinHistory;
+            $stockinHistory->branch_id = $branch->id;
+            $stockinHistory->product_id = $product_id;
+            $stockinHistory->qty = $qty;
+            $stockinHistory->save();
+
             return back()->with('success', "Insert successfully");
-          }
+
         }
     }
 
@@ -139,6 +150,31 @@ class StockController extends Controller
     public function destroy(Stock $stock)
     {
         //
+    }
+
+    public function stockForSrRequest(Request $request){
+        //   return $request->all();
+
+        $newStockQty = $request->new_stock_qty;
+        $stock_id = $request->stock_id;
+        $request_qty = $request->request_qty;
+        $notification_id = $request->notification_id;
+
+
+        $stock = Stock::where('id',$stock_id)->first();
+        $notification = Notification::where('id',$notification_id)->first();
+        if($newStockQty >= $request_qty){
+            $stock->qty += $newStockQty;
+            $stock->update();
+            $notification->status = '0';
+            $notification->update();
+            return redirect()->back()->with('success','New stock quantity added success');
+        }else{
+            $stock->qty += $newStockQty;
+            $stock->update();
+            return redirect()->back()->with('success','New stock quantity added success');
+        }
+
     }
 
 
