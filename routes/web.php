@@ -72,27 +72,27 @@ Route::middleware(['auth'])->group(function (){
 
 
         //Super Admin Route
-            Route::middleware(['checkSuperAdmin'])->group(function (){
-                //Users Routes Start Here
-                Route::get('/users', [UserController::class, 'index'])->name('users');
-                Route::get('/create-users', [UserController::class, 'create'])->name('create_user');
-                Route::post('/store_admin',[UserController::class, 'storeAdmin'])->name('store_admin');
-                Route::post('/store_sr',[UserController::class, 'storeSR'])->name('store_sr');
-                Route::get('user-edit/{id}',[UserController::class, 'editUser'])->name('userEdit');
-                Route::patch('update-admin/{id}',[UserController::class, 'updateAdmin'])->name('updateAdmin');
-                Route::patch('update-sr/{id}',[UserController::class, 'updateSr'])->name('updateSr');
-                //Users Routes End Here
+        Route::middleware(['checkSuperAdmin'])->group(function (){
+            //Users Routes Start Here
+            Route::get('/users', [UserController::class, 'index'])->name('users');
+            Route::get('/create-users', [UserController::class, 'create'])->name('create_user');
+            Route::post('/store_admin',[UserController::class, 'storeAdmin'])->name('store_admin');
+            Route::post('/store_sr',[UserController::class, 'storeSR'])->name('store_sr');
+            Route::get('user-edit/{id}',[UserController::class, 'editUser'])->name('userEdit');
+            Route::patch('update-admin/{id}',[UserController::class, 'updateAdmin'])->name('updateAdmin');
+            Route::patch('update-sr/{id}',[UserController::class, 'updateSr'])->name('updateSr');
+            //Users Routes End Here
 
 
-                //Branch Routes Start
-                Route::get("/all-branches", [BranchController::class, 'index'])->name('branches');
-                Route::get('/add_branch_form', [BranchController::class, 'addBranchForm'])->name('add_branch_form');
-                Route::post('/add_branch', [BranchController::class, 'addBranch'])->name('add_branch');
-                Route::get('edit-branch/{id}', [BranchController::class, 'editBranch'])->name('branchEdit');
-                Route::patch('update-branch/{id}', [BranchController::class, 'updateBranch'])->name('updateBranch');
-                //Branch End Start
+            //Branch Routes Start
+            Route::get("/all-branches", [BranchController::class, 'index'])->name('branches');
+            Route::get('/add_branch_form', [BranchController::class, 'addBranchForm'])->name('add_branch_form');
+            Route::post('/add_branch', [BranchController::class, 'addBranch'])->name('add_branch');
+            Route::get('edit-branch/{id}', [BranchController::class, 'editBranch'])->name('branchEdit');
+            Route::patch('update-branch/{id}', [BranchController::class, 'updateBranch'])->name('updateBranch');
+            //Branch End Start
 
-            });
+        });
 
 
         Route::middleware(['checkAdmin'])->group(function(){
@@ -136,17 +136,17 @@ Route::middleware(['auth'])->group(function (){
     Route::post('store/grade',[GradeController::class, 'store'])->name('store_grade');
     //Product route end here
 
-  //Distributors Routes Start Here
-  Route::get('/distributors', [DistributorController::class, 'index'])->name('distributors');
-  Route::get('/create-distributors', [DistributorController::class, 'create'])->name('create_distributors');
-  Route::post('/store-distributors',[DistributorController::class, 'store'])->name('store_distributors');
-  //Distributors Routes end Here
+    //Distributors Routes Start Here
+    Route::get('/distributors', [DistributorController::class, 'index'])->name('distributors');
+    Route::get('/create-distributors', [DistributorController::class, 'create'])->name('create_distributors');
+    Route::post('/store-distributors',[DistributorController::class, 'store'])->name('store_distributors');
+    //Distributors Routes end Here
 
-  //Stock Routes start here
-   Route::get('stocks', [StockController::class, 'index'])->name('stocks');
-   Route::get('add-stock',[StockController::class, 'create'])->name('add_stock');
-   Route::post('store-stock',[StockController::class, 'store'])->name('store_stock');
-  //Stock Routes emd here
+    //Stock Routes start here
+    Route::get('stocks', [StockController::class, 'index'])->name('stocks');
+    Route::get('add-stock',[StockController::class, 'create'])->name('add_stock');
+    Route::post('store-stock',[StockController::class, 'store'])->name('store_stock');
+    //Stock Routes emd here
 
 
    //Shift Route start here
@@ -183,6 +183,24 @@ Route::middleware(['auth'])->group(function (){
 
    Route::post('collect-entry',[OrderController::class, 'collectEntry'])->name('collect_entry');
    Route::post('get-entry',[OrderController::class, 'getEntry'])->name('get_entry');
+
+
+   Route::get('get-srs', [OrderController::class, 'getSRs'])->name('get_srs');
+   Route::get('get-distributors', [OrderController::class, 'getDistributors'])->name('get_distributors');
+   Route::get('sales-history', [OrderController::class, 'salesHistory'])->name('sales_history');
+   Route::get('sales-history-table', [OrderController::class, 'salesHistoryTable'])->name('sales_history_table');
+
+   Route::get('purchase-history', [ProductController::class, 'purchaseHistory'])->name('purchase_history');
+   Route::get('purchase-history-table', [ProductController::class, 'purchaseHistoryTable'])->name('purchase_history_table');
+
+   Route::get('payment-history', [OrderController::class, 'paymentHistory'])->name('payment_history');
+   Route::get('payment-history-table', [OrderController::class, 'paymentHistoryTable'])->name('payment_history_table');
+
+
+
+
+
+
 
 
 
