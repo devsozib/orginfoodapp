@@ -1,4 +1,8 @@
-
+@php
+    $totalPrice = 0;
+    $totalCollected = 0;
+    $totalPaied = 0;
+@endphp
 
 <div class="container-fluid" style="display: flex; justify-content: end;">
     <div class="btn-group btn-group-sm d-print-none">
@@ -30,6 +34,11 @@
     <tbody>
 
     @foreach ($orders as $item)
+        @php
+            $totalPrice += ($item->qty *  $item->price);
+            $totalCollected += $item->collected_amount;
+            $totalPaied += $item->paid_amount;
+        @endphp
         <tr>
             <th scope="row">{{ $loop->index+1 }}</th>
             @if(auth()->user()->role == 'admin' or auth()->user()->role == 'super_admin')
@@ -53,3 +62,6 @@
     @endforeach
     </tbody>
 </table>
+<p class="text-end" style="text-align: end;">Total Price: {{$totalPrice}}</p>
+<p class="text-end" style="text-align: end;">Total Collected: {{$totalCollected}}</p>
+<p class="text-end" style="text-align: end;">Total Paied: {{$totalPaied}}</p>

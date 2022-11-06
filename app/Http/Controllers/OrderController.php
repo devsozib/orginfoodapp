@@ -23,7 +23,6 @@ class OrderController extends Controller
     {
 
 
-
         if(auth()->user()->role == "admin"){
              $branch= Branch::where('user_id', auth()->user()->id)->first('id');
              $condition= ['orders.branch_id','=', $branch->id];
@@ -38,21 +37,24 @@ class OrderController extends Controller
         }
         else{
             $condition= ['orders.id','!=',0];
-            $condition2= [['orders.id','!=',0]];
+            $condition2= ['orders.id','!=',0];
         }
 
-        // return  $condition2;
+        //  return  $branch->id;
 
-        $orders = Order::join('branches', 'orders.branch_id','=','branches.id')
+      $orders = Order::join('branches', 'branches.id','=','orders.branch_id')
         ->join('srs', 'srs.id', '=', 'orders.sr_id')
         ->join('products', 'products.id', '=', 'orders.product_id')
         ->join('distributors', 'distributors.id', '=', 'orders.distributor_id')
-        ->join('users' , 'srs.user_id', '=', 'users.id')
-        ->leftJoin('stocks','stocks.product_id','=','products.id')
+        ->join('users' , 'users.id', '=', 'srs.user_id')
+        ->leftJoin('stocks',function($join){
+            $join->on('stocks.product_id','=','orders.product_id')
+            ->where('stocks.branch_id', 'orders.branch_id');
+        })
         ->where([$condition])
         ->where($condition2)
-        ->select('orders.id','users.name as sr_name', 'products.name as product_name',    'products.price',
-         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'orders.collected_amount', 'orders.paid_amount', 'orders.date', 'orders.status','stocks.qty as available_qty')
+        ->select('orders.id','users.name as sr_name', 'products.id as product_id', 'products.name as product_name',    'products.price',
+         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'orders.collected_amount', 'orders.paid_amount', 'orders.date', 'orders.status','stocks.id as available_qty_id', 'stocks.qty as available_qty')
          ->orderBy('orders.id','desc')
          ->get();
 
