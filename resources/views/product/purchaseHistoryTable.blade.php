@@ -1,3 +1,9 @@
+<div class="container-fluid d-print-none" style="display: flex; justify-content: end;">
+    <div class="">
+        <a href="javascript:window.print()" class="btn btn-primary"><i class="material-icons">print</i>&nbsp;&nbsp;Print</a>
+        {{-- <a onclick="ck()"  class="btn btn-light border text-black-50 shadow-none" id="download"><i class="fa fa-download"></i> Download</a> --}}
+    </div>
+</div>
 <table class="table" >
     <thead>
         <tr>
@@ -20,7 +26,7 @@
                     <td>{{ $item->branch_name }}</td>
                 @endif
 
-            <td>{{ $item->name }}</td>
+            <td>{{ $item->name.'-'.$item->grade_name }}</td>
             <td>{{ $item->qty }}</td>
             <td>{{ $item->created_at }}</td>
 

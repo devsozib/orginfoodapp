@@ -29,8 +29,8 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th  scope="col">Collected Amount</th>
                                         <th scope="col">Paid Amount</th>
+                                        <th scope="col">Payment Type</th>
                                         <th  scope="col">Date</th>
 
                                     </tr>
@@ -40,8 +40,8 @@
                                 @forelse($paymentHistories as $item)
                                     <tr>
                                         <th scope="row">{{ $loop->index+1 }}</th>
-                                        <td colspan="1">{{ $item->collected_amount }}</td>
                                         <td colspan="1">{{ $item->paid_amount }}</td>
+                                        <td colspan="1">{{ $item->payment_type }}</td>
                                         <td>{{ $item->date }}</td>
 
                                     </tr>

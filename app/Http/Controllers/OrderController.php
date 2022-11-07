@@ -45,6 +45,7 @@ class OrderController extends Controller
       $orders = Order::join('branches', 'branches.id','=','orders.branch_id')
         ->join('srs', 'srs.id', '=', 'orders.sr_id')
         ->join('products', 'products.id', '=', 'orders.product_id')
+        ->join('grades','products.grade_id', '=', 'grades.id')
         ->join('distributors', 'distributors.id', '=', 'orders.distributor_id')
         ->join('users' , 'users.id', '=', 'srs.user_id')
         ->leftJoin('stocks',function($join){
@@ -54,7 +55,7 @@ class OrderController extends Controller
         ->where([$condition])
         ->where($condition2)
         ->select('orders.id','users.name as sr_name', 'products.id as product_id', 'products.name as product_name',    'products.price',
-         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'orders.collected_amount', 'orders.paid_amount', 'orders.date', 'orders.status','stocks.id as available_qty_id', 'stocks.qty as available_qty')
+         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'orders.collected_amount', 'orders.paid_amount', 'orders.date', 'orders.status','stocks.id as available_qty_id', 'stocks.qty as available_qty','grades.name as grade_name')
          ->orderBy('orders.id','desc')
          ->get();
 
@@ -129,7 +130,7 @@ class OrderController extends Controller
 
     public function getPayment($id){
         $order = Order::findOrFail($id);
-        return view('Order/getPayment')->with(compact('order'));
+        return view('Order.getPayment')->with(compact('order'));
     }
     public function collectEntry(Request $request){
         //dd($request->all());
@@ -153,10 +154,18 @@ class OrderController extends Controller
 
 
   public function getEntry(Request $request){
-        //dd($request->all());
+        // return $request->all();
+        $get_amount = $request->get_amount;
+        $payment_type = $request->payment_type;
+        $date = $request->date;
+        $request->validate([
+            'get_amount'=>['required'],
+            'payment_type'=>['required'],
+            'date'=>['date']
+        ]);
         $order = Order::findOrFail($request->order_id);
 
-        $order->paid_amount += $request->get_amount;
+        $order->paid_amount += $get_amount;
         $order->save();
 
         $paymentHistory = PaymentHistory::where('order_id',$order->id)->first();
@@ -164,12 +173,13 @@ class OrderController extends Controller
         $paymentHistory = new PaymentHistory;
 
         $paymentHistory->order_id = $order->id;
+        $paymentHistory->payment_type = $payment_type;
         $paymentHistory->collected_amount = 0;
         $paymentHistory->paid_amount = $request->get_amount;
-        $paymentHistory->date = $order->date;
+        $paymentHistory->date = $date;
         $paymentHistory->save();
 
-        return back();
+        return redirect()->back()->with('success','Payment collection complete');
     }
 
     /**
@@ -385,6 +395,7 @@ class OrderController extends Controller
         $orders = Order::join('branches', 'orders.branch_id','=','branches.id')
         ->join('srs', 'srs.id', '=', 'orders.sr_id')
         ->join('products', 'products.id', '=', 'orders.product_id')
+        ->join('grades','products.grade_id', '=', 'grades.id')
         ->join('distributors', 'distributors.id', '=', 'orders.distributor_id')
         ->join('users' , 'srs.user_id', '=', 'users.id')
         ->where('orders.status', 'delivered')
@@ -394,12 +405,12 @@ class OrderController extends Controller
         ->where([$condition2])
         ->whereBetween('delivery_date',array($from,$to))
         ->select('orders.id','users.name as sr_name', 'products.name as product_name',    'products.price',
-         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'orders.collected_amount', 'orders.paid_amount', 'orders.delivery_date as date')
+         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'orders.collected_amount', 'orders.paid_amount', 'orders.delivery_date as date','grades.name as grade_name')
          ->orderBy('orders.id','desc')
          ->get();
 
 
-        return view('Order.historyTable', compact('orders'));
+        return view('Order.salesHistoryTable', compact('orders'));
     }
 
     protected function paymentHistoryTable(Request $request){
@@ -455,26 +466,24 @@ class OrderController extends Controller
         if($to == ''){
             $to = date('Y-m-d');
         }
-
-
-
-
         $orders = PaymentHistory::join('orders','orders.id', '=', 'payment_histories.order_id')
-        ->join('branches', 'orders.branch_id','=','branches.id')
-        ->join('srs', 'srs.id', '=', 'orders.sr_id')
-        ->join('products', 'products.id', '=', 'orders.product_id')
-        ->join('distributors', 'distributors.id', '=', 'orders.distributor_id')
-        ->join('users' , 'srs.user_id', '=', 'users.id')
-        ->where('orders.status', 'delivered')
-        ->where([ $condition0])
-        ->where([$condition])
-        ->where([$condition1])
-        ->where([$condition2])
-        ->whereBetween('payment_histories.date',array($from,$to))
-        ->select('payment_histories.id','users.name as sr_name', 'products.name as product_name',    'products.price',
-         'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'payment_histories.collected_amount', 'payment_histories.paid_amount', 'payment_histories.date')
-         ->orderBy('payment_histories.id','desc')
-         ->get();
+                        ->join('branches', 'orders.branch_id','=','branches.id')
+                        ->join('srs', 'srs.id', '=', 'orders.sr_id')
+                        ->join('products', 'products.id', '=', 'orders.product_id')
+                        ->join('grades', 'products.grade_id', '=', 'grades.id')
+                        ->join('distributors', 'distributors.id', '=', 'orders.distributor_id')
+                        ->join('users' , 'srs.user_id', '=', 'users.id')
+                        ->where('payment_histories.paid_amount', '>', 0)
+                        ->where('orders.status', 'delivered')
+                        ->where([ $condition0])
+                        ->where([$condition])
+                        ->where([$condition1])
+                        ->where([$condition2])
+                        ->whereBetween('payment_histories.date',array($from,$to))
+                        ->select('payment_histories.id','users.name as sr_name', 'products.name as product_name',    'products.price',
+                        'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'payment_histories.collected_amount', 'payment_histories.paid_amount', 'payment_histories.date', 'grades.name as grade_name')
+                        ->orderBy('payment_histories.id','desc')
+                        ->get();
 
          return view('Order.paymentHistoryTable', compact('orders'));
 
@@ -482,6 +491,7 @@ class OrderController extends Controller
     }
 
     protected function paymentHistory(){
+
         if(auth()->user()->role  == 'super_admin'){
             $branches = Branch::where('type', 'wirehouse')->get();
             $products = Product::get();

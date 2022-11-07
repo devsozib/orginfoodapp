@@ -1,8 +1,7 @@
 
-
-<div class="container-fluid" style="display: flex; justify-content: end;">
-    <div class="btn-group btn-group-sm d-print-none">
-        <a href="javascript:window.print()" class="btn btn-primary border text-black-50 shadow-none"><i class="fa fa-print"></i> Print</a>
+<div class="container-fluid d-print-none" style="display: flex; justify-content: end;">
+    <div class="">
+        <a href="javascript:window.print()" class="btn btn-primary"><i class="material-icons">print</i>&nbsp;&nbsp;Print</a>
         {{-- <a onclick="ck()"  class="btn btn-light border text-black-50 shadow-none" id="download"><i class="fa fa-download"></i> Download</a> --}}
     </div>
 </div>
@@ -21,7 +20,7 @@
             <th scope="col">Request Qty</th>
             <th scope="col">Price <span style="font-size: 10px; text-style: none;">(Per Unit)</span> </th>
             <th scope="col">Total</th>
-            <th scope="col">Collected</th>
+            <th scope="col">Due</th>
             <th scope="col">Paied</th>
             <th scope="col">date</th>
 
@@ -39,13 +38,13 @@
                 <td >{{ $item->sr_name }}</td>
             @endif
 
-            <td>{{ $item->product_name }}</td>
+            <td>{{ $item->product_name.'-'.$item->grade_name }}</td>
             <td>{{ $item->distributor_name }}</td>
 
             <td>{{ $item->qty }}</td>
             <td>{{ $item->price }}</td>
             <td>{{ $item->qty *  $item->price}}</td>
-            <td>{{$item->collected_amount}}</td>
+            <td>{{($item->qty *  $item->price)-$item->paid_amount}}</td>
             <td>{{$item->paid_amount}}</td>
             <td>{{ $item->date }}</td>
 

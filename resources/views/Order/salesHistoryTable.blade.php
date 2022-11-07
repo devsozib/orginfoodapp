@@ -25,7 +25,7 @@
             <th scope="col">Request Qty</th>
             <th scope="col">Price <span style="font-size: 10px; text-style: none;">(Per Unit)</span> </th>
             <th scope="col">Total</th>
-            <th scope="col">Collected</th>
+            <th scope="col">Due</th>
             <th scope="col">Paied</th>
             <th scope="col">date</th>
 
@@ -48,13 +48,13 @@
                 <td >{{ $item->sr_name }}</td>
             @endif
 
-            <td>{{ $item->product_name }}</td>
+            <td>{{ $item->product_name.'-'.$item->grade_name }}</td>
             <td>{{ $item->distributor_name }}</td>
 
             <td>{{ $item->qty }}</td>
             <td>{{ $item->price }}</td>
-            <td>{{ $item->qty *  $item->price}}</td>
-            <td>{{$item->collected_amount}}</td>
+            <td>{{ ($item->qty *  $item->price)}}</td>
+            <td>{{($item->qty *  $item->price)-$item->paid_amount}}</td>
             <td>{{$item->paid_amount}}</td>
             <td>{{ $item->date }}</td>
 
@@ -63,5 +63,4 @@
     </tbody>
 </table>
 <p class="text-end" style="text-align: end;">Total Price: {{$totalPrice}}</p>
-<p class="text-end" style="text-align: end;">Total Collected: {{$totalCollected}}</p>
 <p class="text-end" style="text-align: end;">Total Paied: {{$totalPaied}}</p>

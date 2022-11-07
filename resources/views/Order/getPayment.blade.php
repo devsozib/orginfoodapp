@@ -41,12 +41,12 @@
                             <input type="number" name="order_id" style="display: none;" value="{{$order->id}}">
                             <div class="body">
                                 <div class="row clearfix">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                     <div class=" form-float">
                                         <div class="form-line">
                                             <label class="">Get Amount</label>
                                             <input value="{{old('amount')}}" type="number" class="form-control" min="1" placeholder="Get amount" name="get_amount" required>
-                                            @error('amount')
+                                            @error('get_amount')
                                             <span class="text-danger">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -54,9 +54,25 @@
                                         </div>
                                     </div>
                                     </div>
+                                    <div class="col-sm-4">
+                                        <div class=" form-float">
+                                            <div class="form-line">
+                                                <label class="">Payment Type</label>
+                                                <select name="payment_type" class="form-control show-tick">
+                                                    <option value="">-- Please select --</option>
+                                                    <option value="Cash">Cash</option>
+                                                    <option value="Check">Check</option>
+                                                </select>
+                                                  @error('payment_type')
+                                                        <span class="text-danger">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                  @enderror
+                                            </div>
+                                        </div>
+                                        </div>
 
-
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <div class=" form-float">
                                             <div class="form-line">
                                                 <label class="">Date</label>

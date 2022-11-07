@@ -238,7 +238,7 @@ class ProductController extends Controller
     protected function purchaseHistory(){
         if(auth()->user()->role  == 'super_admin'){
             $branches = Branch::where('type', 'wirehouse')->get();
-            $products = Product::get();
+            $products = Product::join('grades','grades.id','=','products.grade_id')->select('products.id','products.name as products_name','grades.name as grade_name')->get();
             return view('order.purchaseHistory', compact('branches', 'products'));
         }
 
@@ -283,10 +283,11 @@ class ProductController extends Controller
 
        $stockinHistories = StockinHistory::join('branches', 'branches.id', '=', 'stockin_histories.branch_id')
                             ->join('products', 'products.id', '=', 'stockin_histories.product_id')
+                            ->join('grades','products.grade_id','=','grades.id')
                             ->where([$condition])
                             ->where([$condition2])
                             ->whereBetween('stockin_histories.created_at',array($from,$to))
-                            ->select('branches.name as branch_name','products.id', 'products.name', 'stockin_histories.qty', 'stockin_histories.created_at')
+                            ->select('branches.name as branch_name','products.id', 'products.name', 'stockin_histories.qty', 'stockin_histories.created_at','grades.name as grade_name')
                             ->get();
         return view('product.purchaseHistoryTable')->with(compact('stockinHistories'));
 

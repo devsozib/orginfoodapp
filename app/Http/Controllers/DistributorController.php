@@ -88,7 +88,7 @@ class DistributorController extends Controller
 
     public function paymentHistory($id){
 
-            $paymentHistories = PaymentHistory::where('order_id',$id)->get();
+            $paymentHistories = PaymentHistory::where('order_id',$id)->where('paid_amount','>',0)->get();
             // return $paymentHistories;
             return view('order.paymentHistory',compact('paymentHistories'));
 

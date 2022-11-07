@@ -53,7 +53,7 @@
                         <a href="{{route('users')}}">
 
                             <i class="material-icons">person</i>
-                            <span>Users</span>
+                            <span>All Users</span>
                         </a>
                     </li>
 
@@ -75,7 +75,7 @@
                 @php
                 $check_factory = App\Models\Branch::where('user_id',auth()->user()->id)->where('type','factory')->exists();
                 @endphp
-
+{{--
                 @if (auth()->user()->role == 'super_admin' or $check_factory)
                 <li>
                     <a href="{{ route('vendors') }}">
@@ -89,7 +89,7 @@
                         <span>Testing</span>
                     </a>
                 </li>
-                @endif
+                @endif --}}
 
 
                 @php
@@ -120,14 +120,14 @@
                    </a>
                </li>
                @endif
-              @if(auth()->user()->role =="super_admin" or $check_factory)
+              {{-- @if(auth()->user()->role =="super_admin" or $check_factory)
               <li>
                 <a href="{{ route('materials_stock') }}">
                     <i class="material-icons">shopping_cart</i>
                     <span>Materials Stock</span>
                   </a>
               </li>
-              @endif
+              @endif --}}
 
 
                 @if(auth()->user()->role != 'sr' and auth()->user()->role != "account" )
@@ -146,14 +146,14 @@
                               <a class="list-group-item list-group-item-action" href="{{route('products')}}">Product List</a>
                               <a class="list-group-item list-group-item-action" href="{{route('product_grade')}}">Product Grade</a>
                               @endif
-
+{{--
                               @if ($check_factory or auth()->user()->role == 'super_admin')
                               <a class="list-group-item list-group-item-action" href="{{route('raw_product')}}">Raw Products</a>
 
                               <a class="list-group-item list-group-item-action" href="{{route('production')}}">Productions</a>
 
 
-                              @endif
+                              @endif --}}
 
 
 
@@ -162,9 +162,9 @@
                             <a class="list-group-item list-group-item-action" href="{{ route('add_stock') }}">Add Stocks</a>
                             @endif
 
-                            @if (auth()->user()->role == 'super_admin' or $check_factory)
+                            {{-- @if (auth()->user()->role == 'super_admin' or $check_factory)
                             <a class="list-group-item list-group-item-action" href="{{ route('raw_product_stocks') }}">Raw Product Stocks</a>
-                            @endif
+                            @endif --}}
 
 
 
@@ -225,7 +225,7 @@
                <li>
                    <a href="{{ route('purchase_history') }}">
                        <i class="material-icons">history</i>
-                       <span>Purchase History</span>
+                       <span>Stock History</span>
                    </a>
                </li>
                @endif

@@ -4,15 +4,15 @@
 <section class="">
     <div class="container-fluid">
         <div class="block-header">
-            <h2>Purchase History</h2>
+            <h2>Stock History</h2>
         </div>
         <!-- Basic Table -->
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="card">
-                    <div class="header">
-                        <h2 class="mb-3">All Purchase</h2><br>
-                        <div class="row mt-3">
+                    <div class="header d-print-none">
+                        <h2 class="mb-3">All Stocks</h2><br>
+                        <div class="row mt-3 d-print-none">
                             <div class="col-12 col-md-2">
 
                             </div>
@@ -35,7 +35,7 @@
                                 <select onchange="getHistoryTable()" class="form-select form-control" aria-label="Default select example" id="product">
                                     <option value="" selected>All</option>
                                     @foreach ($products as $product)
-                                        <option value="{{$product->id}}">{{$product->name}}</option>
+                                        <option value="{{$product->id}}">{{$product->products_name.'-'.$product->grade_name}}</option>
                                     @endforeach
                                   </select>
                             </div>
@@ -50,6 +50,13 @@
                         </div>
 
                     </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
                     <div class="body" >
                         <div class="table-responsive" id="purchase_history_table">
 
@@ -59,6 +66,7 @@
                 </div>
             </div>
         </div>
+
         <!-- #END# Basic Table -->
 
     </div>

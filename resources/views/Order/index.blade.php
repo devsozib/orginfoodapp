@@ -39,11 +39,13 @@
                                         <th scope="col">Request Qty</th>
                                         <th scope="col">Price <span style="font-size: 10px; text-style: none;">(Per Unit)</span> </th>
                                         <th scope="col">Total</th>
-                                        <th scope="col">Collected</th>
+                                        <th scope="col">Due</th>
                                         <th scope="col">Paied</th>
                                         <th scope="col">date</th>
                                         <th scope="col">Status</th>
+                                        @if (auth()->user()->role != 'sr')
                                         <th scope="col">Action</th>
+                                        @endif
                                         {{-- @if ($item->status == 'delivered')
                                         <th>Payment Status</th>
                                         @endif --}}
@@ -64,7 +66,7 @@
                                         <td>{{ $item->qty }}</td>
                                         <td>{{ $item->price }}</td>
                                         <td>{{ $item->qty *  $item->price}}</td>
-                                        <td>{{$item->collected_amount}}</td>
+                                        <td>{{($item->qty *  $item->price)-$item->paid_amount}}</td>
                                         <td>{{$item->paid_amount}}</td>
                                         <td>{{ $item->date }}</td>
                                         <td>
@@ -119,6 +121,7 @@
 
                                         </td>
                                         @if ($item->status == 'delivered')
+                                        @if (auth()->user()->role != 'sr')
                                             <td>
                                                 <div class="dropdown">
                                                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -126,17 +129,21 @@
                                                       <span class="caret"></span>
                                                     </button>
                                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                                      <li><a href="{{ route('distributor_payment_history',$item->id) }}">Payment History</a></li>
+
+                                                        <li><a href="{{ route('distributor_payment_history',$item->id) }}">Payment History</a></li>
+
+
                                                       {{-- <li><a href="">Sales History</a></li> --}}
-                                                      @if (auth()->user()->role == "sr")
+                                                      {{-- @if (auth()->user()->role == "account")
                                                         <li><a href="{{route('collect_payment', $item->id)}}">Collect Payment</a></li>
-                                                      @endif
+                                                      @endif --}}
                                                       @if (auth()->user()->role == "account")
                                                         <li><a href="{{route('get_payment', $item->id)}}">Get Payment</a></li>
                                                       @endif
                                                     </ul>
                                                   </div>
                                             </td>
+                                            @endif
                                         @endif
 
                                     </tr>

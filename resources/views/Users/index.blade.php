@@ -34,7 +34,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>NAME</th>
-                                    <th>BRANCH</th>
+
                                     <th>EMAIL</th>
                                     <th>ROLE</th>
                                     <th>ACTION</th>
@@ -46,7 +46,7 @@
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
                                     <td>{{ $user->user_name }}</td>
-                                    <td>{{ $user->branch_name }}</td>
+
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->role }}</td>
                                     <td class="float-left">
