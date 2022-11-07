@@ -281,11 +281,14 @@ class ProductController extends Controller
             $to = date('Y-m-d');
         }
 
+       $startDate = Carbon::createFromFormat('Y-m-d', $from)->startOfDay();
+        $endDate = Carbon::createFromFormat('Y-m-d', $to)->endOfDay();
+
        $stockinHistories = StockinHistory::join('branches', 'branches.id', '=', 'stockin_histories.branch_id')
                             ->join('products', 'products.id', '=', 'stockin_histories.product_id')
                             ->where([$condition])
                             ->where([$condition2])
-                            ->whereBetween('stockin_histories.created_at',array($from,$to))
+                            ->whereBetween('stockin_histories.created_at',array($startDate,$endDate))
                             ->select('branches.name as branch_name','products.id', 'products.name', 'stockin_histories.qty', 'stockin_histories.created_at')
                             ->get();
         return view('product.purchaseHistoryTable')->with(compact('stockinHistories'));

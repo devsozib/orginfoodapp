@@ -22,7 +22,7 @@
 
             <td>{{ $item->name }}</td>
             <td>{{ $item->qty }}</td>
-            <td>{{ $item->created_at }}</td>
+            <td>{{ $item->created_at->format('d M Y') }}</td>
 
         </tr>
     @endforeach

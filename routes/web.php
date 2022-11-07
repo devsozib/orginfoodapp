@@ -192,7 +192,7 @@ Route::middleware(['auth'])->group(function (){
    Route::get('sales-history', [OrderController::class, 'salesHistory'])->name('sales_history');
    Route::get('sales-history-table', [OrderController::class, 'salesHistoryTable'])->name('sales_history_table');
 
-   Route::get('purchase-history', [ProductController::class, 'purchaseHistory'])->name('purchase_history');
+   Route::get('warehouse-purchase-history', [ProductController::class, 'purchaseHistory'])->name('purchase_history_warehouse');
    Route::get('purchase-history-table', [ProductController::class, 'purchaseHistoryTable'])->name('purchase_history_table');
 
    Route::get('payment-history', [OrderController::class, 'paymentHistory'])->name('payment_history');
