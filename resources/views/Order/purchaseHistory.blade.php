@@ -4,14 +4,17 @@
 <section class="">
     <div class="container-fluid">
         <div class="block-header">
-            <h2>Stock History</h2>
+            <div class="logo text-center d-none d-print-block">
+                <img width=100px src="{{ asset('assets/images/cropped-Orgin-English-Logo-01-1-270x270.png') }}" alt="">
+             </div>
+            <h2 class="print-text-center" ><span id="filtering"></span></h2>
         </div>
         <!-- Basic Table -->
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
+                <div class="card d-print-none">
                     <div class="header d-print-none">
-                        <h2 class="mb-3">All Stocks</h2><br>
+                        <h2 class="mb-3">All Stocks History</h2><br>
                         <div class="row mt-3 d-print-none">
                             <div class="col-12 col-md-2">
 
@@ -89,10 +92,55 @@ getHistoryTable("");
         to = document.getElementById('to_date').value;
         // alert(from);
         $.get('{{route('purchase_history_table')}}', {branch:branch, product:product, from:from, to:to}, function(data){
-            document.getElementById('purchase_history_table').innerHTML = data;
+
+            // if(data.product.product_name||data.product.grade_name||data.branch||data.from_date||data.to_date){
+            //     document.getElementById('filtering').innerText = (data.product.product_name+'-'+data.product.grade_name)+'-'+data.branch.name;
+            // }else{
+            //     document.getElementById('filtering').innerText = "All";
+            // }
+            var filterData = getTitle();
+            document.getElementById('filtering').innerHTML = filterData;
+            document.getElementById('purchase_history_table').innerHTML = data.purchaseHistoryTable;
         });
     }
 
+    function getTitle(){
+        let branch = null;
 
+
+        if(document.getElementById("branch")){
+            branch = document.getElementById("branch");
+            branch =  branch.options[ branch.selectedIndex ].innerHTML;
+        }
+
+        var product = document.getElementById( "product");
+        product =  product.options[ product.selectedIndex ].innerHTML;
+
+        from = document.getElementById('from_date').value;
+        to = document.getElementById('to_date').value;
+
+
+       let title = "All ";
+
+       if(product != 'All'){
+            title += product+" ";
+       }
+       title += "stock history ";
+
+
+        if(branch != null && branch != "All"){
+                title += "of "+branch+" ";
+        }
+
+        if(to == ""){
+            to =  new Date().toJSON().slice(0, 10);
+        }
+        if(from != ""){
+            title += "<br/>Of date: "+from+" ";
+            if(from != to)title += "to "+to;
+        }
+
+        return title;
+    }
 </script>
 @endsection

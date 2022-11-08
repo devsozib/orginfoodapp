@@ -223,7 +223,7 @@
 
                @if ( auth()->user()->role == "super_admin" or (auth()->user()->role == "admin" and !$check_factory))
                <li>
-                   <a href="{{ route('purchase_history') }}">
+                   <a href="{{ route('purchase_history_warehouse') }}">
                        <i class="material-icons">history</i>
                        <span>Stock History</span>
                    </a>

@@ -13,7 +13,7 @@
                 @endif
             <th scope="col">PRODUCT</th>
             <th scope="col">Qty</th>
-            <th scope="col">date</th>
+            <th style="text-align: right" scope="col">date</th>
 
         </tr>
     </thead>
@@ -28,7 +28,7 @@
 
             <td>{{ $item->name.'-'.$item->grade_name }}</td>
             <td>{{ $item->qty }}</td>
-            <td>{{ $item->created_at }}</td>
+            <td style="text-align: right">{{ $item->created_at->format('d M Y') }}</td>
 
         </tr>
     @endforeach

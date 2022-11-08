@@ -17,12 +17,13 @@
             @endif
             <th scope="col">PRODUCT</th>
             <th scope="col">DISTRIBUTOR</th>
-            <th scope="col">Request Qty</th>
-            <th scope="col">Price <span style="font-size: 10px; text-style: none;">(Per Unit)</span> </th>
+            <th scope="col">R Qty</th>
+            <th scope="col">Unit Price</span> </th>
             <th scope="col">Total</th>
             <th scope="col">Due</th>
-            <th scope="col">Paied</th>
-            <th scope="col">date</th>
+            <th scope="col">Paid</th>
+            <th scope="col">Payment Type</th>
+            <th style="text-align: right" scope="col">date</th>
 
         </tr>
     </thead>
@@ -46,7 +47,8 @@
             <td>{{ $item->qty *  $item->price}}</td>
             <td>{{($item->qty *  $item->price)-$item->paid_amount}}</td>
             <td>{{$item->paid_amount}}</td>
-            <td>{{ $item->date }}</td>
+            <td>{{$item->payment_type}}</td>
+            <td style="text-align: right">{{ $item->date }}</td>
 
         </tr>
     @endforeach

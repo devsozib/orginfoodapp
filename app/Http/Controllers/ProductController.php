@@ -242,8 +242,9 @@ class ProductController extends Controller
             return view('order.purchaseHistory', compact('branches', 'products'));
         }
 
+
         if(auth()->user()->role  == 'admin' || auth()->user()->role  == 'sr'){
-            $products = Product::get();
+            $products = Product::join('grades','grades.id','=','products.grade_id')->select('products.id','products.name as products_name','grades.name as grade_name')->get();
             return view('order.purchaseHistory', compact('products'));
         }
     }
@@ -253,6 +254,10 @@ class ProductController extends Controller
         $productId = $request->product;
         $from = $request->from;
         $to = $request->to;
+
+
+
+
 
         if(auth()->user()->role == 'admin'){
             $brance = Branch::where('user_id', auth()->user()->id)->first();
@@ -281,6 +286,9 @@ class ProductController extends Controller
             $to = date('Y-m-d');
         }
 
+       $startDate = Carbon::createFromFormat('Y-m-d', $from)->startOfDay();
+       $endDate = Carbon::createFromFormat('Y-m-d', $to)->endOfDay();
+
        $stockinHistories = StockinHistory::join('branches', 'branches.id', '=', 'stockin_histories.branch_id')
                             ->join('products', 'products.id', '=', 'stockin_histories.product_id')
                             ->join('grades','products.grade_id','=','grades.id')
@@ -289,7 +297,43 @@ class ProductController extends Controller
                             ->whereBetween('stockin_histories.created_at',array($from,$to))
                             ->select('branches.name as branch_name','products.id', 'products.name', 'stockin_histories.qty', 'stockin_histories.created_at','grades.name as grade_name')
                             ->get();
-        return view('product.purchaseHistoryTable')->with(compact('stockinHistories'));
+
+        $forBranch = "";
+        $forProduct= "";
+
+
+        if( $branchId != '' ){
+            $forBranch = Branch::where('id',$branchId)->first();
+        }else{
+            $forBranch = "";
+        }
+
+        if( $productId != '' ){
+            $forProduct = Product::join('grades','grades.id','=','products.grade_id')->where('products.id',$productId)->select('products.name as product_name','grades.name as grade_name')->first();
+        }else{
+            $forProduct = "";
+        }
+
+        //  if($forProduct){
+        //     $product_name = $forProduct->name;
+        //  }else{
+        //     $product_name = "";
+        //  }
+
+        //  if($forBranch){
+        //     $branch_name = $forBranch->name;
+        //  }else{
+        //     $branch_name = "";
+        //  }
+
+        // return $product_name;
+
+        $purchaseHistoryTable = view('product.purchaseHistoryTable')->with(compact('stockinHistories'));
+        return response()->json([
+            'product' =>   $forProduct,
+            'branch' =>   $forBranch,
+            'purchaseHistoryTable' =>  (string)$purchaseHistoryTable
+        ]);
 
     }
 

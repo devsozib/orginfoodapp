@@ -42,10 +42,18 @@
 
         }
 
+       th{
+            text-transform: uppercase;
+        }
+
+
 
         @media print {
-            *{
-                /* display: none; */
+            @page: footer{
+                display: none;
+            }
+            @page: header{
+                display: none;
             }
             .d-print-inline {
                 display:inline!important
@@ -80,6 +88,11 @@
             .printable{
                 width: 100% !important;
                 margin: 0px !important;
+            }
+            .print-text-center{
+                text-align: center !important;
+                font-weight: bold!important;
+                font-size: 20px!important;
             }
 
         }

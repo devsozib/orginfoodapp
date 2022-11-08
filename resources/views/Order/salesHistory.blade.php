@@ -4,13 +4,17 @@
 <section class="">
     <div class="container-fluid printable">
         <div class="block-header">
-            <h2>Sales History</h2>
+             {{-- <h2 style="display:none; padding-top: 5rem; font-size: 30px; font-weight: 500;" class="d-print-block text-center ">Sales History<span id="filtering-for-print"></span></h2> --}}
+             <div class="logo text-center d-none d-print-block">
+                <img width=100px src="{{ asset('assets/images/cropped-Orgin-English-Logo-01-1-270x270.png') }}" alt="">
+             </div>
+            <h2 class="print-text-center" ><span id="filtering"></span></h2>
         </div>
         <!-- Basic Table -->
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="header  d-print-none">
+                <div class="card d-print-none">
+                    <div class="header  ">
                         <h2 class="mb-3">All Sales History</h2><br>
                         <div class="row mt-3 d-print-none">
                             <div class="col-12 col-md-2">
@@ -123,8 +127,66 @@
         to = document.getElementById('to_date').value;
         // alert(from);
         $.get('{{route('sales_history_table')}}', {branch:branch, sr:sr, distributor:distributor, product:product, from:from, to:to}, function(data){
+            var filterData = getTitle();
+            document.getElementById('filtering').innerHTML = filterData;
             document.getElementById('sales_history_table').innerHTML = data;
         });
+    }
+
+    function getTitle(){
+        let branch = null;
+        let sr = null;
+
+        if(document.getElementById("branch")){
+            branch = document.getElementById("branch");
+            branch =  branch.options[ branch.selectedIndex ].innerHTML;
+        }
+
+        if(document.getElementById("sr")){
+            sr = document.getElementById( "sr" );
+            sr =  sr.options[ sr.selectedIndex ].innerHTML;
+        }
+
+
+        var distributor = document.getElementById( "distributor" );
+        distributor =  distributor.options[ distributor.selectedIndex ].innerHTML;
+
+        var product = document.getElementById( "product");
+        product =  product.options[ product.selectedIndex ].innerHTML;
+
+        from = document.getElementById('from_date').value;
+        to = document.getElementById('to_date').value;
+
+
+       let title = "All ";
+
+       if(product != 'All'){
+            title += product+" ";
+       }
+       title += "sales history ";
+        if(sr!="All"){
+            title += "of "+sr+" ";
+        }
+
+        if(branch != null && branch != "All"){
+            if(sr!="All"){
+                title += "from "+branch+" ";
+            }else{
+                title += "of "+branch+" ";
+            }
+        }
+        if(distributor != 'All'){
+            title += "to "+distributor+" ";
+        }
+        if(to == ""){
+            to =  new Date().toJSON().slice(0, 10);
+        }
+        if(from != ""){
+            title += "<br/>Of date: "+from+" ";
+            if(from != to)title += "to "+to;
+        }
+
+        return title;
     }
 
 

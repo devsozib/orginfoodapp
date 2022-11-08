@@ -23,11 +23,11 @@
             <th scope="col" >PRODUCT</th>
             <th scope="col">DISTRIBUTOR</th>
             <th scope="col">Request Qty</th>
-            <th scope="col">Price <span style="font-size: 10px; text-style: none;">(Per Unit)</span> </th>
+            <th scope="col">Unit Price</span> </th>
             <th scope="col">Total</th>
             <th scope="col">Due</th>
-            <th scope="col">Paied</th>
-            <th scope="col">date</th>
+            <th scope="col">Paid</th>
+            <th style="text-align: right" scope="col">date</th>
 
         </tr>
     </thead>
@@ -56,7 +56,7 @@
             <td>{{ ($item->qty *  $item->price)}}</td>
             <td>{{($item->qty *  $item->price)-$item->paid_amount}}</td>
             <td>{{$item->paid_amount}}</td>
-            <td>{{ $item->date }}</td>
+            <td style="text-align: right">{{ $item->date }}</td>
 
         </tr>
     @endforeach
@@ -64,3 +64,4 @@
 </table>
 <p class="text-end" style="text-align: end;">Total Price: {{$totalPrice}}</p>
 <p class="text-end" style="text-align: end;">Total Paied: {{$totalPaied}}</p>
+<p class="text-end" style="text-align: end;">Total Due: {{$totalPrice-$totalPaied}}</p>

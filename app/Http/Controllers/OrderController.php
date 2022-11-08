@@ -130,7 +130,7 @@ class OrderController extends Controller
 
     public function getPayment($id){
         $order = Order::findOrFail($id);
-        return view('Order.getPayment')->with(compact('order'));
+        return view('order.getPayment')->with(compact('order'));
     }
     public function collectEntry(Request $request){
         //dd($request->all());
@@ -332,7 +332,9 @@ class OrderController extends Controller
         }
 
         if(auth()->user()->role  == 'admin' || auth()->user()->role  == 'sr'){
-            $products = Product::get();
+            $products = Product::join('grades','products.grade_id','=','grades.id')
+            ->select('products.id as product_id','products.name as product_name','grades.name as   grade_name')
+            ->get();
             return view('order.salesHistory', compact('products'));
         }
     }
@@ -410,10 +412,11 @@ class OrderController extends Controller
          ->get();
 
 
-        return view('Order.salesHistoryTable', compact('orders'));
+        return view('order.salesHistoryTable', compact('orders'));
     }
 
     protected function paymentHistoryTable(Request $request){
+        //return $request;
         // return 5/0;
         $branchId = $request->branch;
         $srId = $request->sr;
@@ -481,11 +484,11 @@ class OrderController extends Controller
                         ->where([$condition2])
                         ->whereBetween('payment_histories.date',array($from,$to))
                         ->select('payment_histories.id','users.name as sr_name', 'products.name as product_name',    'products.price',
-                        'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'payment_histories.collected_amount', 'payment_histories.paid_amount', 'payment_histories.date', 'grades.name as grade_name')
+                        'distributors.name as distributor_name', 'branches.name as branch_name', 'orders.qty', 'payment_histories.collected_amount', 'payment_histories.paid_amount', 'payment_histories.date', 'grades.name as grade_name','payment_histories.payment_type')
                         ->orderBy('payment_histories.id','desc')
                         ->get();
 
-         return view('Order.paymentHistoryTable', compact('orders'));
+                return view('order.paymentHistoryTable', compact('orders'));
 
 
     }
@@ -494,12 +497,12 @@ class OrderController extends Controller
 
         if(auth()->user()->role  == 'super_admin'){
             $branches = Branch::where('type', 'wirehouse')->get();
-            $products = Product::get();
+            $products = Product::join('grades','products.grade_id','=','grades.id')->select('products.id','products.name as product_name','grades.name as grade_name')->get();
             return view('order.warehousePaymentHistory', compact('branches', 'products'));
         }
 
         if(auth()->user()->role  == 'admin' || auth()->user()->role  == 'sr'){
-            $products = Product::get();
+            $products = Product::join('grades','products.grade_id','=','grades.id')->select('products.id','products.name as product_name','grades.name as grade_name')->get();
             return view('order.warehousePaymentHistory', compact('products'));
         }
     }

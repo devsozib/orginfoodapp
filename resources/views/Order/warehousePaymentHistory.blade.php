@@ -4,7 +4,11 @@
 <section class="">
     <div class="container-fluid printable">
         <div class="block-header">
-            <h2>Payment History</h2>
+            <div class="logo text-center d-none d-print-block">
+                <img width=100px src="{{ asset('assets/images/cropped-Orgin-English-Logo-01-1-270x270.png') }}" alt="">
+             </div>
+            <h2 class="print-text-center" ><span id="filtering"></span></h2>
+
         </div>
         <!-- Basic Table -->
         <div class="row clearfix">
@@ -44,7 +48,7 @@
                                 <select onchange="getHistoryTable()" class="form-select form-control" aria-label="Default select example" id="product">
                                     <option value="" selected>All</option>
                                     @foreach ($products as $product)
-                                        <option value="{{$product->id}}">{{$product->name}}</option>
+                                        <option value="{{$product->id}}">{{$product->product_name.'-'.$product->grade_name}}</option>
                                     @endforeach
                                   </select>
                             </div>
@@ -117,10 +121,67 @@
         to = document.getElementById('to_date').value;
         // alert(from);
         $.get('{{route('payment_history_table')}}', {branch:branch, sr:sr, distributor:distributor, product:product, from:from, to:to}, function(data){
+            console.log(data);
+            var filterData = getTitle();
+            document.getElementById('filtering').innerHTML = filterData;
             document.getElementById('payment_history_table').innerHTML = data;
         });
     }
 
+    function getTitle(){
+        let branch = null;
+        let sr = null;
 
+        if(document.getElementById("branch")){
+            branch = document.getElementById("branch");
+            branch =  branch.options[ branch.selectedIndex ].innerHTML;
+        }
+
+        if(document.getElementById("sr")){
+            sr = document.getElementById( "sr" );
+            sr =  sr.options[ sr.selectedIndex ].innerHTML;
+        }
+
+
+        var distributor = document.getElementById( "distributor" );
+        distributor =  distributor.options[ distributor.selectedIndex ].innerHTML;
+
+        var product = document.getElementById( "product");
+        product =  product.options[ product.selectedIndex ].innerHTML;
+
+        from = document.getElementById('from_date').value;
+        to = document.getElementById('to_date').value;
+
+
+       let title = "All ";
+
+       if(product != 'All'){
+            title += product+" ";
+       }
+       title += "payments history ";
+        if(distributor!="All"){
+            title += "of "+distributor+" ";
+        }
+
+        if(branch != null && branch != "All"){
+            if(sr!="All"){
+                title += "from "+branch+" ";
+            }else{
+                title += "of "+branch+" ";
+            }
+        }
+        if(sr != 'All'){
+            title += "by "+sr+" ";
+        }
+        if(to == ""){
+            to =  new Date().toJSON().slice(0, 10);
+        }
+        if(from != ""){
+            title += "<br/>Of date: "+from+" ";
+            if(from != to)title += "to "+to;
+        }
+
+        return title;
+    }
 </script>
 @endsection
