@@ -123,21 +123,21 @@ getHistoryTable("");
        let title = "All ";
 
        if(product != 'All'){
-            title += product+" ";
+            title += "<span style='font-weight: bold !important; color: #000000 !important;'> "+product+"</span>";
        }
-       title += "stock history ";
+       title += " stock history ";
 
 
         if(branch != null && branch != "All"){
-                title += "of "+branch+" ";
+                title += "of <span style='font-weight: bold !important; color: #000000 !important;'> "+branch+"</span>";
         }
 
         if(to == ""){
             to =  new Date().toJSON().slice(0, 10);
         }
         if(from != ""){
-            title += "<br/>Of date: "+from+" ";
-            if(from != to)title += "to "+to;
+            title += "<br/>Of date: <span style='font-weight: bold !important; color: #000000 !important;'>"+from+"</span>";
+            if(from != to)title += "to <span style='font-weight: bold !important; color: #000000 !important;'>"+to+"</span>";
         }
 
         return title;

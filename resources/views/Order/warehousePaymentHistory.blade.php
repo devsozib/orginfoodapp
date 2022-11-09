@@ -153,32 +153,37 @@
         to = document.getElementById('to_date').value;
 
 
-       let title = "All ";
-
-       if(product != 'All'){
-            title += product+" ";
-       }
-       title += "payments history ";
+       let title = "Payment histories ";
         if(distributor!="All"){
-            title += "of "+distributor+" ";
+            title += "of <span style='font-weight: bold !important; color: #000000 !important;'>"+distributor+"</span> ";
         }
 
         if(branch != null && branch != "All"){
-            if(sr!="All"){
-                title += "from "+branch+" ";
+            if(distributor!="All"){
+                title += "to <span style='font-weight: bold !important; color: #000000 !important;'>"+branch+"</span> ";
             }else{
-                title += "of "+branch+" ";
+                title += "of <span style='font-weight: bold !important; color: #000000 !important;'>"+branch+"</span> ";
             }
         }
-        if(sr != 'All'){
-            title += "by "+sr+" ";
+
+        if(sr!=null && sr!="All"){
+            title += "by <span style='font-weight: bold !important; color: #000000 !important;'>"+sr+"</span> ";
         }
+
+        if(product != 'All'){
+            title += "for <span style='font-weight: bold !important; color: #000000 !important;'>"+product+"</span> ";
+        }
+
+        if(from == "" && to != ""){
+            title += "<br>date: to <span style='font-weight: bold !important; color: #000000 !important;'>"+to+"</span> ";
+        }
+
         if(to == ""){
-            to =  new Date().toJSON().slice(0, 10);
+            to = new Date().toJSON().slice(0, 10);
         }
         if(from != ""){
-            title += "<br/>Of date: "+from+" ";
-            if(from != to)title += "to "+to;
+            title += "<br>date: <span style='font-weight: bold !important; color: #000000 !important;'>"+from+"</span> ";
+            if(from != to)title += "to <span style='font-weight: bold !important; color: #000000 !important;'>"+to+"</span> ";
         }
 
         return title;

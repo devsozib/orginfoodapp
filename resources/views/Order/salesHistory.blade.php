@@ -161,29 +161,29 @@
        let title = "All ";
 
        if(product != 'All'){
-            title += product+" ";
+            title +="<span style='font-weight: bold !important; color: #000000 !important;'>"+product+"</span> ";
        }
        title += "sales history ";
         if(sr!="All"){
-            title += "of "+sr+" ";
+            title += "of <span style='font-weight: bold !important; color: #000000 !important;'>"+sr+"</span>";
         }
 
         if(branch != null && branch != "All"){
-            if(sr!="All"){
-                title += "from "+branch+" ";
+            if(sr!="All" && sr!=null){
+                title += "from <span style='font-weight: bold !important; color: #000000 !important;'>"+branch+" ";
             }else{
-                title += "of "+branch+" ";
+                title += "of <span style='font-weight: bold !important; color: #000000 !important;'>"+branch+"<span/> ";
             }
         }
         if(distributor != 'All'){
-            title += "to "+distributor+" ";
+            title += "to <span style='font-weight: bold !important; color: #000000 !important;'>"+distributor+"</span>";
         }
         if(to == ""){
             to =  new Date().toJSON().slice(0, 10);
         }
         if(from != ""){
-            title += "<br/>Of date: "+from+" ";
-            if(from != to)title += "to "+to;
+            title += "<br/>Of date:  <span style='font-weight: bold !important; color: #000000 !important;'>"+from+"</span> ";
+            if(from != to)title += "to  <span style='font-weight: bold !important; color: #000000 !important;'>"+to+"</span> ";
         }
 
         return title;

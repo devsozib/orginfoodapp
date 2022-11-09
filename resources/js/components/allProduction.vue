@@ -6,7 +6,7 @@
         <select v-model="filter_by" name="filter_by" v-on:change="getProduction('dropdown')" class="form-control" style="width:100px; float:right">
             <option value="" disabled selected hidden>Filter By</option>
             <option value="all">All</option>
-            <option value="today">Today</option>
+            <option value="today">Today JJ</option>
             <option value="this_week">This week</option>
             <option value="this_month">This month</option>
             <option value="this_year">This Year</option>

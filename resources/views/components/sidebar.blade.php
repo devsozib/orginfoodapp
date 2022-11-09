@@ -243,7 +243,7 @@
                <li>
                    <a href="{{ route('payment_history') }}">
                        <i class="material-icons">history</i>
-                       <span>payment History</span>
+                       <span>Payment History</span>
                    </a>
                </li>
                @endif
