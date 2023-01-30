@@ -49,7 +49,7 @@ class OrderController extends Controller
         ->join('distributors', 'distributors.id', '=', 'orders.distributor_id')
         ->join('users' , 'users.id', '=', 'srs.user_id')
         ->leftJoin('stocks',function($join){
-            $join->on('stocks.product_id','=','orders.product_id')
+             $join->on('stocks.product_id','=','orders.product_id')
             ->where('stocks.branch_id', 'orders.branch_id');
         })
         ->where([$condition])

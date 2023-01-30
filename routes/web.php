@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ConsumerController;
 use App\Http\Controllers\RawProductController;
 use App\Http\Controllers\DistributorController;
+use App\Http\Controllers\WholeSellerController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ShiftProductController;
 use App\Http\Controllers\MaterialsStockController;
@@ -77,12 +78,15 @@ Route::middleware(['auth'])->group(function (){
             Route::get('/users', [UserController::class, 'index'])->name('users');
             Route::get('/all-admin', [UserController::class, 'allAdmin'])->name('all_admin');
             Route::get('/all-srs', [UserController::class, 'allSrs'])->name('all_srs');
-            Route::get('/create-users', [UserController::class, 'create'])->name('create_user');
+            Route::get('/whole-sellers', [UserController::class, 'wholeSellers'])->name('whole_sellers');
+            Route::get('/create-users/{user_type?}', [UserController::class, 'create'])->name('create_user');
             Route::post('/store_admin',[UserController::class, 'storeAdmin'])->name('store_admin');
             Route::post('/store_sr',[UserController::class, 'storeSR'])->name('store_sr');
+            Route::post('/store_whole_seller',[UserController::class, 'storeWholeSeller'])->name('store_whole_seller');
             Route::get('user-edit/{id}',[UserController::class, 'editUser'])->name('userEdit');
             Route::patch('update-admin/{id}',[UserController::class, 'updateAdmin'])->name('updateAdmin');
             Route::patch('update-sr/{id}',[UserController::class, 'updateSr'])->name('updateSr');
+            Route::patch('update-whole_seller/{id}',[UserController::class, 'updateWholeSeller'])->name('updateWholeSeller');
             //Users Routes End Here
 
 
@@ -158,12 +162,15 @@ Route::middleware(['auth'])->group(function (){
    //Shift Route end here
 
 
-   //Order Route Start Here
+   //SR Order Route Start Here
    Route::get('orders',[OrderController::class,'index'])->name('orders');
    Route::get('order-place',[OrderController::class,'create'])->name('order_place');
    Route::post('store-orders',[OrderController::class,'store'])->name('store_orders');
 
-
+    //Whole Seller Order Route Start Here
+    Route::get('whole-sellers-orders',[WholeSellerController::class,'index'])->name('whole_seller_orders');
+    Route::get('whole_seller_order_place',[WholeSellerController::class,'create'])->name('whole_seller_order_place');
+    Route::post('store-whole-sellers-orders',[WholeSellerController::class,'store'])->name('store_whole_seller_orders');
 
    //product request route start here
     Route::get('request-product',[NotificationController::class, 'index'])->name('request_product');
@@ -176,6 +183,7 @@ Route::middleware(['auth'])->group(function (){
 
    //Change order status route
    Route::get('change-order-status',[OrderController::class,'ChangeStatus'])->name('change-order-status');
+   Route::get('change-order-whole-seller-status',[WholeSellerController::class,'ChangeStatus'])->name('change-order-whole-seller-status');
    Route::get('/payment-history/{id}',[MaterialsPurchase::class, 'payment_history'])->name('payment_history');
    Route::get('purchase-history/{id}',[MaterialsPurchase::class, 'purchase_history'])->name('purchase_history');
    //session testing function

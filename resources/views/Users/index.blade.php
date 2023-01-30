@@ -17,9 +17,7 @@
                            All Users
 
                         </h2>
-                        <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('create_user') }}">Add Users</a>
-                        </ul>
+
                     </div>
                     <div class="body table-responsive">
                         <table class="table">

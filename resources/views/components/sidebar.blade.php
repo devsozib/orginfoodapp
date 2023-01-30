@@ -49,14 +49,28 @@
                             <span>Branches</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{route('users')}}">
-
-                            <i class="material-icons">person</i>
-                            <span>All Users</span>
-                        </a>
-                    </li>
-
+                   <li>
+                    <a class="" data-toggle="collapse" href="#users" role="button" aria-expanded="false" aria-controls="multiCollapseExample2">
+                        <i class="material-icons">person</i>
+                        <span>Users</span>
+                        <small style="margin-top:-10px"><i class="material-icons">keyboard_arrow_down</i></small>
+                    </a>
+                    <div class="container">
+                        <div  class="collapse multi-collapse" id="users">
+                         <div id="list-example" class="list-group w-50">
+                            <a class="list-group-item list-group-item-action" href="{{route('users')}}">All Users</a>
+                            <a class="list-group-item list-group-item-action" href="{{route('all_admin')}}">Branch Admin</a>
+                            <a class="list-group-item list-group-item-action" href="{{route('all_srs')}}">SR'S</a>
+                            <a class="list-group-item list-group-item-action" href="{{route('whole_sellers')}}">Whole Sellers</a>
+                       </div>
+                      </div>
+                </li>
+                   <li>
+                    <a href="{{route('create_user','wholeseller')}}">
+                        <i class="material-icons">person</i>
+                        <span>Add Whole Seller</span>
+                    </a>
+                  </li>
 
 
                 @endif
@@ -95,7 +109,7 @@
                 @php
                 $check_factory = App\Models\Branch::where('user_id',auth()->user()->id)->where('type','factory')->exists();
                 @endphp
-                @if (auth()->user()->role != "account" and !$check_factory)
+                @if (auth()->user()->role != "account" and !$check_factory && auth()->user()->role != "whole_seller")
                     <li>
                         <a href="{{ route('distributors') }}">
                             <i class="material-icons">group</i>
@@ -134,7 +148,6 @@
                 <li>
                     <a class="" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample2"> <i class="material-icons">report</i>
                         <span>Product</span><small style="margin-top:-10px"><i class="material-icons">keyboard_arrow_down</i></small></a>
-
                   <div class="container">
                     <div  class="collapse multi-collapse" id="multiCollapseExample2">
 
@@ -142,8 +155,9 @@
                             @php
                             $check_wirehouse = App\Models\Branch::where('user_id',auth()->user()->id)->where('type','wirehouse')->exists();
                             @endphp
+                            <a class="list-group-item list-group-item-action" href="{{route('products')}}">Product List</a>
                              @if ($check_wirehouse or auth()->user()->role == 'super_admin')
-                              <a class="list-group-item list-group-item-action" href="{{route('products')}}">Product List</a>
+
                               <a class="list-group-item list-group-item-action" href="{{route('product_grade')}}">Product Grade</a>
                               @endif
 {{--
@@ -190,6 +204,12 @@
                         <span>SR's Product Request</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('whole_seller_orders') }}">
+                        <i class="material-icons">request_page</i>
+                        <span>Whole Seller Product Request</span>
+                    </a>
+                </li>
                 @endif
 
 
@@ -212,6 +232,16 @@
                     </a>
                 </li>
                 @endif
+
+                @if (auth()->user()->role == "whole_seller")
+                <li>
+                    <a href="{{ route('whole_seller_order_place') }}">
+                        <i class="material-icons">move_up</i>
+                        <span>Palce Order and Order Staus</span>
+                    </a>
+                </li>
+                @endif
+
                 @if (auth()->user()->role == "account")
                 <li>
                     <a href="{{ route('orders') }}">
@@ -219,7 +249,7 @@
                         <span>SR Order Status</span>
                     </a>
                 </li>
-               @endif
+                @endif
 
                @if ( auth()->user()->role == "super_admin" or (auth()->user()->role == "admin" and !$check_factory))
                <li>

@@ -18,7 +18,7 @@
 
                         </h2>
                         <ul class="header-dropdown m-r--5">
-                            <a class="btn-sm btn-primary float-right"href="{{ route('create_user') }}">Add Sr</a>
+                            <a class="btn-sm btn-primary float-right"href="{{ route('create_user','sr') }}">Add Sr</a>
                         </ul>
                     </div>
                     <div class="body table-responsive">
@@ -50,7 +50,7 @@
                                     <td>{{ $sr->email }}</td>
                                     <td>{{ $sr->phone }}</td>
                                     <td class="float-left">
-                                        <a class="btn btn-sm btn-info" href=""> <i class="material-icons">edit_square</i>Edit</a>
+                                        <a class="btn btn-sm btn-info" href="{{ route('userEdit',$sr->id) }}"> <i class="material-icons">edit_square</i>Edit</a>
                                         <a class="btn btn-sm btn-danger ml-2"> <i class="material-icons">delete</i>Delete</a>
                                     </td>
                                 </tr>
